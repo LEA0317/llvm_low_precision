@@ -1,13 +1,17 @@
-all: test_fixed4.ll test_int4.ll
+all: test_fixed4.ll test_int4.ll test_uint4.ll
 
 clean:
 	@echo "** remove ll files **"
-	rm *.ll
+	rm *.ll *~
 
 test_fixed4.ll:
 	@echo "** test for fixed4 **"
 	../llvm7.0.0/build/bin/clang++ -S -emit-llvm test_fixed4.cpp
 
 test_int4.ll:
-	@echo "** test for test4 **"
+	@echo "** test for int4 **"
 	../llvm7.0.0/build/bin/clang++ -S -emit-llvm test_int4.cpp
+
+test_uint4.ll:
+	@echo "** test for uint4 **"
+	../llvm7.0.0/build/bin/clang++ -S -emit-llvm test_uint4.cpp
