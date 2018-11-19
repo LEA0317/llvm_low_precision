@@ -464,6 +464,8 @@ LLVMTypeKind LLVMGetTypeKind(LLVMTypeRef Ty) {
     return LLVMVoidTypeKind;
   case Type::Fixed4TyID: // LMSDK
     return LLVMFixed4TypeKind;
+  case Type::Fixed8TyID: // LMSDK
+    return LLVMFixed8TypeKind;    
   case Type::HalfTyID:
     return LLVMHalfTypeKind;
   case Type::FloatTyID:
@@ -582,6 +584,9 @@ unsigned LLVMGetIntTypeWidth(LLVMTypeRef IntegerTy) {
 LLVMTypeRef LLVMFixed4TypeInContext(LLVMContextRef C) { // LMSDK
   return (LLVMTypeRef) Type::getFixed4Ty(*unwrap(C));
 }
+LLVMTypeRef LLVMFixed8TypeInContext(LLVMContextRef C) { // LMSDK
+  return (LLVMTypeRef) Type::getFixed8Ty(*unwrap(C));
+}
 LLVMTypeRef LLVMHalfTypeInContext(LLVMContextRef C) {
   return (LLVMTypeRef) Type::getHalfTy(*unwrap(C));
 }
@@ -606,6 +611,9 @@ LLVMTypeRef LLVMX86MMXTypeInContext(LLVMContextRef C) {
 
 LLVMTypeRef LLVMFixed4Type(void) { // LMSDK
   return LLVMFixed4TypeInContext(LLVMGetGlobalContext());
+}
+LLVMTypeRef LLVMFixed8Type(void) { // LMSDK
+  return LLVMFixed8TypeInContext(LLVMGetGlobalContext());
 }
 LLVMTypeRef LLVMHalfType(void) {
   return LLVMHalfTypeInContext(LLVMGetGlobalContext());

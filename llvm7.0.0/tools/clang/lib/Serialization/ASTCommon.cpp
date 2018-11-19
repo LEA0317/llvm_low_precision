@@ -88,6 +88,9 @@ serialization::TypeIdxFromBuiltin(const BuiltinType *BT) {
   case BuiltinType::Fixed4: // LMSDK
     ID = PREDEF_TYPE_Fixed4_ID;
     break;
+  case BuiltinType::Fixed8: // LMSDK
+    ID = PREDEF_TYPE_Fixed8_ID;
+    break;    
   case BuiltinType::Half:
     ID = PREDEF_TYPE_HALF_ID;
     break;

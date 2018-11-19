@@ -292,6 +292,8 @@ static llvm::Type *getTypeForFormat(llvm::LLVMContext &VMContext,
                                     bool UseNativeHalf = false) {
   if (&format == &llvm::APFloat::IEEEfixed4()) // LMSDK
     return llvm::Type::getFixed4Ty(VMContext);
+  if (&format == &llvm::APFloat::IEEEfixed8()) // LMSDK
+    return llvm::Type::getFixed8Ty(VMContext);  
   if (&format == &llvm::APFloat::IEEEhalf()) {
     if (UseNativeHalf)
       return llvm::Type::getHalfTy(VMContext);
@@ -477,6 +479,11 @@ llvm::Type *CodeGenTypes::ConvertType(QualType T) {
           getTypeForFormat(getLLVMContext(), Context.getFloatTypeSemantics(T),
                            /* UseNativeFixed4 = */ true);
       break;
+    case BuiltinType::Fixed8: // LMSDK 
+      ResultType =
+          getTypeForFormat(getLLVMContext(), Context.getFloatTypeSemantics(T),
+                           /* UseNativeFixed8 = */ true);
+      break;      
     case BuiltinType::Float16:
       ResultType =
           getTypeForFormat(getLLVMContext(), Context.getFloatTypeSemantics(T),

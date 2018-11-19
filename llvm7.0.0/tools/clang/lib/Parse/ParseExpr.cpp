@@ -1246,6 +1246,7 @@ ExprResult Parser::ParseCastExpression(bool isUnaryExpression,
   case tok::kw_signed:
   case tok::kw_unsigned:
   case tok::kw_fixed4: // LMSDK
+  case tok::kw_fixed8: // LMSDK    
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:

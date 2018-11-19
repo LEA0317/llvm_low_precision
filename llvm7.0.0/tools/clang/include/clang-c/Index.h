@@ -3188,14 +3188,15 @@ enum CXTypeKind {
   CXType_ObjCSel = 31,
   CXType_Float128 = 32,
   CXType_Fixed4 = 33, /* LMSDK */
-  CXType_Half = 34,
-  CXType_Float16 = 35,
-  CXType_ShortAccum = 36,
-  CXType_Accum = 37,
-  CXType_LongAccum = 38,
-  CXType_UShortAccum = 39,
-  CXType_UAccum = 40,
-  CXType_ULongAccum = 41,
+  CXType_Fixed8 = 34, /* LMSDK */  
+  CXType_Half = 35,
+  CXType_Float16 = 36,
+  CXType_ShortAccum = 37,
+  CXType_Accum = 38,
+  CXType_LongAccum = 39,
+  CXType_UShortAccum = 40,
+  CXType_UAccum = 41,
+  CXType_ULongAccum = 42,
   CXType_FirstBuiltin = CXType_Void,
   CXType_LastBuiltin = CXType_ULongAccum,
 
@@ -4154,6 +4155,7 @@ enum CXPrintingPolicyProperty {
   CXPrintingPolicy_TerseOutput,
   CXPrintingPolicy_PolishForDeclaration,
   CXPrintingPolicy_Fixed4, /* LMSDK */
+  CXPrintingPolicy_Fixed8, /* LMSDK */  
   CXPrintingPolicy_Half,
   CXPrintingPolicy_MSWChar,
   CXPrintingPolicy_IncludeNewlines,

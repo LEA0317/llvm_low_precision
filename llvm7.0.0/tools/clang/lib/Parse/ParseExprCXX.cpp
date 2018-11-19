@@ -1951,6 +1951,9 @@ void Parser::ParseCXXSimpleTypeSpecifier(DeclSpec &DS) {
   case tok::kw_fixed4: // LMSDK
     DS.SetTypeSpecType(DeclSpec::TST_fixed4, Loc, PrevSpec, DiagID, Policy);
     break;
+  case tok::kw_fixed8: // LMSDK
+    DS.SetTypeSpecType(DeclSpec::TST_fixed8, Loc, PrevSpec, DiagID, Policy);
+    break;    
   case tok::kw_half:
     DS.SetTypeSpecType(DeclSpec::TST_half, Loc, PrevSpec, DiagID, Policy);
     break;

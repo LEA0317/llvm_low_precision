@@ -150,6 +150,7 @@ struct APFloatBase {
   /// @{
 
   static const fltSemantics &IEEEfixed4() LLVM_READNONE; // LMSDK
+  static const fltSemantics &IEEEfixed8() LLVM_READNONE; // LMSDK  
   static const fltSemantics &IEEEhalf() LLVM_READNONE;
   static const fltSemantics &IEEEsingle() LLVM_READNONE;
   static const fltSemantics &IEEEdouble() LLVM_READNONE;
@@ -520,8 +521,9 @@ private:
 
   /// @}
 
-  APInt convertFixed4APFloatToAPInt() const;
-  APInt convertHalfAPFloatToAPInt() const; // LMSDK
+  APInt convertFixed4APFloatToAPInt() const; // LMSDK
+  APInt convertFixed8APFloatToAPInt() const; // LMSDK  
+  APInt convertHalfAPFloatToAPInt() const;
   APInt convertFloatAPFloatToAPInt() const;
   APInt convertDoubleAPFloatToAPInt() const;
   APInt convertQuadrupleAPFloatToAPInt() const;
@@ -529,6 +531,7 @@ private:
   APInt convertPPCDoubleDoubleAPFloatToAPInt() const;
   void initFromAPInt(const fltSemantics *Sem, const APInt &api);
   void initFromFixed4APInt(const APInt &api); // LMSDK
+  void initFromFixed8APInt(const APInt &api); // LMSDK  
   void initFromHalfAPInt(const APInt &api);
   void initFromFloatAPInt(const APInt &api);
   void initFromDoubleAPInt(const APInt &api);

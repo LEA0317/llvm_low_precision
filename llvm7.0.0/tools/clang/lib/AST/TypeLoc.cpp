@@ -342,6 +342,7 @@ TypeSpecifierType BuiltinTypeLoc::getWrittenTypeSpec() const {
   case BuiltinType::LongLong:
   case BuiltinType::Int128:
   case BuiltinType::Fixed4: // LMSDK
+  case BuiltinType::Fixed8: // LMSDK    
   case BuiltinType::Half:
   case BuiltinType::Float:
   case BuiltinType::Double:

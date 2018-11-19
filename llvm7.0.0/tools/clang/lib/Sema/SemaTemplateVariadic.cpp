@@ -845,6 +845,7 @@ bool Sema::containsUnexpandedParameterPacks(Declarator &D) {
   case TST_int:
   case TST_int128:
   case TST_fixed4: // LMSDK
+  case TST_fixed8: // LMSDK
   case TST_half:
   case TST_float:
   case TST_double:

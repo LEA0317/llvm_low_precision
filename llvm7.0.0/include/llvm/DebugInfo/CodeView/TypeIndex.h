@@ -82,6 +82,7 @@ enum class SimpleTypeKind : uint32_t {
   SInt4 = 0x0101,
   UInt4 = 0x0102,
   Fixed4 = 0x0111,
+  Fixed8 = 0x0112,    
 #endif
 };
 
@@ -189,6 +190,7 @@ public:
 
   // LMSDK
   static TypeIndex Fixed4()  { return TypeIndex(SimpleTypeKind::Fixed4); }
+  static TypeIndex Fixed8()  { return TypeIndex(SimpleTypeKind::Fixed8); }  
   static TypeIndex Float32() { return TypeIndex(SimpleTypeKind::Float32); }
   static TypeIndex Float64() { return TypeIndex(SimpleTypeKind::Float64); }
 

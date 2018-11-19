@@ -890,6 +890,9 @@ LegalizerHelper::lower(MachineInstr &MI, unsigned TypeIdx, LLT Ty) {
     case 4: // LMSDK
       ZeroTy = Type::getFixed4Ty(Ctx);
       break;
+    case 8: // LMSDK
+      ZeroTy = Type::getFixed8Ty(Ctx);
+      break;
     case 16:
       ZeroTy = Type::getHalfTy(Ctx);
       break;

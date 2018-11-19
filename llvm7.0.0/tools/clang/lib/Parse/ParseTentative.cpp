@@ -1036,6 +1036,7 @@ Parser::isExpressionOrTypeSpecifierSimple(tok::TokenKind Kind) {
   case tok::kw___float128:
   case tok::kw_enum:
   case tok::kw_fixed4: // LMSDK
+  case tok::kw_fixed8: // LMSDK    
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_int:
@@ -1545,6 +1546,7 @@ Parser::isCXXDeclarationSpecifier(Parser::TPResult BracedCastResult,
   case tok::kw_signed:
   case tok::kw_unsigned:
   case tok::kw_fixed4: // LMSDK
+  case tok::kw_fixed8: // LMSDK    
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:
@@ -1639,6 +1641,7 @@ bool Parser::isCXXDeclarationSpecifierAType() {
   case tok::kw_signed:
   case tok::kw_unsigned:
   case tok::kw_fixed4: // LMSDK
+  case tok::kw_fixed8: // LMSDK    
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:

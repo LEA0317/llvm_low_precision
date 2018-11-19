@@ -25,7 +25,7 @@
 //  c -> char
 //  s -> short
 //  i -> int
-//  f -> fixed4 // LMSDK FIX ME
+//  q-> fixed4 // LMSDK FIX ME
 //  h -> half
 //  f -> float
 //  d -> double

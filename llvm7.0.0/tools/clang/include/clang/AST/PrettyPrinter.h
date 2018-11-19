@@ -50,6 +50,7 @@ struct PrintingPolicy {
       UseVoidForZeroParams(!LO.CPlusPlus),
       TerseOutput(false), PolishForDeclaration(false),
       Fixed4(true /* LangOption */), // LMSDK
+      Fixed8(true /* LangOption */), // LMSDK      
       Half(LO.Half), MSWChar(LO.MicrosoftExt && !LO.WChar),
       IncludeNewlines(true), MSVCFormatting(false),
       ConstantsAsWritten(false), SuppressImplicitBase(false),
@@ -188,6 +189,7 @@ struct PrintingPolicy {
 
   // LMSDK
   unsigned Fixed4 : 1;
+  unsigned Fixed8 : 1;  
 
   /// When true, print the half-precision floating-point type as 'half'
   /// instead of '__fp16'

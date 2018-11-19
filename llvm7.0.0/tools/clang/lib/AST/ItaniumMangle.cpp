@@ -2508,6 +2508,7 @@ void CXXNameMangler::mangleType(const BuiltinType *T) {
   case BuiltinType::UInt4: // LMSDK
   case BuiltinType::SInt4:
   case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:    
     Out << 'X'; // FIX ME LMSDK
     break;
   case BuiltinType::Void:

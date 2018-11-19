@@ -26,6 +26,7 @@ LLVMContextImpl::LLVMContextImpl(LLVMContext &C)
     VoidTy(C, Type::VoidTyID),
     LabelTy(C, Type::LabelTyID),
     Fixed4Ty(C, Type::Fixed4TyID), // LMSDK
+    Fixed8Ty(C, Type::Fixed8TyID), // LMSDK    
     HalfTy(C, Type::HalfTyID),
     FloatTy(C, Type::FloatTyID),
     DoubleTy(C, Type::DoubleTyID),

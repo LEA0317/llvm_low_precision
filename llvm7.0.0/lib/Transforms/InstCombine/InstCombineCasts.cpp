@@ -1430,6 +1430,8 @@ static Type *shrinkFPConstant(ConstantFP *CFP) {
     return nullptr;  // No constant folding of this.
   if (fitsInFPType(CFP, APFloat::IEEEfixed4())) // LMSDK
     return Type::getFixed4Ty(CFP->getContext());
+  if (fitsInFPType(CFP, APFloat::IEEEfixed8())) // LMSDK
+    return Type::getFixed8Ty(CFP->getContext());  
   // See if the value can be truncated to half and then reextended.
   if (fitsInFPType(CFP, APFloat::IEEEhalf()))
     return Type::getHalfTy(CFP->getContext());

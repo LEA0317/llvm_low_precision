@@ -2198,7 +2198,10 @@ Error BitcodeReader::parseConstants() {
         return error("Invalid record");
       if (CurTy->isFixed4Ty()) // LMSDK
         V = ConstantFP::get(Context, APFloat(APFloat::IEEEfixed4(),
-                                             APInt(4, (uint8_t)Record[0])));
+                                             APInt(4, (uint64_t)Record[0])));
+      if (CurTy->isFixed8Ty()) // LMSDK
+        V = ConstantFP::get(Context, APFloat(APFloat::IEEEfixed8(),
+                                             APInt(8, (uint8_t)Record[0])));      
       if (CurTy->isHalfTy())
         V = ConstantFP::get(Context, APFloat(APFloat::IEEEhalf(),
                                              APInt(16, (uint16_t)Record[0])));

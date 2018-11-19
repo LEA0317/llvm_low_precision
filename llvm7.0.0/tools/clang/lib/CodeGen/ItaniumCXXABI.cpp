@@ -2778,6 +2778,7 @@ static bool TypeInfoIsInStandardLibrary(const BuiltinType *Ty) {
     case BuiltinType::UInt4: // LMSDK
     case BuiltinType::SInt4:
     case BuiltinType::Fixed4:
+    case BuiltinType::Fixed8:      
     case BuiltinType::Void:
     case BuiltinType::NullPtr:
     case BuiltinType::Bool:

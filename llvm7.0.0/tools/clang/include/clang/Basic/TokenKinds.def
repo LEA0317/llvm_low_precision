@@ -577,6 +577,7 @@ KEYWORD(__bool                      , KEYALTIVEC|KEYZVECTOR)
 
 // LMSDK
 KEYWORD(fixed4                      , KEYALL)
+KEYWORD(fixed8                      , KEYALL)
 
 // ARM NEON extensions.
 ALIAS("__fp16", half                , KEYALL)

@@ -158,6 +158,7 @@ protected:
 
   enum APFloatSemantics {
     IEEEfixed4, // LMSDK
+    IEEEfixed8, // LMSDK    
     IEEEhalf,
     IEEEsingle,
     IEEEdouble,

@@ -2029,6 +2029,7 @@ bool MIParser::parseMachineOperand(MachineOperand &Dest,
   case MIToken::IntegerLiteral:
     return parseImmediateOperand(Dest);
   case MIToken::kw_fixed4: // LMSDK
+  case MIToken::kw_fixed8: // LMSDK    
   case MIToken::kw_half:
   case MIToken::kw_float:
   case MIToken::kw_double:

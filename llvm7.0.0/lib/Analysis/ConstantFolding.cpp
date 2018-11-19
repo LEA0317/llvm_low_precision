@@ -1496,6 +1496,12 @@ Constant *GetConstantFoldFPValue(double V, Type *Ty) {
     APF.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven, &unused);
     return ConstantFP::get(Ty->getContext(), APF);
   }
+  if (Ty->isFixed8Ty()) {
+    APFloat APF(V);
+    bool unused;
+    APF.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &unused);
+    return ConstantFP::get(Ty->getContext(), APF);
+  }  
 #endif
   if (Ty->isHalfTy()) {
     APFloat APF(V);

@@ -97,7 +97,7 @@ namespace Intrinsic {
   /// intrinsic. This is returned by getIntrinsicInfoTableEntries.
   struct IITDescriptor {
     enum IITDescriptorKind {
-      Void, VarArg, MMX, Token, Metadata, Fixed4, // LMSDK
+      Void, VarArg, MMX, Token, Metadata, Fixed4, Fixed8, // LMSDK
       Half, Float, Double, Quad,
       Integer, Vector, Pointer, Struct,
       Argument, ExtendArgument, TruncArgument, HalfVecArgument,

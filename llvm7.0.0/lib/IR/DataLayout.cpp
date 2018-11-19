@@ -170,6 +170,7 @@ static const LayoutAlignElem DefaultAlignments[] = {
   { INTEGER_ALIGN, 32, 4, 4 },   // i32
   { INTEGER_ALIGN, 64, 4, 8 },   // i64
   { FLOAT_ALIGN, 4, 1, 1 },      // fixed4 // LMSDK
+  { FLOAT_ALIGN, 8, 1, 1 },      // fixed8 // LMSDK  
   { FLOAT_ALIGN, 16, 2, 2 },     // half
   { FLOAT_ALIGN, 32, 4, 4 },     // float
   { FLOAT_ALIGN, 64, 8, 8 },     // double
@@ -701,6 +702,7 @@ unsigned DataLayout::getAlignment(Type *Ty, bool abi_or_pref) const {
     AlignType = INTEGER_ALIGN;
     break;
   case Type::Fixed4TyID: // LMSDK
+  case Type::Fixed8TyID: // LMSDK    
   case Type::HalfTyID:
   case Type::FloatTyID:
   case Type::DoubleTyID:

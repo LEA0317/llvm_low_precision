@@ -557,6 +557,7 @@ void TypePrinting::print(Type *Ty, raw_ostream &OS) {
   switch (Ty->getTypeID()) {
   case Type::VoidTyID:      OS << "void"; return;
   case Type::Fixed4TyID:    OS << "f4"; return; // LMSDK
+  case Type::Fixed8TyID:    OS << "f8"; return; // LMSDK    
   case Type::HalfTyID:      OS << "half"; return;
   case Type::FloatTyID:     OS << "float"; return;
   case Type::DoubleTyID:    OS << "double"; return;
@@ -1362,9 +1363,13 @@ static void WriteConstantInternal(raw_ostream &Out, const Constant *CV,
       Out << format_hex_no_prefix(API.getZExtValue(), 4,
                                   /*Upper=*/true);
     } else if (&APF.getSemantics() == &APFloat::IEEEfixed4()) { // LMSDK
-      Out << 'O';
+      Out << 'Q'; // LMSDK FIX ME
       Out << format_hex_no_prefix(API.getZExtValue(), 1,
-                                  /*Upper=*/true);
+				  /*Upper=*/true);
+    } else if (&APF.getSemantics() == &APFloat::IEEEfixed8()) { // LMSDK
+      Out << 'O'; // LMSDK FIX ME
+      Out << format_hex_no_prefix(API.getZExtValue(), 1,
+				  /*Upper=*/true);      
     } else
       llvm_unreachable("Unsupported floating point type");
     return;

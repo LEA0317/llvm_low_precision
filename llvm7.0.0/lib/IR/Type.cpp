@@ -40,6 +40,7 @@ Type *Type::getPrimitiveType(LLVMContext &C, TypeID IDNumber) {
   switch (IDNumber) {
   case VoidTyID      : return getVoidTy(C);
   case Fixed4TyID    : return getFixed4Ty(C); // LMSDK
+  case Fixed8TyID    : return getFixed8Ty(C); // LMSDK    
   case HalfTyID      : return getHalfTy(C);
   case FloatTyID     : return getFloatTy(C);
   case DoubleTyID    : return getDoubleTy(C);
@@ -116,6 +117,7 @@ bool Type::isEmptyTy() const {
 unsigned Type::getPrimitiveSizeInBits() const {
   switch (getTypeID()) {
   case Type::Fixed4TyID: return 4; // LMSDK
+  case Type::Fixed8TyID: return 8; // LMSDK    
   case Type::HalfTyID: return 16;
   case Type::FloatTyID: return 32;
   case Type::DoubleTyID: return 64;
@@ -137,7 +139,8 @@ int Type::getFPMantissaWidth() const {
   if (auto *VTy = dyn_cast<VectorType>(this))
     return VTy->getElementType()->getFPMantissaWidth();
   assert(isFloatingPointTy() && "Not a floating point type!");
-  if (getTypeID() == Fixed4TyID) return 3; // LMSDK
+  if (getTypeID() == Fixed4TyID) return 1; // LMSDK
+  if (getTypeID() == Fixed8TyID) return 6; // LMSDK  
   if (getTypeID() == HalfTyID) return 11;
   if (getTypeID() == FloatTyID) return 24;
   if (getTypeID() == DoubleTyID) return 53;
@@ -164,6 +167,7 @@ bool Type::isSizedDerivedType(SmallPtrSetImpl<Type*> *Visited) const {
 Type *Type::getVoidTy(LLVMContext &C) { return &C.pImpl->VoidTy; }
 Type *Type::getLabelTy(LLVMContext &C) { return &C.pImpl->LabelTy; }
 Type *Type::getFixed4Ty(LLVMContext &C) { return &C.pImpl->Fixed4Ty; } // LMSDK
+Type *Type::getFixed8Ty(LLVMContext &C) { return &C.pImpl->Fixed8Ty; } // LMSDK
 Type *Type::getHalfTy(LLVMContext &C) { return &C.pImpl->HalfTy; }
 Type *Type::getFloatTy(LLVMContext &C) { return &C.pImpl->FloatTy; }
 Type *Type::getDoubleTy(LLVMContext &C) { return &C.pImpl->DoubleTy; }
@@ -188,6 +192,10 @@ IntegerType *Type::getIntNTy(LLVMContext &C, unsigned N) {
 // LMSDK
 PointerType *Type::getFixed4PtrTy(LLVMContext &C, unsigned AS) {
   return getFixed4Ty(C)->getPointerTo(AS);
+}
+// LMSDK
+PointerType *Type::getFixed8PtrTy(LLVMContext &C, unsigned AS) {
+  return getFixed8Ty(C)->getPointerTo(AS);
 }
 
 PointerType *Type::getHalfPtrTy(LLVMContext &C, unsigned AS) {

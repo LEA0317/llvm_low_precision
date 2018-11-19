@@ -232,6 +232,11 @@ APFloat llvm::getAPFloatFromSize(double Val, unsigned Size) {
     APFloat APF(Val);
     APF.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven, &Ignored);
     return APF;
+  } else if (Size == 8) { // LMSDK
+    bool Ignored;
+    APFloat APF(Val);
+    APF.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &Ignored);
+    return APF;
   }
   if (Size != 4)
     llvm_unreachable("Unsupported FPConstant size");

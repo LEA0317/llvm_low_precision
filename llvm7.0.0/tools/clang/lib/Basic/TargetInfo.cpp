@@ -70,6 +70,8 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
     NewAlign = 0; // Infer from basic type alignment.
   Fixed4Width = 4; // LMSDK
   Fixed4Align = 4; // LMSDK
+  Fixed8Width = 8; // LMSDK
+  Fixed8Align = 8; // LMSDK  
   HalfWidth = 16;
   HalfAlign = 16;
   FloatWidth = 32;
@@ -103,6 +105,7 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
   UseExplicitBitFieldAlignment = true;
   ZeroLengthBitfieldBoundary = 0;
   Fixed4Format = &llvm::APFloat::IEEEfixed4(); // LMSDK
+  Fixed8Format = &llvm::APFloat::IEEEfixed8(); // LMSDK  
   HalfFormat = &llvm::APFloat::IEEEhalf();
   FloatFormat = &llvm::APFloat::IEEEsingle();
   DoubleFormat = &llvm::APFloat::IEEEdouble();
@@ -349,7 +352,6 @@ void TargetInfo::adjust(LangOptions &Opts) {
     IntWidth = IntAlign = 32;
     LongWidth = LongAlign = 64;
     LongLongWidth = LongLongAlign = 128;
-    Fixed4Width = Fixed4Align = 4; // LMSDK
     HalfWidth = HalfAlign = 16;
     FloatWidth = FloatAlign = 32;
 
@@ -372,7 +374,6 @@ void TargetInfo::adjust(LangOptions &Opts) {
     IntMaxType = SignedLongLong;
     Int64Type = SignedLong;
 
-    Fixed4Format = &llvm::APFloat::IEEEfixed4(); // LMSDK
     HalfFormat = &llvm::APFloat::IEEEhalf();
     FloatFormat = &llvm::APFloat::IEEEsingle();
     LongDoubleFormat = &llvm::APFloat::IEEEquad();

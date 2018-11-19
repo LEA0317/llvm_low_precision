@@ -212,6 +212,7 @@ Type *EVT::getTypeForEVT(LLVMContext &Context) const {
   case MVT::i64:     return Type::getInt64Ty(Context);
   case MVT::i128:    return IntegerType::get(Context, 128);
   case MVT::f4:      return Type::getFixed4Ty(Context); // LMSDK
+  case MVT::f8:      return Type::getFixed8Ty(Context); // LMSDK    
   case MVT::f16:     return Type::getHalfTy(Context);
   case MVT::f32:     return Type::getFloatTy(Context);
   case MVT::f64:     return Type::getDoubleTy(Context);
@@ -289,6 +290,7 @@ MVT MVT::getVT(Type *Ty, bool HandleUnknown){
   case Type::IntegerTyID:
     return getIntegerVT(cast<IntegerType>(Ty)->getBitWidth());
   case Type::Fixed4TyID:    return MVT(MVT::f4); // LMSDK
+  case Type::Fixed8TyID:    return MVT(MVT::f8); // LMSDK    
   case Type::HalfTyID:      return MVT(MVT::f16);
   case Type::FloatTyID:     return MVT(MVT::f32);
   case Type::DoubleTyID:    return MVT(MVT::f64);

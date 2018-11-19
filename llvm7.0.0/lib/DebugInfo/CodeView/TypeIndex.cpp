@@ -55,6 +55,7 @@ static const SimpleTypeEntry SimpleTypeNames[] = {
     {"__int128*", SimpleTypeKind::Int128},
     {"unsigned __int128*", SimpleTypeKind::UInt128},
     {"__fixed4*", SimpleTypeKind::Fixed4}, // LMSDK
+    {"__fixed8*", SimpleTypeKind::Fixed8}, // LMSDK    
     {"__half*", SimpleTypeKind::Float16},
     {"float*", SimpleTypeKind::Float32},
     {"float*", SimpleTypeKind::Float32PartialPrecision},

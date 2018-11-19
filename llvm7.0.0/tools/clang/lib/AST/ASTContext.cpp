@@ -108,7 +108,7 @@ unsigned ASTContext::NumImplicitDestructors;
 unsigned ASTContext::NumImplicitDestructorsDeclared;
 
 enum FloatingRank {
-  Float16Rank, Fixed4Rank, // LMSDK
+  Float16Rank, Fixed4Rank, Fixed8Rank, // LMSDK
   HalfRank, FloatRank, DoubleRank, LongDoubleRank, Float128Rank
 };
 
@@ -1267,6 +1267,7 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
 
   // LMSDK
   InitBuiltinType(Fixed4Ty,       BuiltinType::Fixed4);
+  InitBuiltinType(Fixed8Ty,       BuiltinType::Fixed8);  
   InitBuiltinType(SignedInt4Ty,   BuiltinType::SInt4);
   InitBuiltinType(UnsignedInt4Ty, BuiltinType::UInt4);
 
@@ -1490,6 +1491,8 @@ const llvm::fltSemantics &ASTContext::getFloatTypeSemantics(QualType T) const {
   default: llvm_unreachable("Not a floating point type!");
   case BuiltinType::Fixed4: // LMSDK 
     return Target->getFixed4Format();
+  case BuiltinType::Fixed8: // LMSDK 
+    return Target->getFixed8Format();    
   case BuiltinType::Float16:
   case BuiltinType::Half:
     return Target->getHalfFormat();
@@ -1870,6 +1873,10 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
       Width = Target->getFixed4Width();
       Align = Target->getFixed4Align();
       break;
+    case BuiltinType::Fixed8: // LMSDK
+      Width = Target->getFixed8Width();
+      Align = Target->getFixed8Align();
+      break;      
     case BuiltinType::Float16:
     case BuiltinType::Half:
       Width = Target->getHalfWidth();
@@ -5515,6 +5522,7 @@ static FloatingRank getFloatingRank(QualType T) {
   switch (T->getAs<BuiltinType>()->getKind()) {
   default: llvm_unreachable("getFloatingRank(): not a floating type");
   case BuiltinType::Fixed4:     return Fixed4Rank; // LMSDK
+  case BuiltinType::Fixed8:     return Fixed8Rank; // LMSDK    
   case BuiltinType::Float16:    return Float16Rank;
   case BuiltinType::Half:       return HalfRank;
   case BuiltinType::Float:      return FloatRank;
@@ -5536,6 +5544,7 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
     case Float16Rank:
     case HalfRank: llvm_unreachable("Complex half is not supported");
     case Fixed4Rank:     return Fixed4Ty; // LMSDK
+    case Fixed8Rank:     return Fixed8Ty; // LMSDK
     case FloatRank:      return FloatComplexTy;
     case DoubleRank:     return DoubleComplexTy;
     case LongDoubleRank: return LongDoubleComplexTy;
@@ -5546,6 +5555,7 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
   assert(Domain->isRealFloatingType() && "Unknown domain!");
   switch (EltRank) {
   case Fixed4Rank:     return Fixed4Ty; // LMSDK
+  case Fixed8Rank:     return Fixed8Ty; // LMSDK    
   case Float16Rank:    return HalfTy;
   case HalfRank:       return HalfTy;
   case FloatRank:      return FloatTy;
@@ -6460,6 +6470,7 @@ static char getObjCEncodingForPrimitiveKind(const ASTContext *C,
     case BuiltinType::Float16:
     case BuiltinType::Float128:
     case BuiltinType::Fixed4: // LMSDK
+    case BuiltinType::Fixed8: // LMSDK      
     case BuiltinType::Half:
     case BuiltinType::ShortAccum:
     case BuiltinType::Accum:

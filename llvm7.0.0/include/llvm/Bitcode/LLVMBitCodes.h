@@ -147,29 +147,30 @@ enum TypeCodes {
 
   // LMSDK
   TYPE_CODE_FIXED4 = 10,
-  TYPE_CODE_HALF = 11, // HALF
+  TYPE_CODE_FIXED8 = 11,  
+  TYPE_CODE_HALF = 12, // HALF
 
-  TYPE_CODE_ARRAY = 12,  // ARRAY: [numelts, eltty]
-  TYPE_CODE_VECTOR = 13, // VECTOR: [numelts, eltty]
+  TYPE_CODE_ARRAY = 13,  // ARRAY: [numelts, eltty]
+  TYPE_CODE_VECTOR = 14, // VECTOR: [numelts, eltty]
 
   // These are not with the other floating point types because they're
   // a late addition, and putting them in the right place breaks
   // binary compatibility.
-  TYPE_CODE_X86_FP80 = 14,  // X86 LONG DOUBLE
-  TYPE_CODE_FP128 = 15,     // LONG DOUBLE (112 bit mantissa)
-  TYPE_CODE_PPC_FP128 = 16, // PPC LONG DOUBLE (2 doubles)
+  TYPE_CODE_X86_FP80 = 15,  // X86 LONG DOUBLE
+  TYPE_CODE_FP128 = 16,     // LONG DOUBLE (112 bit mantissa)
+  TYPE_CODE_PPC_FP128 = 17, // PPC LONG DOUBLE (2 doubles)
 
-  TYPE_CODE_METADATA = 17, // METADATA
+  TYPE_CODE_METADATA = 18, // METADATA
 
-  TYPE_CODE_X86_MMX = 18, // X86 MMX
+  TYPE_CODE_X86_MMX = 19, // X86 MMX
 
-  TYPE_CODE_STRUCT_ANON = 19,  // STRUCT_ANON: [ispacked, eltty x N]
-  TYPE_CODE_STRUCT_NAME = 20,  // STRUCT_NAME: [strchr x N]
-  TYPE_CODE_STRUCT_NAMED = 21, // STRUCT_NAMED: [ispacked, eltty x N]
+  TYPE_CODE_STRUCT_ANON = 20,  // STRUCT_ANON: [ispacked, eltty x N]
+  TYPE_CODE_STRUCT_NAME = 21,  // STRUCT_NAME: [strchr x N]
+  TYPE_CODE_STRUCT_NAMED = 22, // STRUCT_NAMED: [ispacked, eltty x N]
 
-  TYPE_CODE_FUNCTION = 22, // FUNCTION: [vararg, retty, paramty x N]
+  TYPE_CODE_FUNCTION = 23, // FUNCTION: [vararg, retty, paramty x N]
 
-  TYPE_CODE_TOKEN = 23 // TOKEN
+  TYPE_CODE_TOKEN = 24 // TOKEN
 };
 
 enum OperandBundleTagCode {

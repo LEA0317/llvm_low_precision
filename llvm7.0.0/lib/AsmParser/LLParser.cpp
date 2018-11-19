@@ -4935,7 +4935,10 @@ bool LLParser::ConvertValIDToValue(Type *Ty, ValID &ID, Value *&V,
       if (Ty->isFixed4Ty()) // LMSDK
         ID.APFloatVal.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven,
                               &Ignored);
-      if (Ty->isHalfTy())
+      else if (Ty->isFixed8Ty()) // LMSDK
+        ID.APFloatVal.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven,
+                              &Ignored);      
+      else if (Ty->isHalfTy())
         ID.APFloatVal.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven,
                               &Ignored);
       else if (Ty->isFloatTy())

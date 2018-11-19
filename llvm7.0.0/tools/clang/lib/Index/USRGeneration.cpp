@@ -647,7 +647,8 @@ void USRGenerator::VisitType(QualType T) {
         case BuiltinType::SInt4: // LMSDK
         case BuiltinType::UInt4:
         case BuiltinType::Fixed4:
-	  llvm_unreachable("unhandled type");
+        case BuiltinType::Fixed8:	  
+	  llvm_unreachable("LMSDK unhandled type");
         case BuiltinType::Void:
           c = 'v'; break;
         case BuiltinType::Bool:
@@ -689,7 +690,7 @@ void USRGenerator::VisitType(QualType T) {
         case BuiltinType::Int128:
           c = 'J'; break;
         case BuiltinType::Float16:
-	case BuiltinType::Half: // LMSDK FIXME: ADD for fixed4
+	case BuiltinType::Half: // LMSDK FIXME: ADD for fixed4 and fixed8
           c = 'h'; break;
         case BuiltinType::Float:
           c = 'f'; break;

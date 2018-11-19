@@ -347,6 +347,7 @@ bool Declarator::isDeclarationOfFunction() const {
     case TST_error:
     case TST_float:
     case TST_fixed4: // LMSDK
+    case TST_fixed8: // LMSDK      
     case TST_half:
     case TST_int:
     case TST_int128:
@@ -512,6 +513,7 @@ const char *DeclSpec::getSpecifierName(DeclSpec::TST T,
   case DeclSpec::TST_int:         return "int";
   case DeclSpec::TST_int128:      return "__int128";
   case DeclSpec::TST_fixed4:      return "fixed4"; // LMSDK
+  case DeclSpec::TST_fixed8:      return "fixed8"; // LMSDK    
   case DeclSpec::TST_half:        return "half";
   case DeclSpec::TST_float:       return "float";
   case DeclSpec::TST_double:      return "double";

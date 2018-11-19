@@ -576,6 +576,8 @@ inline uint64_t DataLayout::getTypeSizeInBits(Type *Ty) const {
     return Ty->getIntegerBitWidth();
   case Type::Fixed4TyID: // LMSDK
     return 4;
+  case Type::Fixed8TyID: // LMSDK
+    return 8;    
   case Type::HalfTyID:
     return 16;
   case Type::FloatTyID:

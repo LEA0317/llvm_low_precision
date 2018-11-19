@@ -694,6 +694,7 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
     Encoding = llvm::dwarf::DW_ATE_boolean;
     break;
   case BuiltinType::Fixed4: // LMSDK
+  case BuiltinType::Fixed8: // LMSDK    
   case BuiltinType::Half:
   case BuiltinType::Float:
   case BuiltinType::LongDouble:

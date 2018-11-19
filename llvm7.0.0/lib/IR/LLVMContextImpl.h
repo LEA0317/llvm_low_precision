@@ -1290,7 +1290,7 @@ public:
   std::unique_ptr<ConstantTokenNone> TheNoneToken;
 
   // Basic type instances.
-  Type VoidTy, LabelTy, Fixed4Ty, // LMSDK
+  Type VoidTy, LabelTy, Fixed4Ty, Fixed8Ty, // LMSDK
        HalfTy, FloatTy, DoubleTy, MetadataTy, TokenTy;
   Type X86_FP80Ty, FP128Ty, PPC_FP128Ty, X86_MMXTy;
   IntegerType Int1Ty, Int8Ty, Int16Ty, Int32Ty, Int64Ty, Int128Ty;

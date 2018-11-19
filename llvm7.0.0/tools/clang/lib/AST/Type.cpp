@@ -2703,6 +2703,8 @@ StringRef BuiltinType::getName(const PrintingPolicy &Policy) const {
     return "unsigned __int128";
   case Fixed4: // LMSDK
     return "fixed4";
+  case Fixed8: // LMSDK
+    return "fixed8";    
   case Half:
     return Policy.Half ? "half" : "__fp16";
   case Float:

@@ -275,7 +275,9 @@ static const llvm::fltSemantics &getFloatSemantics(unsigned BitWidth) {
     llvm_unreachable("Unsupported floating-point semantics!");
     break;
   case 4: // LMSDK
-    return llvm::APFloat::IEEEfixed4();   
+    return llvm::APFloat::IEEEfixed4();
+  case 8: // LMSDK
+    return llvm::APFloat::IEEEfixed8();       
   case 16:
     return llvm::APFloat::IEEEhalf();
   case 32:

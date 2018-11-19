@@ -366,6 +366,9 @@ public:
   Type *getFixed4Ty() {
     return Type::getFixed4Ty(Context);
   }
+  Type *getFixed8Ty() {
+    return Type::getFixed8Ty(Context);
+  }  
 
   /// Fetch the type representing a 16-bit floating point value.
   Type *getHalfTy() {

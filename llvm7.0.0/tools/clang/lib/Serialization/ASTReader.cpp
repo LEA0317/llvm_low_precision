@@ -6857,6 +6857,9 @@ QualType ASTReader::GetType(TypeID ID) {
     case PREDEF_TYPE_Fixed4_ID: // LMSDK
       T = Context.Fixed4Ty;
       break;
+    case PREDEF_TYPE_Fixed8_ID: // LMSDK
+      T = Context.Fixed8Ty;
+      break;      
     case PREDEF_TYPE_HALF_ID:
       T = Context.HalfTy;
       break;

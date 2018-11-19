@@ -1397,6 +1397,7 @@ static QualType ConvertDeclSpecToType(TypeProcessingState &state) {
     break;
   case DeclSpec::TST_float16: Result = Context.Float16Ty; break;
   case DeclSpec::TST_fixed4:  Result = Context.Fixed4Ty; break; // LMSDK
+  case DeclSpec::TST_fixed8:  Result = Context.Fixed8Ty; break; // LMSDK    
   case DeclSpec::TST_half:    Result = Context.HalfTy; break;
   case DeclSpec::TST_float:   Result = Context.FloatTy; break;
   case DeclSpec::TST_double:

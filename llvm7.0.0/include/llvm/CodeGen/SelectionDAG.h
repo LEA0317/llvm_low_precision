@@ -1330,6 +1330,7 @@ public:
     switch (VT.getScalarType().getSimpleVT().SimpleTy) {
     default: llvm_unreachable("Unknown FP format");
     case MVT::f4:      return APFloat::IEEEfixed4(); // LMSDK
+    case MVT::f8:      return APFloat::IEEEfixed8(); // LMSDK      
     case MVT::f16:     return APFloat::IEEEhalf();
     case MVT::f32:     return APFloat::IEEEsingle();
     case MVT::f64:     return APFloat::IEEEdouble();

@@ -207,6 +207,9 @@ UNSIGNED_TYPE(SatULongFract, SatUnsignedLongFractTy)
 // LMSDK fixed4
 FLOATING_TYPE(Fixed4, Fixed4Ty)
 
+// LMSDK fixed8
+FLOATING_TYPE(Fixed8, Fixed8Ty)
+
 // 'half' in OpenCL, '__fp16' in ARM NEON.
 FLOATING_TYPE(Half, HalfTy)
 
