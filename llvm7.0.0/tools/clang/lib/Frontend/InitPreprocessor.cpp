@@ -110,7 +110,7 @@ static void AddImplicitIncludePCH(MacroBuilder &Builder, Preprocessor &PP,
 /// PickFP - This is used to pick a value based on the FP semantics of the
 /// specified FP model.
 template <typename T>
-static T PickFP(const llvm::fltSemantics *Sem, /*T IEEEEFixed4Val,*/ // LMSDK
+static T PickFP(const llvm::fltSemantics *Sem, /*T IEEEFixed4Val,*/ // LMSDK
 		T IEEEHalfVal, T IEEESingleVal,
                 T IEEEDoubleVal, T X87DoubleExtendedVal, T PPCDoubleDoubleVal,
                 T IEEEQuadVal) {

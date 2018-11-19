@@ -158,6 +158,8 @@ public:
   ///===---- Target Data Type Query Methods -------------------------------===//
   enum IntType {
     NoInt = 0,
+    SignedInt4,
+    UnsignedInt4,    
     SignedChar,
     UnsignedChar,
     SignedShort,
@@ -261,6 +263,8 @@ public:
   IntType getSizeType() const { return SizeType; }
   IntType getSignedSizeType() const {
     switch (SizeType) {
+    case UnsignedInt4: // LMSDK
+      return SignedInt4;      
     case UnsignedShort:
       return SignedShort;
     case UnsignedInt:
@@ -356,12 +360,16 @@ public:
   /// \param AddrSpace address space of pointee in source language.
   virtual uint64_t getNullPointerValue(LangAS AddrSpace) const { return 0; }
 
-  /// Return the size of '_Bool' and C++ 'bool' for this target, in bits.
+  /// Return the size of '_Bool' and C++ 'bool' for this target, in bits.  
   unsigned getBoolWidth() const { return BoolWidth; }
 
   /// Return the alignment of '_Bool' and C++ 'bool' for this target.
   unsigned getBoolAlign() const { return BoolAlign; }
 
+  // LMSDK
+  unsigned getInt4Width() const { return 4; }  
+  unsigned getInt4Align() const { return 4; }
+  
   unsigned getCharWidth() const { return 8; } // FIXME
   unsigned getCharAlign() const { return 8; } // FIXME
 

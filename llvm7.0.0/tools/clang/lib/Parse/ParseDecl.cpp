@@ -3557,6 +3557,10 @@ void Parser::ParseDeclarationSpecifiers(DeclSpec &DS,
       isInvalid = DS.SetTypeSpecType(DeclSpec::TST_int128, Loc, PrevSpec,
                                      DiagID, Policy);
       break;
+    case tok::kw_int4: // LMSDK
+      isInvalid = DS.SetTypeSpecType(DeclSpec::TST_int4, Loc, PrevSpec,
+                                     DiagID, Policy);
+      break;      
     case tok::kw_fixed4: // LMSDK
       isInvalid = DS.SetTypeSpecType(DeclSpec::TST_fixed4, Loc, PrevSpec,
                                      DiagID, Policy);

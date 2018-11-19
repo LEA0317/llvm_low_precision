@@ -1773,6 +1773,11 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
       Width = Target->getBoolWidth();
       Align = Target->getBoolAlign();
       break;
+    case BuiltinType::SInt4: // LMSDK
+    case BuiltinType::UInt4:
+      Width = Target->getInt4Width();
+      Align = Target->getInt4Align();
+      break;
     case BuiltinType::Char_S:
     case BuiltinType::Char_U:
     case BuiltinType::UChar:

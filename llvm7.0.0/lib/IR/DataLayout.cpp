@@ -169,7 +169,7 @@ static const LayoutAlignElem DefaultAlignments[] = {
   { INTEGER_ALIGN, 16, 2, 2 },   // i16
   { INTEGER_ALIGN, 32, 4, 4 },   // i32
   { INTEGER_ALIGN, 64, 4, 8 },   // i64
-  { FLOAT_ALIGN, 4, 1, 1 },     // fixed4 // LMSDK
+  { FLOAT_ALIGN, 4, 1, 1 },      // fixed4 // LMSDK
   { FLOAT_ALIGN, 16, 2, 2 },     // half
   { FLOAT_ALIGN, 32, 4, 4 },     // float
   { FLOAT_ALIGN, 64, 8, 8 },     // double
