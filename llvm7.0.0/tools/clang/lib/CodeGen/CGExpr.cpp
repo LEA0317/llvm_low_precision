@@ -1094,6 +1094,7 @@ Address CodeGenFunction::EmitPointerWithAlignment(const Expr *E,
   // Otherwise, use the alignment of the type.
   CharUnits Align = getNaturalPointeeTypeAlignment(E->getType(), BaseInfo,
                                                    TBAAInfo);
+
   return Address(EmitScalarExpr(E), Align);
 }
 

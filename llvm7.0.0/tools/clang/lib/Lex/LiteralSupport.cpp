@@ -542,6 +542,8 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
   isLong = false;
   isUnsigned = false;
   isLongLong = false;
+  isFixed4 = false; // LMSDK
+  isFixed8 = false; // LMSDK   
   isHalf = false;
   isFloat = false;
   isImaginary = false;

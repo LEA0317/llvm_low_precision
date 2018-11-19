@@ -3385,8 +3385,10 @@ ExprResult Sema::ActOnNumericConstant(const Token &Tok, Scope *UDLScope) {
                                               Tok.getLocation(), scale);
   } else if (Literal.isFloatingLiteral()) {
     QualType Ty;
-    if (Literal.isHalf) {
+    if (Literal.isFixed4) { // LMSDK
         Ty = Context.Fixed4Ty;
+    } else if (Literal.isFixed8) { // LMSDK
+        Ty = Context.Fixed8Ty;	
     } else if (Literal.isHalf){
       if (getOpenCLOptions().isEnabled("cl_khr_fp16"))
         Ty = Context.HalfTy;

@@ -2167,8 +2167,10 @@ ScalarExprEmitter::EmitScalarPrePostIncDec(const UnaryOperator *E, LValue LV,
         FS = &CGF.getTarget().getFloat128Format();
       else if (value->getType()->isHalfTy())
         FS = &CGF.getTarget().getHalfFormat();
-      else if (value->getType()->isFixed4Ty())
+      else if (value->getType()->isFixed4Ty()) // LMSDK
         FS = &CGF.getTarget().getFixed4Format();
+      else if (value->getType()->isFixed8Ty()) // LMSDK
+        FS = &CGF.getTarget().getFixed8Format();      
       else
         FS = &CGF.getTarget().getLongDoubleFormat();
       F.convert(*FS, llvm::APFloat::rmTowardZero, &ignored);
