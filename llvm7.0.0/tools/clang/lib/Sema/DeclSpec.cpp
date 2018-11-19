@@ -1119,7 +1119,7 @@ void DeclSpec::Finish(Sema &S, const PrintingPolicy &Policy) {
   if (TypeSpecSign != TSS_unspecified) {
     if (TypeSpecType == TST_unspecified)
       TypeSpecType = TST_int; // unsigned -> unsigned int, signed -> signed int.
-    else if (TypeSpecType != TST_int && TypeSpecType != TST_int128 &&
+    else if (TypeSpecType != TST_int && TypeSpecType != TST_int128 && TypeSpecType != TST_int4 && // LMSDK
              TypeSpecType != TST_char && TypeSpecType != TST_wchar &&
              !IsFixedPointType) {
       S.Diag(TSSLoc, diag::err_invalid_sign_spec)
