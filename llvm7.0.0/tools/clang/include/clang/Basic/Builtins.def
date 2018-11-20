@@ -26,7 +26,7 @@
 //  s -> short
 //  i -> int
 //  o -> fixed4 // LMSDK FIX ME
-//  O -> fixed4 // LMSDK FIX ME
+//  O -> fixed8 // LMSDK FIX ME
 //  h -> half
 //  f -> float
 //  d -> double
