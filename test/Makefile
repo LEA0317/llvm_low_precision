@@ -1,5 +1,9 @@
 all: test_fixed4.ll test_fixed8.ll test_int4.ll test_uint4.ll
 
+llvm:
+	@echo "** build llvm **"
+	cd ../llvm7.0.0 && ./build_compiler.sh
+
 clean:
 	@echo "** remove generated files **"
 	rm *.ll *~
