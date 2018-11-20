@@ -179,6 +179,7 @@ Type *Type::getPPC_FP128Ty(LLVMContext &C) { return &C.pImpl->PPC_FP128Ty; }
 Type *Type::getX86_MMXTy(LLVMContext &C) { return &C.pImpl->X86_MMXTy; }
 
 IntegerType *Type::getInt1Ty(LLVMContext &C) { return &C.pImpl->Int1Ty; }
+IntegerType *Type::getInt4Ty(LLVMContext &C) { return &C.pImpl->Int4Ty; } // LMSDK
 IntegerType *Type::getInt8Ty(LLVMContext &C) { return &C.pImpl->Int8Ty; }
 IntegerType *Type::getInt16Ty(LLVMContext &C) { return &C.pImpl->Int16Ty; }
 IntegerType *Type::getInt32Ty(LLVMContext &C) { return &C.pImpl->Int32Ty; }
@@ -234,6 +235,11 @@ PointerType *Type::getInt1PtrTy(LLVMContext &C, unsigned AS) {
   return getInt1Ty(C)->getPointerTo(AS);
 }
 
+// LMSDK
+PointerType *Type::getInt4PtrTy(LLVMContext &C, unsigned AS) {
+  return getInt4Ty(C)->getPointerTo(AS);
+}
+
 PointerType *Type::getInt8PtrTy(LLVMContext &C, unsigned AS) {
   return getInt8Ty(C)->getPointerTo(AS);
 }
@@ -261,6 +267,7 @@ IntegerType *IntegerType::get(LLVMContext &C, unsigned NumBits) {
   // Check for the built-in integer types
   switch (NumBits) {
   case   1: return cast<IntegerType>(Type::getInt1Ty(C));
+  case   4: return cast<IntegerType>(Type::getInt4Ty(C)); // LMSDK
   case   8: return cast<IntegerType>(Type::getInt8Ty(C));
   case  16: return cast<IntegerType>(Type::getInt16Ty(C));
   case  32: return cast<IntegerType>(Type::getInt32Ty(C));

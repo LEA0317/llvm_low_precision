@@ -605,7 +605,15 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (!(saw_period || saw_exponent)) break;
       isAccum = true;
       continue;
-    case 'h':      // FP Suffix for "half". // LMSDK FIXME: ADD fixed4
+    case 'o': // LMSDK
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed4 = true;
+      continue;  // Success.
+    case 'O': // LMSDK
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed8 = true;
+      continue;  // Success.            
+    case 'h':      // FP Suffix for "half".
     case 'H':
       // OpenCL Extension v1.2 s9.5 - h or H suffix for half type.
       if (!(PP.getLangOpts().Half || PP.getLangOpts().FixedPoint)) break;

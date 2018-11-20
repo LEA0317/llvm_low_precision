@@ -1105,6 +1105,7 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
 
   // C99 6.2.5p2.
   InitBuiltinType(BoolTy,              BuiltinType::Bool);
+
   // C99 6.2.5p3.
   if (LangOpts.CharIsSigned)
     InitBuiltinType(CharTy,            BuiltinType::Char_S);
@@ -9250,6 +9251,16 @@ static QualType DecodeTypeFromStr(const char *&Str, const ASTContext &Context,
            "Bad modifiers used with 'v'!");
     Type = Context.VoidTy;
     break;
+  case 'o': // LMSDK FIX ME?
+    assert(HowLong == 0 && !Signed && !Unsigned &&
+           "Bad modifiers used with 'o'!");
+    Type = Context.Fixed4Ty;
+    break;
+  case 'O': // LMSDK FIX ME?
+    assert(HowLong == 0 && !Signed && !Unsigned &&
+           "Bad modifiers used with 'o'!");
+    Type = Context.Fixed8Ty;
+    break;        
   case 'h':
     assert(HowLong == 0 && !Signed && !Unsigned &&
            "Bad modifiers used with 'h'!");

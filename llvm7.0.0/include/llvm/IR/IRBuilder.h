@@ -283,6 +283,11 @@ public:
     return ConstantInt::get(getInt1Ty(), V);
   }
 
+  // LMSDK
+  ConstantInt *getInt4(bool V) {
+    return ConstantInt::get(getInt4Ty(), V);
+  }  
+
   /// Get the constant value for i1 true.
   ConstantInt *getTrue() {
     return ConstantInt::getTrue(Context);
@@ -332,6 +337,11 @@ public:
   IntegerType *getInt1Ty() {
     return Type::getInt1Ty(Context);
   }
+
+  // LMSDK
+  IntegerType *getInt4Ty() {
+    return Type::getInt4Ty(Context);
+  }  
 
   /// Fetch the type representing an 8-bit integer.
   IntegerType *getInt8Ty() {

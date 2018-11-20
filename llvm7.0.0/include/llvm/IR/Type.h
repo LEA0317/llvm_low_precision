@@ -416,6 +416,7 @@ public:
   static Type *getTokenTy(LLVMContext &C);
   static IntegerType *getIntNTy(LLVMContext &C, unsigned N);
   static IntegerType *getInt1Ty(LLVMContext &C);
+  static IntegerType *getInt4Ty(LLVMContext &C); // LMSDK  
   static IntegerType *getInt8Ty(LLVMContext &C);
   static IntegerType *getInt16Ty(LLVMContext &C);
   static IntegerType *getInt32Ty(LLVMContext &C);
@@ -451,6 +452,7 @@ public:
   static PointerType *getX86_MMXPtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getIntNPtrTy(LLVMContext &C, unsigned N, unsigned AS = 0);
   static PointerType *getInt1PtrTy(LLVMContext &C, unsigned AS = 0);
+  static PointerType *getInt4PtrTy(LLVMContext &C, unsigned AS = 0); // LMSDK  
   static PointerType *getInt8PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt16PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt32PtrTy(LLVMContext &C, unsigned AS = 0);

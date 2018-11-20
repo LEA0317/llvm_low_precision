@@ -534,6 +534,10 @@ char *LLVMPrintTypeToString(LLVMTypeRef Ty) {
 LLVMTypeRef LLVMInt1TypeInContext(LLVMContextRef C)  {
   return (LLVMTypeRef) Type::getInt1Ty(*unwrap(C));
 }
+// LMSDK
+LLVMTypeRef LLVMInt4TypeInContext(LLVMContextRef C)  {
+  return (LLVMTypeRef) Type::getInt4Ty(*unwrap(C));
+}
 LLVMTypeRef LLVMInt8TypeInContext(LLVMContextRef C)  {
   return (LLVMTypeRef) Type::getInt8Ty(*unwrap(C));
 }

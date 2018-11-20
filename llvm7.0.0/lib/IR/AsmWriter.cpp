@@ -1363,11 +1363,11 @@ static void WriteConstantInternal(raw_ostream &Out, const Constant *CV,
       Out << format_hex_no_prefix(API.getZExtValue(), 4,
                                   /*Upper=*/true);
     } else if (&APF.getSemantics() == &APFloat::IEEEfixed4()) { // LMSDK
-      Out << 'Q'; // LMSDK FIX ME
+      Out << 'o'; // LMSDK FIX ME?
       Out << format_hex_no_prefix(API.getZExtValue(), 1,
 				  /*Upper=*/true);
     } else if (&APF.getSemantics() == &APFloat::IEEEfixed8()) { // LMSDK
-      Out << 'O'; // LMSDK FIX ME
+      Out << 'O'; // LMSDK FIX ME?
       Out << format_hex_no_prefix(API.getZExtValue(), 1,
 				  /*Upper=*/true);      
     } else

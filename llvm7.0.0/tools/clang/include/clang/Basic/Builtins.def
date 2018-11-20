@@ -25,7 +25,8 @@
 //  c -> char
 //  s -> short
 //  i -> int
-//  q-> fixed4 // LMSDK FIX ME
+//  o -> fixed4 // LMSDK FIX ME
+//  O -> fixed4 // LMSDK FIX ME
 //  h -> half
 //  f -> float
 //  d -> double
@@ -1498,6 +1499,8 @@ BUILTIN(__xray_typedevent, "vzcC*z", "")
 BUILTIN(__builtin_ms_va_start, "vc*&.", "nt")
 BUILTIN(__builtin_ms_va_end, "vc*&", "n")
 BUILTIN(__builtin_ms_va_copy, "vc*&c*&", "n")
+
+BUILTIN(__builtin_fixed4_add , "ooo"  , "nc")
 
 #undef BUILTIN
 #undef LIBBUILTIN

@@ -91,7 +91,6 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
   PtrDiffType = SignedLong;
   IntMaxType = SignedLongLong;
   IntPtrType = SignedLong;
-  Int4Type = SignedInt; // LMSDK
   WCharType = SignedInt;
   WIntType = SignedInt;
   Char16Type = UnsignedShort;

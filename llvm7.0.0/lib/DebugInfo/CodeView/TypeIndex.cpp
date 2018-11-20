@@ -29,7 +29,7 @@ static const SimpleTypeEntry SimpleTypeNames[] = {
     {"<not translated>*", SimpleTypeKind::NotTranslated},
     {"HRESULT*", SimpleTypeKind::HResult},
     {"int4*", SimpleTypeKind::SInt4}, // LMSDK
-    {"unsigned signedint4*", SimpleTypeKind::UInt4}, // LMSDK
+    {"unsigned int4*", SimpleTypeKind::UInt4}, // LMSDK
     {"signed char*", SimpleTypeKind::SignedCharacter},
     {"unsigned char*", SimpleTypeKind::UnsignedCharacter},
     {"char*", SimpleTypeKind::NarrowCharacter},

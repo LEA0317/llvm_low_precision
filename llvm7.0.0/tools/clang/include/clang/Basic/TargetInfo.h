@@ -223,7 +223,7 @@ public:
   };
 
 protected:
-  IntType SizeType, IntMaxType, PtrDiffType, IntPtrType, Int4Type, // LMSDK
+  IntType SizeType, IntMaxType, PtrDiffType, IntPtrType,
 	  WCharType,
           WIntType, Char16Type, Char32Type, Int64Type, SigAtomicType,
           ProcessIDType;
