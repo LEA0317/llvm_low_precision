@@ -158,6 +158,7 @@ CharUnits CodeGenFunction::getNaturalTypeAlignment(QualType T,
         Alignment = CharUnits::fromQuantity(MaxAlign);
     }
   }
+  
   return Alignment;
 }
 

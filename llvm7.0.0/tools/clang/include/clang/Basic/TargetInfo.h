@@ -370,8 +370,8 @@ public:
   unsigned getBoolAlign() const { return BoolAlign; }
 
   // LMSDK
-  unsigned getInt4Width() const { return 4; }  
-  unsigned getInt4Align() const { return 4; }
+  unsigned getInt4Width() const { return 8; }  
+  unsigned getInt4Align() const { return 8; }
   
   unsigned getCharWidth() const { return 8; } // FIXME
   unsigned getCharAlign() const { return 8; } // FIXME

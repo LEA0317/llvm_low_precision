@@ -17,6 +17,11 @@ let TargetPrefix = "x86" in {  // All intrinsics start with "llvm.x86.".
   def int_x86_int : Intrinsic<[], [llvm_i8_ty]>;
 }
 
+let TargetPrefix = "x86" in {
+  def int_x86_fixed4_add : GCCBuiltin<"__builtin_fixed4_add">,
+        Intrinsic<[llvm_f4_ty], [llvm_f4_ty, llvm_f4_ty], [IntrNoMem]>;
+}
+
 //===----------------------------------------------------------------------===//
 // SEH intrinsics for Windows
 let TargetPrefix = "x86" in {

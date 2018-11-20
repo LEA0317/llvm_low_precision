@@ -1484,6 +1484,12 @@ LANGBUILTIN(__builtin_store_halff, "vfh*", "n", ALL_OCLC_LANGUAGES)
 LANGBUILTIN(__builtin_load_half, "dhC*", "nc", ALL_OCLC_LANGUAGES)
 LANGBUILTIN(__builtin_load_halff, "fhC*", "nc", ALL_OCLC_LANGUAGES)
 
+// LMSDK
+LANGBUILTIN(__builtin_store_fixed4, "vdo*", "n", ALL_OCLC_LANGUAGES)
+LANGBUILTIN(__builtin_load_fixed4, "doC*", "nc", ALL_OCLC_LANGUAGES)
+LANGBUILTIN(__builtin_store_fixed8, "vdO*", "n", ALL_OCLC_LANGUAGES)
+LANGBUILTIN(__builtin_load_fixed8, "dOC*", "nc", ALL_OCLC_LANGUAGES)
+
 // Builtins for os_log/os_trace
 BUILTIN(__builtin_os_log_format_buffer_size, "zcC*.", "p:0:nut")
 BUILTIN(__builtin_os_log_format, "v*v*cC*.", "p:0:nt")
@@ -1499,8 +1505,6 @@ BUILTIN(__xray_typedevent, "vzcC*z", "")
 BUILTIN(__builtin_ms_va_start, "vc*&.", "nt")
 BUILTIN(__builtin_ms_va_end, "vc*&", "n")
 BUILTIN(__builtin_ms_va_copy, "vc*&c*&", "n")
-
-BUILTIN(__builtin_fixed4_add , "ooo"  , "nc")
 
 #undef BUILTIN
 #undef LIBBUILTIN

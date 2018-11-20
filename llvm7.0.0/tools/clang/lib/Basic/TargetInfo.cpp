@@ -68,10 +68,10 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
     NewAlign = Triple.isArch64Bit() ? 128 : Triple.isArch32Bit() ? 64 : 0;
   else
     NewAlign = 0; // Infer from basic type alignment.
-  Fixed4Width = 4; // LMSDK
-  Fixed4Align = 4; // LMSDK
-  Fixed8Width = 8; // LMSDK
-  Fixed8Align = 8; // LMSDK  
+  Fixed4Width = 8; // LMSDK FIX ME?
+  Fixed4Align = 8; // LMSDK FIX ME?
+  Fixed8Width = 8; // LMSDK FIX ME?
+  Fixed8Align = 8; // LMSDK FIX ME?
   HalfWidth = 16;
   HalfAlign = 16;
   FloatWidth = 32;
