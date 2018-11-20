@@ -2,7 +2,7 @@
 ```
   utilize low precision in LLVM7
 
-  you can use types as belowi (unsigned int4 may be buggy).
+  you can use types as below (unsigned int4 may be buggy).
 ```
 
 `fixed4 = f4`  
