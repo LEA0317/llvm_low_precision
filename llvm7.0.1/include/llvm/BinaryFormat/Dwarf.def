@@ -1,4 +1,4 @@
-[//===- llvm/Support/Dwarf.def - Dwarf definitions ---------------*- C++ -*-===//
+//===- llvm/Support/Dwarf.def - Dwarf definitions ---------------*- C++ -*-===//
 //
 //                     The LLVM Compiler Infrastructure
 //
