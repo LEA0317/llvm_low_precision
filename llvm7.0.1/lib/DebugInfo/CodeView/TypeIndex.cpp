@@ -28,12 +28,16 @@ static const SimpleTypeEntry SimpleTypeNames[] = {
     {"void*", SimpleTypeKind::Void},
     {"<not translated>*", SimpleTypeKind::NotTranslated},
     {"HRESULT*", SimpleTypeKind::HResult},
+    {"int4*", SimpleTypeKind::SInt4}, // LMSDK
+    {"unsigned int4*", SimpleTypeKind::UInt4}, // LMSDK
     {"signed char*", SimpleTypeKind::SignedCharacter},
     {"unsigned char*", SimpleTypeKind::UnsignedCharacter},
     {"char*", SimpleTypeKind::NarrowCharacter},
     {"wchar_t*", SimpleTypeKind::WideCharacter},
     {"char16_t*", SimpleTypeKind::Character16},
     {"char32_t*", SimpleTypeKind::Character32},
+    {"__int4*", SimpleTypeKind::SInt4}, // LMSDK
+    {"unsigned __int4*", SimpleTypeKind::UInt4}, // LMSDK
     {"__int8*", SimpleTypeKind::SByte},
     {"unsigned __int8*", SimpleTypeKind::Byte},
     {"short*", SimpleTypeKind::Int16Short},
@@ -50,6 +54,8 @@ static const SimpleTypeEntry SimpleTypeNames[] = {
     {"unsigned __int64*", SimpleTypeKind::UInt64},
     {"__int128*", SimpleTypeKind::Int128},
     {"unsigned __int128*", SimpleTypeKind::UInt128},
+    {"__fixed4*", SimpleTypeKind::Fixed4}, // LMSDK
+    {"__fixed8*", SimpleTypeKind::Fixed8}, // LMSDK
     {"__half*", SimpleTypeKind::Float16},
     {"float*", SimpleTypeKind::Float32},
     {"float*", SimpleTypeKind::Float32PartialPrecision},

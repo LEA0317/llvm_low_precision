@@ -62,6 +62,8 @@ public:
   bool isUnsigned : 1;
   bool isLong : 1;          // This is *not* set for long long.
   bool isLongLong : 1;
+  bool isFixed4 : 1;        // 1.0 // LMSDK
+  bool isFixed8 : 1;        // 1.0 // LMSDK  
   bool isHalf : 1;          // 1.0h
   bool isFloat : 1;         // 1.0f
   bool isImaginary : 1;     // 1.0i

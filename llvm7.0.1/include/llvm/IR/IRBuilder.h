@@ -283,6 +283,11 @@ public:
     return ConstantInt::get(getInt1Ty(), V);
   }
 
+  // LMSDK
+  ConstantInt *getInt4(bool V) {
+    return ConstantInt::get(getInt4Ty(), V);
+  }
+
   /// Get the constant value for i1 true.
   ConstantInt *getTrue() {
     return ConstantInt::getTrue(Context);
@@ -333,6 +338,11 @@ public:
     return Type::getInt1Ty(Context);
   }
 
+  // LMSDK
+  IntegerType *getInt4Ty() {
+    return Type::getInt4Ty(Context);
+  }
+
   /// Fetch the type representing an 8-bit integer.
   IntegerType *getInt8Ty() {
     return Type::getInt8Ty(Context);
@@ -361,6 +371,16 @@ public:
     return Type::getIntNTy(Context, N);
   }
 
+  // LMSDK
+  /// Fetch the type representing a 4-bit floating point value.
+  Type *getFixed4Ty() {
+    return Type::getFixed4Ty(Context);
+  }
+  /// Fetch the type representing a 8-bit floating point value.  
+  Type *getFixed8Ty() {
+    return Type::getFixed8Ty(Context);
+  }
+  
   /// Fetch the type representing a 16-bit floating point value.
   Type *getHalfTy() {
     return Type::getHalfTy(Context);

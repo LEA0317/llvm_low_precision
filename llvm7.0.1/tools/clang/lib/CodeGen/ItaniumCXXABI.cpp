@@ -2775,6 +2775,10 @@ static bool TypeInfoIsInStandardLibrary(const BuiltinType *Ty) {
 
   // Types added here must also be added to EmitFundamentalRTTIDescriptors.
   switch (Ty->getKind()) {
+    case BuiltinType::UInt4: // LMSDK
+    case BuiltinType::SInt4: // LMSDK
+    case BuiltinType::Fixed4: // LMSDK
+    case BuiltinType::Fixed8: // LMSDK
     case BuiltinType::Void:
     case BuiltinType::NullPtr:
     case BuiltinType::Bool:

@@ -108,7 +108,8 @@ unsigned ASTContext::NumImplicitDestructors;
 unsigned ASTContext::NumImplicitDestructorsDeclared;
 
 enum FloatingRank {
-  Float16Rank, HalfRank, FloatRank, DoubleRank, LongDoubleRank, Float128Rank
+  Float16Rank, Fixed4Rank, Fixed8Rank, // LMSDK
+  HalfRank, FloatRank, DoubleRank, LongDoubleRank, Float128Rank
 };
 
 RawComment *ASTContext::getRawCommentForDeclNoCache(const Decl *D) const {
@@ -1264,6 +1265,12 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
   // nullptr type (C++0x 2.14.7)
   InitBuiltinType(NullPtrTy,           BuiltinType::NullPtr);
 
+  // LMSDK
+  InitBuiltinType(Fixed4Ty,       BuiltinType::Fixed4);
+  InitBuiltinType(Fixed8Ty,       BuiltinType::Fixed8);
+  InitBuiltinType(SignedInt4Ty,   BuiltinType::SInt4);
+  InitBuiltinType(UnsignedInt4Ty, BuiltinType::UInt4);
+  
   // half type (OpenCL 6.1.1.1) / ARM NEON __fp16
   InitBuiltinType(HalfTy, BuiltinType::Half);
 
@@ -1482,6 +1489,10 @@ const llvm::fltSemantics &ASTContext::getFloatTypeSemantics(QualType T) const {
   assert(BT && "Not a floating point type!");
   switch (BT->getKind()) {
   default: llvm_unreachable("Not a floating point type!");
+  case BuiltinType::Fixed4: // LMSDK
+    return Target->getFixed4Format();
+  case BuiltinType::Fixed8: // LMSDK
+    return Target->getFixed8Format();
   case BuiltinType::Float16:
   case BuiltinType::Half:
     return Target->getHalfFormat();
@@ -1765,6 +1776,11 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
       Width = Target->getBoolWidth();
       Align = Target->getBoolAlign();
       break;
+    case BuiltinType::SInt4: // LMSDK
+    case BuiltinType::UInt4:
+      Width = Target->getInt4Width();
+      Align = Target->getInt4Align();
+      break;
     case BuiltinType::Char_S:
     case BuiltinType::Char_U:
     case BuiltinType::UChar:
@@ -1852,6 +1868,14 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
     case BuiltinType::SatULongFract:
       Width = Target->getLongFractWidth();
       Align = Target->getLongFractAlign();
+      break;
+    case BuiltinType::Fixed4: // LMSDK
+      Width = Target->getFixed4Width();
+      Align = Target->getFixed4Align();
+      break;
+    case BuiltinType::Fixed8: // LMSDK
+      Width = Target->getFixed8Width();
+      Align = Target->getFixed8Align();
       break;
     case BuiltinType::Float16:
     case BuiltinType::Half:
@@ -5497,6 +5521,8 @@ static FloatingRank getFloatingRank(QualType T) {
   assert(T->getAs<BuiltinType>() && "getFloatingRank(): not a floating type");
   switch (T->getAs<BuiltinType>()->getKind()) {
   default: llvm_unreachable("getFloatingRank(): not a floating type");
+  case BuiltinType::Fixed4:     return Fixed4Rank; // LMSDK
+  case BuiltinType::Fixed8:     return Fixed8Rank; // LMSDK 
   case BuiltinType::Float16:    return Float16Rank;
   case BuiltinType::Half:       return HalfRank;
   case BuiltinType::Float:      return FloatRank;
@@ -5515,6 +5541,8 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
   FloatingRank EltRank = getFloatingRank(Size);
   if (Domain->isComplexType()) {
     switch (EltRank) {
+    case Fixed4Rank:
+    case Fixed8Rank:
     case Float16Rank:
     case HalfRank: llvm_unreachable("Complex half is not supported");
     case FloatRank:      return FloatComplexTy;
@@ -5526,6 +5554,8 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
 
   assert(Domain->isRealFloatingType() && "Unknown domain!");
   switch (EltRank) {
+  case Fixed4Rank:     return Fixed4Ty; // LMSDK
+  case Fixed8Rank:     return Fixed8Ty; // LMSDK
   case Float16Rank:    return HalfTy;
   case HalfRank:       return HalfTy;
   case FloatRank:      return FloatTy;
@@ -6404,6 +6434,11 @@ void ASTContext::getObjCEncodingForPropertyType(QualType T,
 static char getObjCEncodingForPrimitiveKind(const ASTContext *C,
                                             BuiltinType::Kind kind) {
     switch (kind) {
+      // LMSDK
+    case BuiltinType::UInt4:
+    case BuiltinType::SInt4:
+      llvm_unreachable("not support OBJ-C");
+      
     case BuiltinType::Void:       return 'v';
     case BuiltinType::Bool:       return 'B';
     case BuiltinType::Char8:
@@ -6432,6 +6467,8 @@ static char getObjCEncodingForPrimitiveKind(const ASTContext *C,
     case BuiltinType::LongDouble: return 'D';
     case BuiltinType::NullPtr:    return '*'; // like char*
 
+    case BuiltinType::Fixed4: // LMSDK
+    case BuiltinType::Fixed8: // LMSDK
     case BuiltinType::Float16:
     case BuiltinType::Float128:
     case BuiltinType::Half:
@@ -9212,6 +9249,16 @@ static QualType DecodeTypeFromStr(const char *&Str, const ASTContext &Context,
     assert(HowLong == 0 && !Signed && !Unsigned &&
            "Bad modifiers used with 'v'!");
     Type = Context.VoidTy;
+    break;
+  case 'o': // LMSDK FIX ME?
+    assert(HowLong == 0 && !Signed && !Unsigned &&
+	   "Bad modifiers used with 'o'!");
+    Type = Context.Fixed4Ty;
+    break;
+  case 'O': // LMSDK FIX ME?
+    assert(HowLong == 0 && !Signed && !Unsigned &&
+	   "Bad modifiers used with 'o'!");
+    Type = Context.Fixed8Ty;
     break;
   case 'h':
     assert(HowLong == 0 && !Signed && !Unsigned &&

@@ -1850,6 +1850,11 @@ void MicrosoftCXXNameMangler::mangleType(const BuiltinType *T, Qualifiers,
   //                 ::= _W # wchar_t
   //                 ::= _Z # __float80 (Digital Mars)
   switch (T->getKind()) {
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
+    llvm_unreachable("LMSDK cannot handle this currently.");
   case BuiltinType::Void:
     Out << 'X';
     break;

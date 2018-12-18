@@ -89,6 +89,8 @@ struct MIToken {
     kw_blockaddress,
     kw_intrinsic,
     kw_target_index,
+    kw_fixed4, // LMSDK
+    kw_fixed8, // LMSDK
     kw_half,
     kw_float,
     kw_double,

@@ -75,7 +75,9 @@ public:
 
   // Parse options as IR types. Return true on error.
   bool parse(Option &O, StringRef, StringRef Arg, Type *&Value) {
-    if      (Arg == "half")      Value = Type::getHalfTy(Context);
+    if      (Arg == "fixed4")    Value = Type::getFixed4Ty(Context); // LMSDK
+    else if (Arg == "fixed8")    Value = Type::getFixed8Ty(Context); // LMSDK
+    else if (Arg == "half")      Value = Type::getHalfTy(Context);
     else if (Arg == "fp128")     Value = Type::getFP128Ty(Context);
     else if (Arg == "x86_fp80")  Value = Type::getX86_FP80Ty(Context);
     else if (Arg == "ppc_fp128") Value = Type::getPPC_FP128Ty(Context);

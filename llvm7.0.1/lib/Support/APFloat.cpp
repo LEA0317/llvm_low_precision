@@ -69,6 +69,8 @@ namespace llvm {
     unsigned int sizeInBits;
   };
 
+  static const fltSemantics semIEEEfixed4 = {3, -2, 2, 4}; // LMSDK
+  static const fltSemantics semIEEEfixed8 = {7, -6, 5, 8}; // LMSDK
   static const fltSemantics semIEEEhalf = {15, -14, 11, 16};
   static const fltSemantics semIEEEsingle = {127, -126, 24, 32};
   static const fltSemantics semIEEEdouble = {1023, -1022, 53, 64};
@@ -113,6 +115,13 @@ namespace llvm {
      semantics.  */
   static const fltSemantics semPPCDoubleDoubleLegacy = {1023, -1022 + 53,
                                                         53 + 53, 128};
+
+  const fltSemantics &APFloatBase::IEEEfixed4() { // LMSDK
+    return semIEEEfixed4;
+  }
+  const fltSemantics &APFloatBase::IEEEfixed8() { // LMSDK
+    return semIEEEfixed8;
+  }
 
   const fltSemantics &APFloatBase::IEEEhalf() {
     return semIEEEhalf;
@@ -2989,11 +2998,74 @@ APInt IEEEFloat::convertHalfAPFloatToAPInt() const {
                     (mysignificand & 0x3ff)));
 }
 
+// LMSDK
+APInt IEEEFloat::convertFixed4APFloatToAPInt() const {
+  assert(semantics == (const llvm::fltSemantics*)&semIEEEfixed4);
+  assert(partCount()==1);
+  
+  uint32_t myexponent, mysignificand;
+  
+  if (isFiniteNonZero()) {
+    myexponent = exponent+3; //bias
+    mysignificand = (uint32_t)*significandParts();
+    if (myexponent == 1 && !(mysignificand & 0x2))
+      myexponent = 0;   // denormal
+  } else if (category==fcZero) {
+    myexponent = 0;
+    mysignificand = 0;
+  } else if (category==fcInfinity) {
+    myexponent = 0x3;
+    mysignificand = 0;
+  } else {
+    assert(category == fcNaN && "Unknown category!");
+    myexponent = 0x3;
+    mysignificand = (uint32_t)*significandParts();
+  }
+
+  return APInt(4, (((sign&1) << 3) | ((myexponent&0x3) << 1) |
+		   (mysignificand & 0x3)));
+}
+
+// LMSDK
+APInt IEEEFloat::convertFixed8APFloatToAPInt() const {
+  assert(semantics == (const llvm::fltSemantics*)&semIEEEfixed8);
+  assert(partCount()==1);
+
+  uint32_t myexponent, mysignificand;
+  
+  if (isFiniteNonZero()) {
+    myexponent = exponent+7; //bias
+    mysignificand = (uint32_t)*significandParts();
+    if (myexponent == 1 && !(mysignificand & 0x10))
+      myexponent = 0;   // denormal
+  } else if (category==fcZero) {
+    myexponent = 0;
+    mysignificand = 0;
+  } else if (category==fcInfinity) {
+    myexponent = 0x7;
+    mysignificand = 0;
+  } else {
+    assert(category == fcNaN && "Unknown category!");
+    myexponent = 0x7;
+    mysignificand = (uint32_t)*significandParts();
+  }
+  
+  return APInt(8, (((sign&1) << 7) | ((myexponent&0x7) << 16) |
+		   (mysignificand & 0x7)));
+}
+  
+  
 // This function creates an APInt that is just a bit map of the floating
 // point constant as it would appear in memory.  It is not a conversion,
 // and treating the result as a normal integer is unlikely to be useful.
 
 APInt IEEEFloat::bitcastToAPInt() const {
+  if (semantics == (const llvm::fltSemantics*)&semIEEEfixed4) // LMSDK
+    return convertFixed4APFloatToAPInt();
+
+  if (semantics == (const llvm::fltSemantics*)&semIEEEfixed8) // LMSDK
+    return convertFixed8APFloatToAPInt();
+  
   if (semantics == (const llvm::fltSemantics*)&semIEEEhalf)
     return convertHalfAPFloatToAPInt();
 
@@ -3224,11 +3296,79 @@ void IEEEFloat::initFromHalfAPInt(const APInt &api) {
   }
 }
 
+// LMSDK
+void IEEEFloat::initFromFixed4APInt(const APInt &api) {
+  assert(api.getBitWidth()==4);
+  uint32_t i = (uint32_t)*api.getRawData();
+  uint32_t myexponent = (i >> 1) & 0x3;
+  uint32_t mysignificand = i & 0x3;
+  
+  initialize(&semIEEEfixed4);
+  assert(partCount()==1);
+  
+  sign = i >> 3;
+  if (myexponent==0 && mysignificand==0) {
+    // exponent, significand meaningless
+    category = fcZero;
+  } else if (myexponent==0x3 && mysignificand==0) {
+    // exponent, significand meaningless
+    category = fcInfinity;
+  } else if (myexponent==0x3 && mysignificand!=0) {
+    // sign, exponent, significand meaningless
+    category = fcNaN;
+    *significandParts() = mysignificand;
+  } else {
+    category = fcNormal;
+    exponent = myexponent - 3;  //bias
+    *significandParts() = mysignificand;
+    if (myexponent==0)    // denormal
+      exponent = -2;
+    else
+      *significandParts() |= 0x4; // integer bit
+  }
+}
+
+// LMSDK
+void IEEEFloat::initFromFixed8APInt(const APInt &api) {
+  assert(api.getBitWidth()==8);
+  uint32_t i = (uint32_t)*api.getRawData();
+  uint32_t myexponent = (i >> 1) & 0x7;
+  uint32_t mysignificand = i & 0x7;
+  
+  initialize(&semIEEEfixed8);
+  assert(partCount()==1);
+  
+  sign = i >> 7;
+  if (myexponent==0 && mysignificand==0) {
+    // exponent, significand meaningless
+    category = fcZero;
+  } else if (myexponent==0x7 && mysignificand==0) {
+    // exponent, significand meaningless
+    category = fcInfinity;
+  } else if (myexponent==0x7 && mysignificand!=0) {
+    // sign, exponent, significand meaningless
+    category = fcNaN;
+    *significandParts() = mysignificand;
+  } else {
+    category = fcNormal;
+    exponent = myexponent - 7;  //bias
+    *significandParts() = mysignificand;
+    if (myexponent==0)    // denormal
+      exponent = -6;
+    else
+      *significandParts() |= 0x10; // integer bit
+  }
+}
+  
 /// Treat api as containing the bits of a floating point number.  Currently
 /// we infer the floating point type from the size of the APInt.  The
 /// isIEEE argument distinguishes between PPC128 and IEEE128 (not meaningful
 /// when the size is anything else).
 void IEEEFloat::initFromAPInt(const fltSemantics *Sem, const APInt &api) {
+  if (Sem == &semIEEEfixed4) // LMSDK
+    return initFromFixed4APInt(api);
+  if (Sem == &semIEEEfixed8) // LMSDK
+    return initFromFixed8APInt(api);
   if (Sem == &semIEEEhalf)
     return initFromHalfAPInt(api);
   if (Sem == &semIEEEsingle)
@@ -4469,6 +4609,10 @@ APFloat::opStatus APFloat::convert(const fltSemantics &ToSemantics,
 APFloat APFloat::getAllOnesValue(unsigned BitWidth, bool isIEEE) {
   if (isIEEE) {
     switch (BitWidth) {
+    case 4: // LMSDK
+      return APFloat(semIEEEfixed4, APInt::getAllOnesValue(BitWidth));
+    case 8: // LMSDK
+      return APFloat(semIEEEfixed8, APInt::getAllOnesValue(BitWidth));
     case 16:
       return APFloat(semIEEEhalf, APInt::getAllOnesValue(BitWidth));
     case 32:

@@ -149,6 +149,8 @@ struct APFloatBase {
   /// \name Floating Point Semantics.
   /// @{
 
+  static const fltSemantics &IEEEfixed4() LLVM_READNONE; // LMSDK
+  static const fltSemantics &IEEEfixed8() LLVM_READNONE; // LMSDK
   static const fltSemantics &IEEEhalf() LLVM_READNONE;
   static const fltSemantics &IEEEsingle() LLVM_READNONE;
   static const fltSemantics &IEEEdouble() LLVM_READNONE;
@@ -519,6 +521,8 @@ private:
 
   /// @}
 
+  APInt convertFixed4APFloatToAPInt() const; // LMSDK
+  APInt convertFixed8APFloatToAPInt() const; // LMSDK  
   APInt convertHalfAPFloatToAPInt() const;
   APInt convertFloatAPFloatToAPInt() const;
   APInt convertDoubleAPFloatToAPInt() const;
@@ -526,6 +530,8 @@ private:
   APInt convertF80LongDoubleAPFloatToAPInt() const;
   APInt convertPPCDoubleDoubleAPFloatToAPInt() const;
   void initFromAPInt(const fltSemantics *Sem, const APInt &api);
+  void initFromFixed4APInt(const APInt &api); // LMSDK
+  void initFromFixed8APInt(const APInt &api); // LMSDK
   void initFromHalfAPInt(const APInt &api);
   void initFromFloatAPInt(const APInt &api);
   void initFromDoubleAPInt(const APInt &api);

@@ -3495,6 +3495,33 @@ RValue CodeGenFunction::EmitBuiltinExpr(const FunctionDecl *FD,
         {NDRange, Kernel, Block}));
   }
 
+    // LMSDK
+  case Builtin::BI__builtin_store_fixed4: {
+    Value *Val = EmitScalarExpr(E->getArg(0));
+    Address Address = EmitPointerWithAlignment(E->getArg(1));
+    Value *Fixed4Val = Builder.CreateFPTrunc(Val, Builder.getFixed4Ty());
+    return RValue::get(Builder.CreateStore(Fixed4Val, Address));
+  }
+    // LMSDK
+  case Builtin::BI__builtin_store_fixed8: {
+    Value *Val = EmitScalarExpr(E->getArg(0));
+    Address Address = EmitPointerWithAlignment(E->getArg(1));
+    Value *Fixed8Val = Builder.CreateFPTrunc(Val, Builder.getFixed8Ty());
+    return RValue::get(Builder.CreateStore(Fixed8Val, Address));
+  }
+    // LMSDK
+  case Builtin::BI__builtin_load_fixed4: {
+    Address Address = EmitPointerWithAlignment(E->getArg(0));
+    Value *Fixed4Val = Builder.CreateLoad(Address);
+    return RValue::get(Builder.CreateFPExt(Fixed4Val, Builder.getFixed4Ty()));
+  }
+    // LMSDK
+  case Builtin::BI__builtin_load_fixed8: {
+    Address Address = EmitPointerWithAlignment(E->getArg(0));
+    Value *Fixed8Val = Builder.CreateLoad(Address);
+    return RValue::get(Builder.CreateFPExt(Fixed8Val, Builder.getFixed8Ty()));
+  }
+    
   case Builtin::BI__builtin_store_half:
   case Builtin::BI__builtin_store_halff: {
     Value *Val = EmitScalarExpr(E->getArg(0));

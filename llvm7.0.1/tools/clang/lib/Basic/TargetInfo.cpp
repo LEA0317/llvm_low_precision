@@ -68,6 +68,10 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
     NewAlign = Triple.isArch64Bit() ? 128 : Triple.isArch32Bit() ? 64 : 0;
   else
     NewAlign = 0; // Infer from basic type alignment.
+  Fixed4Width = 4; // LMSDK FIX ME?
+  Fixed4Align = 8; // LMSDK FIX ME?
+  Fixed8Width = 8; // LMSDK FIX ME?
+  Fixed8Align = 8; // LMSDK FIX ME? 
   HalfWidth = 16;
   HalfAlign = 16;
   FloatWidth = 32;
@@ -99,6 +103,8 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
   UseZeroLengthBitfieldAlignment = false;
   UseExplicitBitFieldAlignment = true;
   ZeroLengthBitfieldBoundary = 0;
+  Fixed4Format = &llvm::APFloat::IEEEfixed4(); // LMSDK
+  Fixed8Format = &llvm::APFloat::IEEEfixed8(); // LMSDK 
   HalfFormat = &llvm::APFloat::IEEEhalf();
   FloatFormat = &llvm::APFloat::IEEEsingle();
   DoubleFormat = &llvm::APFloat::IEEEdouble();
@@ -151,6 +157,8 @@ TargetInfo::checkCFProtectionReturnSupported(DiagnosticsEngine &Diags) const {
 const char *TargetInfo::getTypeName(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4:       return "signed int4"; // LMSDK
+  case UnsignedInt4:     return "unsigned int4"; // LMSDK
   case SignedChar:       return "signed char";
   case UnsignedChar:     return "unsigned char";
   case SignedShort:      return "short";
@@ -169,6 +177,7 @@ const char *TargetInfo::getTypeName(IntType T) {
 const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4: // LMSDK    
   case SignedChar:
   case SignedShort:
   case SignedInt:        return "";
@@ -182,6 +191,7 @@ const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
     if (getShortWidth() < getIntWidth())
       return "";
     LLVM_FALLTHROUGH;
+  case UnsignedInt4:     return "U"; // LMSDK     
   case UnsignedInt:      return "U";
   case UnsignedLong:     return "UL";
   case UnsignedLongLong: return "ULL";
@@ -194,6 +204,8 @@ const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
 const char *TargetInfo::getTypeFormatModifier(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4: // LMSDK
+  case UnsignedInt4:     return "hhh"; // LMSDK FIX ME
   case SignedChar:
   case UnsignedChar:     return "hh";
   case SignedShort:
@@ -212,6 +224,8 @@ const char *TargetInfo::getTypeFormatModifier(IntType T) {
 unsigned TargetInfo::getTypeWidth(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4: // LMSDK
+  case UnsignedInt4:     return getInt4Width(); // LMSDK
   case SignedChar:
   case UnsignedChar:     return getCharWidth();
   case SignedShort:
@@ -227,6 +241,8 @@ unsigned TargetInfo::getTypeWidth(IntType T) const {
 
 TargetInfo::IntType TargetInfo::getIntTypeByWidth(
     unsigned BitWidth, bool IsSigned) const {
+  if (getInt4Width() == BitWidth) // LMSDK
+    return IsSigned ? SignedInt4 : UnsignedInt4; // LMSDK 
   if (getCharWidth() == BitWidth)
     return IsSigned ? SignedChar : UnsignedChar;
   if (getShortWidth() == BitWidth)
@@ -242,6 +258,8 @@ TargetInfo::IntType TargetInfo::getIntTypeByWidth(
 
 TargetInfo::IntType TargetInfo::getLeastIntTypeByWidth(unsigned BitWidth,
                                                        bool IsSigned) const {
+  if (getInt4Width() >= BitWidth) // LMSDK
+    return IsSigned ? SignedInt4 : UnsignedInt4; // LMSDK
   if (getCharWidth() >= BitWidth)
     return IsSigned ? SignedChar : UnsignedChar;
   if (getShortWidth() >= BitWidth)
@@ -256,6 +274,7 @@ TargetInfo::IntType TargetInfo::getLeastIntTypeByWidth(unsigned BitWidth,
 }
 
 TargetInfo::RealType TargetInfo::getRealTypeByWidth(unsigned BitWidth) const {
+  // LMSDK FIX ME? add f4 / f8?  
   if (getFloatWidth() == BitWidth)
     return Float;
   if (getDoubleWidth() == BitWidth)
@@ -283,6 +302,8 @@ TargetInfo::RealType TargetInfo::getRealTypeByWidth(unsigned BitWidth) const {
 unsigned TargetInfo::getTypeAlign(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4: // LMSDK
+  case UnsignedInt4:     return getInt4Align(); // LMSDK 
   case SignedChar:
   case UnsignedChar:     return getCharAlign();
   case SignedShort:
@@ -301,12 +322,14 @@ unsigned TargetInfo::getTypeAlign(IntType T) const {
 bool TargetInfo::isTypeSigned(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
+  case SignedInt4: // LMSDK    
   case SignedChar:
   case SignedShort:
   case SignedInt:
   case SignedLong:
   case SignedLongLong:
     return true;
+  case UnsignedInt4: // LMSDK    
   case UnsignedChar:
   case UnsignedShort:
   case UnsignedInt:

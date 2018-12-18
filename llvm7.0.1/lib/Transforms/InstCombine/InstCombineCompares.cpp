@@ -5199,7 +5199,11 @@ Instruction *InstCombiner::visitFCmpInst(FCmpInst &I) {
 
         const fltSemantics *Sem;
         // FIXME: This shouldn't be here.
-        if (LHSExt->getSrcTy()->isHalfTy())
+        if (LHSExt->getSrcTy()->isFixed4Ty()) // LMSDK
+	  Sem = &APFloat::IEEEfixed4();
+	else if (LHSExt->getSrcTy()->isFixed8Ty()) // LMSDK
+	  Sem = &APFloat::IEEEfixed8();
+	else if (LHSExt->getSrcTy()->isHalfTy())
           Sem = &APFloat::IEEEhalf();
         else if (LHSExt->getSrcTy()->isFloatTy())
           Sem = &APFloat::IEEEsingle();

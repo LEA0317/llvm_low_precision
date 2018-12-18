@@ -179,48 +179,51 @@ enum IIT_Info {
   // Common values should be encoded with 0-15.
   IIT_Done = 0,
   IIT_I1   = 1,
-  IIT_I8   = 2,
-  IIT_I16  = 3,
-  IIT_I32  = 4,
-  IIT_I64  = 5,
-  IIT_F16  = 6,
-  IIT_F32  = 7,
-  IIT_F64  = 8,
-  IIT_V2   = 9,
-  IIT_V4   = 10,
-  IIT_V8   = 11,
-  IIT_V16  = 12,
-  IIT_V32  = 13,
-  IIT_PTR  = 14,
-  IIT_ARG  = 15,
+  IIT_I4   = 2, // LMSDK
+  IIT_I8   = 3,
+  IIT_I16  = 4,
+  IIT_I32  = 5,
+  IIT_I64  = 6,
+  IIT_F4   = 7, // LMSDK
+  IIT_F8   = 8, // LMSDK
+  IIT_F16  = 9,
+  IIT_F32  = 10,
+  IIT_F64  = 11,
+  IIT_V2   = 12,
+  IIT_V4   = 13,
+  IIT_V8   = 14,
+  IIT_V16  = 15,
+  IIT_V32  = 16,
+  IIT_PTR  = 17,
+  IIT_ARG  = 18,
 
   // Values from 16+ are only encodable with the inefficient encoding.
-  IIT_V64  = 16,
-  IIT_MMX  = 17,
-  IIT_TOKEN = 18,
-  IIT_METADATA = 19,
-  IIT_EMPTYSTRUCT = 20,
-  IIT_STRUCT2 = 21,
-  IIT_STRUCT3 = 22,
-  IIT_STRUCT4 = 23,
-  IIT_STRUCT5 = 24,
-  IIT_EXTEND_ARG = 25,
-  IIT_TRUNC_ARG = 26,
-  IIT_ANYPTR = 27,
-  IIT_V1   = 28,
-  IIT_VARARG = 29,
-  IIT_HALF_VEC_ARG = 30,
-  IIT_SAME_VEC_WIDTH_ARG = 31,
-  IIT_PTR_TO_ARG = 32,
-  IIT_PTR_TO_ELT = 33,
-  IIT_VEC_OF_ANYPTRS_TO_ELT = 34,
-  IIT_I128 = 35,
-  IIT_V512 = 36,
-  IIT_V1024 = 37,
-  IIT_STRUCT6 = 38,
-  IIT_STRUCT7 = 39,
-  IIT_STRUCT8 = 40,
-  IIT_F128 = 41
+  IIT_V64  = 19,
+  IIT_MMX  = 20,
+  IIT_TOKEN = 21,
+  IIT_METADATA = 22,
+  IIT_EMPTYSTRUCT = 23,
+  IIT_STRUCT2 = 24,
+  IIT_STRUCT3 = 25,
+  IIT_STRUCT4 = 26,
+  IIT_STRUCT5 = 27,
+  IIT_EXTEND_ARG = 28,
+  IIT_TRUNC_ARG = 29,
+  IIT_ANYPTR = 30,
+  IIT_V1   = 31,
+  IIT_VARARG = 32,
+  IIT_HALF_VEC_ARG = 33,
+  IIT_SAME_VEC_WIDTH_ARG = 34,
+  IIT_PTR_TO_ARG = 35,
+  IIT_PTR_TO_ELT = 36,
+  IIT_VEC_OF_ANYPTRS_TO_ELT = 37,
+  IIT_I128 = 38,
+  IIT_V512 = 39,
+  IIT_V1024 = 40,
+  IIT_STRUCT6 = 41,
+  IIT_STRUCT7 = 42,
+  IIT_STRUCT8 = 43,
+  IIT_F128 = 44
 };
 
 static void EncodeFixedValueType(MVT::SimpleValueType VT,
@@ -230,6 +233,7 @@ static void EncodeFixedValueType(MVT::SimpleValueType VT,
     switch (BitWidth) {
     default: PrintFatalError("unhandled integer type width in intrinsic!");
     case 1: return Sig.push_back(IIT_I1);
+    case 4: return Sig.push_back(IIT_I4); // LMSDK      
     case 8: return Sig.push_back(IIT_I8);
     case 16: return Sig.push_back(IIT_I16);
     case 32: return Sig.push_back(IIT_I32);
@@ -240,6 +244,8 @@ static void EncodeFixedValueType(MVT::SimpleValueType VT,
 
   switch (VT) {
   default: PrintFatalError("unhandled MVT in intrinsic!");
+  case MVT::f4: return Sig.push_back(IIT_F4); // LMSDK
+  case MVT::f8: return Sig.push_back(IIT_F8); // LMSDK    
   case MVT::f16: return Sig.push_back(IIT_F16);
   case MVT::f32: return Sig.push_back(IIT_F32);
   case MVT::f64: return Sig.push_back(IIT_F64);

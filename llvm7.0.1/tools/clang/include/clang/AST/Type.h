@@ -1789,6 +1789,7 @@ public:
   bool isScopedEnumeralType() const;
   bool isBooleanType() const;
   bool isCharType() const;
+  bool isInt4Type() const; // LMSDK  
   bool isWideCharType() const;
   bool isChar8Type() const;
   bool isChar16Type() const;
@@ -1809,6 +1810,8 @@ public:
   bool isComplexType() const;      // C99 6.2.5p11 (complex)
   bool isAnyComplexType() const;   // C99 6.2.5p11 (complex) + Complex Int.
   bool isFloatingType() const;     // C99 6.2.5p11 (real floating + complex)
+  bool isFixed4Type() const; // LMSDK
+  bool isFixed8Type() const; // LMSDK  
   bool isHalfType() const;         // OpenCL 6.1.1.1, NEON (IEEE 754-2008 half)
   bool isFloat16Type() const;      // C11 extension ISO/IEC TS 18661
   bool isFloat128Type() const;
@@ -6340,6 +6343,18 @@ inline bool Type::isNonOverloadPlaceholderType() const {
 inline bool Type::isVoidType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() == BuiltinType::Void;
+  return false;
+}
+
+// LMSDK
+inline bool Type::isFixed4Type() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
+    return BT->getKind() == BuiltinType::Fixed4;
+  return false;
+}
+inline bool Type::isFixed8Type() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
+    return BT->getKind() == BuiltinType::Fixed8;
   return false;
 }
 

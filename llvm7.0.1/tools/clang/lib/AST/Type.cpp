@@ -1788,6 +1788,14 @@ bool Type::isIntegralOrUnscopedEnumerationType() const {
   return false;
 }
 
+// LMSDK
+bool Type::isInt4Type() const {
+  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
+    return BT->getKind() == BuiltinType::UInt4 ||
+      BT->getKind() == BuiltinType::SInt4;
+  return false;
+}
+
 bool Type::isCharType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() == BuiltinType::Char_U ||
@@ -1924,7 +1932,7 @@ bool Type::hasUnsignedIntegerRepresentation() const {
 
 bool Type::isFloatingType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
-    return BT->getKind() >= BuiltinType::Half &&
+    return BT->getKind() >= BuiltinType::Fixed4 && // LMSDK
            BT->getKind() <= BuiltinType::Float128;
   if (const auto *CT = dyn_cast<ComplexType>(CanonicalType))
     return CT->getElementType()->isFloatingType();
@@ -2661,6 +2669,10 @@ StringRef BuiltinType::getName(const PrintingPolicy &Policy) const {
     return "void";
   case Bool:
     return Policy.Bool ? "bool" : "_Bool";
+  case UInt4: // LMSDK
+    return "unsigned int4";
+  case SInt4: // LMSDK
+    return "int4";
   case Char_S:
     return "char";
   case Char_U:
@@ -2689,6 +2701,10 @@ StringRef BuiltinType::getName(const PrintingPolicy &Policy) const {
     return "unsigned long long";
   case UInt128:
     return "unsigned __int128";
+  case Fixed4: // LMSDK
+    return "fixed4";
+  case Fixed8: // LMSDK
+    return "fixed8";
   case Half:
     return Policy.Half ? "half" : "__fp16";
   case Float:

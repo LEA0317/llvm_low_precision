@@ -227,12 +227,26 @@ APFloat llvm::getAPFloatFromSize(double Val, unsigned Size) {
     return APFloat(float(Val));
   if (Size == 64)
     return APFloat(Val);
-  if (Size != 16)
+  if (Size == 16) { // LMSDK
+    bool Ignored;
+    APFloat APF(Val);
+    APF.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven, &Ignored);
+    return APF;
+  } else if (Size == 8) { // LMSDK
+    bool Ignored;
+    APFloat APF(Val);
+    APF.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &Ignored);
+    return APF;
+  }
+  if (Size != 4)
     llvm_unreachable("Unsupported FPConstant size");
+
+#if 1 // LMSDK
   bool Ignored;
   APFloat APF(Val);
-  APF.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven, &Ignored);
+  APF.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven, &Ignored);
   return APF;
+#endif
 }
 
 void llvm::getSelectionDAGFallbackAnalysisUsage(AnalysisUsage &AU) {

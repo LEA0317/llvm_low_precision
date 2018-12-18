@@ -542,6 +542,8 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
   isLong = false;
   isUnsigned = false;
   isLongLong = false;
+  isFixed4 = false; // LMSDK
+  isFixed8 = false; // LMSDK 
   isHalf = false;
   isFloat = false;
   isImaginary = false;
@@ -603,6 +605,14 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (!(saw_period || saw_exponent)) break;
       isAccum = true;
       continue;
+    case 'o': // LMSDK
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed4 = true;
+      continue;  // Success.
+    case 'O': // LMSDK
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed8 = true;
+      continue;  // Success.
     case 'h':      // FP Suffix for "half".
     case 'H':
       // OpenCL Extension v1.2 s9.5 - h or H suffix for half type.
@@ -610,7 +620,7 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (isIntegerLiteral()) break;  // Error for integer constant.
       if (isHalf || isFloat || isLong) break; // HH, FH, LH invalid.
       isHalf = true;
-      continue;  // Success.
+      continue;  // Success.      
     case 'f':      // FP Suffix for "float"
     case 'F':
       if (!isFPConstant) break;  // Error for integer constant.

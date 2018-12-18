@@ -67,6 +67,8 @@ protected:
   unsigned char PointerWidth, PointerAlign;
   unsigned char BoolWidth, BoolAlign;
   unsigned char IntWidth, IntAlign;
+  unsigned char Fixed4Width, Fixed4Align; // LMSDK
+  unsigned char Fixed8Width, Fixed8Align; // LMSDK 
   unsigned char HalfWidth, HalfAlign;
   unsigned char FloatWidth, FloatAlign;
   unsigned char DoubleWidth, DoubleAlign;
@@ -111,7 +113,8 @@ protected:
   unsigned short NewAlign;
   std::unique_ptr<llvm::DataLayout> DataLayout;
   const char *MCountName;
-  const llvm::fltSemantics *HalfFormat, *FloatFormat, *DoubleFormat,
+  const llvm::fltSemantics *Fixed4Format, *Fixed8Format, // LMSDK
+    *HalfFormat, *FloatFormat, *DoubleFormat,
     *LongDoubleFormat, *Float128Format;
   unsigned char RegParmMax, SSERegParmMax;
   TargetCXXABI TheCXXABI;
@@ -258,6 +261,8 @@ public:
   IntType getSizeType() const { return SizeType; }
   IntType getSignedSizeType() const {
     switch (SizeType) {
+    case UnsignedInt4: // LMSDK
+      return SignedInt4;
     case UnsignedShort:
       return SignedShort;
     case UnsignedInt:
@@ -297,6 +302,8 @@ public:
 
   static IntType getCorrespondingUnsignedType(IntType T) {
     switch (T) {
+    case SignedInt4: // LMSDK
+      return UnsignedInt4;
     case SignedChar:
       return UnsignedChar;
     case SignedShort:
@@ -359,6 +366,10 @@ public:
   /// Return the alignment of '_Bool' and C++ 'bool' for this target.
   unsigned getBoolAlign() const { return BoolAlign; }
 
+  // LMSDK
+  unsigned getInt4Width() const { return 4; }
+  unsigned getInt4Align() const { return 8; } // FIXME // LMSDK
+  
   unsigned getCharWidth() const { return 8; } // FIXME
   unsigned getCharAlign() const { return 8; } // FIXME
 
@@ -545,6 +556,17 @@ public:
   unsigned getChar32Width() const { return getTypeWidth(Char32Type); }
   unsigned getChar32Align() const { return getTypeAlign(Char32Type); }
 
+  // LMSDK
+  /// getHalfWidth/Align/Format - Return the size/align/format of 'half'.
+  unsigned getFixed4Width() const { return Fixed4Width; }
+  unsigned getFixed4Align() const { return Fixed4Align; }
+  const llvm::fltSemantics &getFixed4Format() const { return *Fixed4Format; }
+
+  // LMSDK
+  unsigned getFixed8Width() const { return Fixed8Width; }
+  unsigned getFixed8Align() const { return Fixed8Align; }
+  const llvm::fltSemantics &getFixed8Format() const { return *Fixed8Format; }
+  
   /// getHalfWidth/Align/Format - Return the size/align/format of 'half'.
   unsigned getHalfWidth() const { return HalfWidth; }
   unsigned getHalfAlign() const { return HalfAlign; }

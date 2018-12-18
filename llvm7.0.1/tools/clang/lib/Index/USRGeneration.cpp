@@ -644,6 +644,12 @@ void USRGenerator::VisitType(QualType T) {
     if (const BuiltinType *BT = T->getAs<BuiltinType>()) {
       unsigned char c = '\0';
       switch (BT->getKind()) {
+        case BuiltinType::SInt4: // LMSDK
+        case BuiltinType::UInt4:
+        case BuiltinType::Fixed4:
+        case BuiltinType::Fixed8:
+	  llvm_unreachable("LMSDK unhandled type");
+	
         case BuiltinType::Void:
           c = 'v'; break;
         case BuiltinType::Bool:
@@ -685,7 +691,7 @@ void USRGenerator::VisitType(QualType T) {
         case BuiltinType::Int128:
           c = 'J'; break;
         case BuiltinType::Float16:
-        case BuiltinType::Half:
+        case BuiltinType::Half:  // LMSDK FIXME: ADD for fixed4 and fixed8
           c = 'h'; break;
         case BuiltinType::Float:
           c = 'f'; break;

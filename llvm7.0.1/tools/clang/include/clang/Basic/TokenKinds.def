@@ -383,6 +383,9 @@ KEYWORD(co_yield                    , KEYCOROUTINES)
 MODULES_KEYWORD(module)
 MODULES_KEYWORD(import)
 
+// LMSDK
+KEYWORD(int4                        , KEYALL)
+
 // C++ char8_t proposal
 KEYWORD(char8_t                     , CHAR8SUPPORT)
 
@@ -571,6 +574,10 @@ KEYWORD(__pascal                    , KEYALL)
 KEYWORD(__vector                    , KEYALTIVEC|KEYZVECTOR)
 KEYWORD(__pixel                     , KEYALTIVEC)
 KEYWORD(__bool                      , KEYALTIVEC|KEYZVECTOR)
+
+// LMSDK
+KEYWORD(fixed4                      , KEYALL)
+KEYWORD(fixed8                      , KEYALL)
 
 // ARM NEON extensions.
 ALIAS("__fp16", half                , KEYALL)

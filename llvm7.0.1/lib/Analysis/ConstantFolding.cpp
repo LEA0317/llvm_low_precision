@@ -402,6 +402,16 @@ bool ReadDataFromGlobal(Constant *C, uint64_t ByteOffset, unsigned char *CurPtr,
       C = FoldBitCast(C, Type::getInt16Ty(C->getContext()), DL);
       return ReadDataFromGlobal(C, ByteOffset, CurPtr, BytesLeft, DL);
     }
+    // LMSDK
+    if (CFP->getType()->isFixed8Ty()){
+      C = FoldBitCast(C, Type::getInt8Ty(C->getContext()), DL);
+      return ReadDataFromGlobal(C, ByteOffset, CurPtr, BytesLeft, DL);
+    }
+    // LMSDK
+    if (CFP->getType()->isFixed4Ty()){
+      C = FoldBitCast(C, Type::getInt4Ty(C->getContext()), DL);
+      return ReadDataFromGlobal(C, ByteOffset, CurPtr, BytesLeft, DL);
+    }    
     return false;
   }
 
@@ -497,7 +507,11 @@ Constant *FoldReinterpretLoadFromConstPtr(Constant *C, Type *LoadTy,
     // that address spaces don't matter here since we're not going to result in
     // an actual new load.
     Type *MapTy;
-    if (LoadTy->isHalfTy())
+    if (LoadTy->isFixed4Ty()) // LMSDK
+      MapTy = Type::getInt4Ty(C->getContext());
+    else if (LoadTy->isFixed8Ty()) // LMSDK
+      MapTy = Type::getInt8Ty(C->getContext());    
+    else if (LoadTy->isHalfTy())
       MapTy = Type::getInt16Ty(C->getContext());
     else if (LoadTy->isFloatTy())
       MapTy = Type::getInt32Ty(C->getContext());
@@ -1489,6 +1503,20 @@ bool llvm::canConstantFoldCallTo(ImmutableCallSite CS, const Function *F) {
 namespace {
 
 Constant *GetConstantFoldFPValue(double V, Type *Ty) {
+#if 1 // LMSDK
+  if (Ty->isFixed4Ty()) {
+    APFloat APF(V);
+    bool unused;
+    APF.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven, &unused);
+    return ConstantFP::get(Ty->getContext(), APF);
+  }
+  if (Ty->isFixed8Ty()) {
+    APFloat APF(V);
+    bool unused;
+    APF.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &unused);
+    return ConstantFP::get(Ty->getContext(), APF);
+  }
+#endif
   if (Ty->isHalfTy()) {
     APFloat APF(V);
     bool unused;
@@ -1630,7 +1658,8 @@ Constant *ConstantFoldScalarCall(StringRef Name, unsigned IntrinsicID, Type *Ty,
         return ConstantInt::get(Ty->getContext(), Val.bitcastToAPInt());
       }
 
-      if (!Ty->isHalfTy() && !Ty->isFloatTy() && !Ty->isDoubleTy())
+      if (!Ty->isHalfTy() && !Ty->isFloatTy() &&
+	  !Ty->isDoubleTy() && !Ty->isFixed4Ty() && !Ty->isFixed8Ty()) // LMSDK
         return nullptr;
 
       if (IntrinsicID == Intrinsic::round) {
@@ -1868,7 +1897,8 @@ Constant *ConstantFoldScalarCall(StringRef Name, unsigned IntrinsicID, Type *Ty,
 
   if (Operands.size() == 2) {
     if (auto *Op1 = dyn_cast<ConstantFP>(Operands[0])) {
-      if (!Ty->isHalfTy() && !Ty->isFloatTy() && !Ty->isDoubleTy())
+      if (!Ty->isHalfTy() && !Ty->isFloatTy() && !Ty->isDoubleTy() &&
+	  !Ty->isFixed4Ty() && !Ty->isFixed8Ty()) // LMSDK
         return nullptr;
       double Op1V = getValueAsDouble(Op1);
 
@@ -2176,7 +2206,8 @@ bool llvm::isMathLibCallNoop(CallSite CS, const TargetLibraryInfo *TLI) {
         // FIXME: Stop using the host math library.
         // FIXME: The computation isn't done in the right precision.
         Type *Ty = OpC->getType();
-        if (Ty->isDoubleTy() || Ty->isFloatTy() || Ty->isHalfTy()) {
+        if (Ty->isDoubleTy() || Ty->isFloatTy() || Ty->isHalfTy() ||
+	    Ty->isFixed4Ty() || Ty->isFixed8Ty()) { // LMSDK
           double OpV = getValueAsDouble(OpC);
           return ConstantFoldFP(tan, OpV, Ty) != nullptr;
         }
@@ -2236,7 +2267,8 @@ bool llvm::isMathLibCallNoop(CallSite CS, const TargetLibraryInfo *TLI) {
         // FIXME: Stop using the host math library.
         // FIXME: The computation isn't done in the right precision.
         Type *Ty = Op0C->getType();
-        if (Ty->isDoubleTy() || Ty->isFloatTy() || Ty->isHalfTy()) {
+        if (Ty->isDoubleTy() || Ty->isFloatTy() || Ty->isHalfTy() ||
+	    Ty->isFixed4Ty() || Ty->isFixed8Ty()) { // LMSDK
           if (Ty == Op1C->getType()) {
             double Op0V = getValueAsDouble(Op0C);
             double Op1V = getValueAsDouble(Op1C);

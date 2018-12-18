@@ -70,6 +70,10 @@ struct TypeCloner {
     switch (Kind) {
       case LLVMVoidTypeKind:
         return LLVMVoidTypeInContext(Ctx);
+      case LLVMFixed4TypeKind: // LMSDK
+        return LLVMFixed4TypeInContext(Ctx);
+      case LLVMFixed8TypeKind: // LMSDK
+        return LLVMFixed8TypeInContext(Ctx);
       case LLVMHalfTypeKind:
         return LLVMHalfTypeInContext(Ctx);
       case LLVMFloatTypeKind:

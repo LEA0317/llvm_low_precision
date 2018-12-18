@@ -34,6 +34,9 @@ BUILTIN(__builtin_cpu_init, "v", "n")
 BUILTIN(__builtin_cpu_supports, "bcC*", "nc")
 BUILTIN(__builtin_cpu_is, "bcC*", "nc")
 
+// LMSDK
+TARGET_BUILTIN(__builtin_fixed4_add , "ooo"  , "", "")
+
 // Undefined Values
 //
 TARGET_BUILTIN(__builtin_ia32_undef128, "V2d", "ncV:128:", "")
