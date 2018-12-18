@@ -159,6 +159,8 @@ public:
   ///===---- Target Data Type Query Methods -------------------------------===//
   enum IntType {
     NoInt = 0,
+    SignedInt4, // LMSDK
+    UnsignedInt4, // LMSDK
     SignedChar,
     UnsignedChar,
     SignedShort,
@@ -174,6 +176,9 @@ public:
   enum RealType {
     NoFloat = 255,
     Float = 0,
+    Half, // LMSDK TODO
+    Fixed4, // LMSDK TODO
+    Fixed8, // LMSDK TODO
     Double,
     LongDouble,
     Float128
