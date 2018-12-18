@@ -5,6 +5,8 @@
   you can use types as below (unsigned int4 may be buggy).
 ```
 
+Dec,18th port to LLVM7.0.1 and fix some bugs.
+
 `fixed4 = f4`  
 `fixed8 = f8`  
 `int4   = i4`  
