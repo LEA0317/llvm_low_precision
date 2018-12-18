@@ -4783,6 +4783,10 @@ clang_PrintingPolicy_getProperty(CXPrintingPolicy Policy,
     return P->TerseOutput;
   case CXPrintingPolicy_PolishForDeclaration:
     return P->PolishForDeclaration;
+  case CXPrintingPolicy_Fixed4: // LMSDK
+    return P->Fixed4;
+  case CXPrintingPolicy_Fixed8: // LMSDK
+    return P->Fixed8;    
   case CXPrintingPolicy_Half:
     return P->Half;
   case CXPrintingPolicy_MSWChar:
@@ -4810,7 +4814,7 @@ void clang_PrintingPolicy_setProperty(CXPrintingPolicy Policy,
     return;
 
   PrintingPolicy *P = static_cast<PrintingPolicy *>(Policy);
-  switch (Property) {
+  switch (Property) {    
   case CXPrintingPolicy_Indentation:
     P->Indentation = Value;
     return;
@@ -4868,6 +4872,12 @@ void clang_PrintingPolicy_setProperty(CXPrintingPolicy Policy,
   case CXPrintingPolicy_PolishForDeclaration:
     P->PolishForDeclaration = Value;
     return;
+  case CXPrintingPolicy_Fixed4: // LMSDK
+    P->Fixed4 = Value;
+    return;
+  case CXPrintingPolicy_Fixed8: // LMSDK
+    P->Fixed8 = Value;
+    return;    
   case CXPrintingPolicy_Half:
     P->Half = Value;
     return;
