@@ -4140,7 +4140,7 @@ Sema::PerformImplicitConversion(Expr *From, QualType ToType,
 
   case ICK_Boolean_Conversion:
     // Perform half-to-boolean conversion via float.
-    if (From->getType()->isHalfType()) {
+    if (From->getType()->isHalfType() || From->getType()->isFixed4Type() || From->getType()->isFixed8Type()) {
       From = ImpCastExprToType(From, Context.FloatTy, CK_FloatingCast).get();
       FromType = Context.FloatTy;
     }

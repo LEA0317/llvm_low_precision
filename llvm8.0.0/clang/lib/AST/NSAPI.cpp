@@ -488,6 +488,8 @@ NSAPI::getNSNumberFactoryMethodKind(QualType T) const {
   case BuiltinType::Overload:
   case BuiltinType::UnknownAny:
   case BuiltinType::ARCUnbridgedCast:
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
   case BuiltinType::Half:
   case BuiltinType::PseudoObject:
   case BuiltinType::BuiltinFn:

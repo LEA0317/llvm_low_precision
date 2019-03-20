@@ -290,6 +290,10 @@ void CodeGenTypes::RefreshTypeCacheForClass(const CXXRecordDecl *RD) {
 static llvm::Type *getTypeForFormat(llvm::LLVMContext &VMContext,
                                     const llvm::fltSemantics &format,
                                     bool UseNativeHalf = false) {
+  if (&format == &llvm::APFloat::IEEEfixed4()) {
+    return llvm::Type::getFixed4Ty(VMContext);
+  if (&format == &llvm::APFloat::IEEEfixed8()) {
+    return llvm::Type::getFixed4Ty(VMContext);
   if (&format == &llvm::APFloat::IEEEhalf()) {
     if (UseNativeHalf)
       return llvm::Type::getHalfTy(VMContext);
@@ -423,6 +427,8 @@ llvm::Type *CodeGenTypes::ConvertType(QualType T) {
       ResultType = llvm::Type::getInt1Ty(getLLVMContext());
       break;
 
+    case BuiltinType::UInt4:
+    case BuiltinType::SInt4:
     case BuiltinType::Char_S:
     case BuiltinType::Char_U:
     case BuiltinType::SChar:
@@ -466,6 +472,17 @@ llvm::Type *CodeGenTypes::ConvertType(QualType T) {
     case BuiltinType::SatULongFract:
       ResultType = llvm::IntegerType::get(getLLVMContext(),
                                  static_cast<unsigned>(Context.getTypeSize(T)));
+      break;
+
+    case BuiltinType::Fixed4:
+      ResultType =
+          getTypeForFormat(getLLVMContext(), Context.getFloatTypeSemantics(T),
+                           /* UseNativeFixed4 = */ true);
+      break;
+    case BuiltinType::Fixed8:
+      ResultType =
+          getTypeForFormat(getLLVMContext(), Context.getFloatTypeSemantics(T),
+                           /* UseNativeFixed8 = */ true);
       break;
 
     case BuiltinType::Float16:

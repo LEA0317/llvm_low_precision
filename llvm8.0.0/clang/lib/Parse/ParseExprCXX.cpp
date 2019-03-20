@@ -1965,6 +1965,15 @@ void Parser::ParseCXXSimpleTypeSpecifier(DeclSpec &DS) {
   case tok::kw___int128:
     DS.SetTypeSpecType(DeclSpec::TST_int128, Loc, PrevSpec, DiagID, Policy);
     break;
+  case tok::kw_int4:
+    DS.SetTypeSpecType(DeclSpec::TST_int4, Loc, PrevSpec, DiagID, Policy);
+    break;
+  case tok::kw_fixed4:
+    DS.SetTypeSpecType(DeclSpec::TST_fixed4, Loc, PrevSpec, DiagID, Policy);
+    break;
+  case tok::kw_fixed8:
+    DS.SetTypeSpecType(DeclSpec::TST_fixed8, Loc, PrevSpec, DiagID, Policy);
+    break;
   case tok::kw_half:
     DS.SetTypeSpecType(DeclSpec::TST_half, Loc, PrevSpec, DiagID, Policy);
     break;

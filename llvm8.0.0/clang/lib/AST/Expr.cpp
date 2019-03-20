@@ -857,6 +857,10 @@ FloatingLiteral::Create(const ASTContext &C, EmptyShell Empty) {
 
 const llvm::fltSemantics &FloatingLiteral::getSemantics() const {
   switch(FloatingLiteralBits.Semantics) {
+  case IEEEfixed4:
+    return llvm::APFloat::IEEEfixed4();
+  case IEEEfixed8:
+    return llvm::APFloat::IEEEfixed8();
   case IEEEhalf:
     return llvm::APFloat::IEEEhalf();
   case IEEEsingle:
@@ -874,7 +878,11 @@ const llvm::fltSemantics &FloatingLiteral::getSemantics() const {
 }
 
 void FloatingLiteral::setSemantics(const llvm::fltSemantics &Sem) {
-  if (&Sem == &llvm::APFloat::IEEEhalf())
+  if (&Sem == &llvm::APFloat::IEEEfixed4())
+    FloatingLiteralBits.Semantics = IEEEfixed4;
+  else if (&Sem == &llvm::APFloat::IEEEfixed8())
+    FloatingLiteralBits.Semantics = IEEEfixed8;
+  else if (&Sem == &llvm::APFloat::IEEEhalf())
     FloatingLiteralBits.Semantics = IEEEhalf;
   else if (&Sem == &llvm::APFloat::IEEEsingle())
     FloatingLiteralBits.Semantics = IEEEsingle;
