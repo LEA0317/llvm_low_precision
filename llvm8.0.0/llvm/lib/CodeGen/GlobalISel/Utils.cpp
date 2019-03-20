@@ -227,11 +227,23 @@ APFloat llvm::getAPFloatFromSize(double Val, unsigned Size) {
     return APFloat(float(Val));
   if (Size == 64)
     return APFloat(Val);
-  if (Size != 16)
+  if (Size == 16) {
+    bool Ignored;
+    APFloat APF(Val);
+    APF.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven, &Ignored);
+    return APF;
+  }
+  if (Size == 8) {
+    bool Ignored;
+    APFloat APF(Val);
+    APF.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &Ignored);
+    return APF;
+  }
+  if (size != 4)
     llvm_unreachable("Unsupported FPConstant size");
   bool Ignored;
   APFloat APF(Val);
-  APF.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven, &Ignored);
+  APF.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven, &Ignored);
   return APF;
 }
 
