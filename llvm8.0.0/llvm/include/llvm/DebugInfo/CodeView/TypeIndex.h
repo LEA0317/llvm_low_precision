@@ -81,7 +81,7 @@ enum class SimpleTypeKind : uint32_t {
   UInt4 = 0x0101,
   SInt4 = 0x0102,
   Fixed4 = 0x0111,
-  Fixed4 = 0x0112,
+  Fixed8 = 0x0112,
 };
 
 enum class SimpleTypeMode : uint32_t {

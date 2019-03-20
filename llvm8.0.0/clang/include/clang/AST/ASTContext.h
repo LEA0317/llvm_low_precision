@@ -1022,7 +1022,7 @@ public:
   CanQualType Char8Ty;  // [C++20 proposal]
   CanQualType Char16Ty; // [C++0x 3.9.1p5], integer type in C99.
   CanQualType Char32Ty; // [C++0x 3.9.1p5], integer type in C99.
-  CanQualType SingnedInt4Ty, UnsignedInt4Ty;
+  CanQualType SignedInt4Ty, UnsignedInt4Ty;
   CanQualType SignedCharTy, ShortTy, IntTy, LongTy, LongLongTy, Int128Ty;
   CanQualType UnsignedCharTy, UnsignedShortTy, UnsignedIntTy, UnsignedLongTy;
   CanQualType UnsignedLongLongTy, UnsignedInt128Ty;

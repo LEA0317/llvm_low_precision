@@ -1247,7 +1247,7 @@ static QualType ConvertDeclSpecToType(TypeProcessingState &state) {
     break;
   case DeclSpec::TST_int4:
     if (DS.getTypeSpecSign() == DeclSpec::TSS_unspecified)
-      Result = Context.Int4Ty;
+      Result = Context.SignedInt4Ty;
     else if (DS.getTypeSpecSign() == DeclSpec::TSS_signed)
       Result = Context.SignedInt4Ty;
     else {

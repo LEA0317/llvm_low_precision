@@ -609,7 +609,7 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (isIntegerLiteral()) break;  // Error for integer constant.
       isFixed4 = true;
       continue;
-    case 'o':
+    case 'O':
       if (isIntegerLiteral()) break;  // Error for integer constant.
       isFixed8 = true;
       continue;

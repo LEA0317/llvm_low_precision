@@ -652,10 +652,10 @@ void USRGenerator::VisitType(QualType T) {
     if (const BuiltinType *BT = T->getAs<BuiltinType>()) {
       unsigned char c = '\0';
       switch (BT->getKind()) {
-        case Bjuiltin::UInt4:
-        case Bjuiltin::SInt4:
-        case Bjuiltin::Fixed4:
-        case Bjuiltin::Fixed8:
+        case BuiltinType::UInt4:
+        case BuiltinType::SInt4:
+        case BuiltinType::Fixed4:
+        case BuiltinType::Fixed8:
 	  llvm_unreachable("FIX ME(konda) not handle it currently");
         case BuiltinType::Void:
           c = 'v'; break;

@@ -290,9 +290,9 @@ void CodeGenTypes::RefreshTypeCacheForClass(const CXXRecordDecl *RD) {
 static llvm::Type *getTypeForFormat(llvm::LLVMContext &VMContext,
                                     const llvm::fltSemantics &format,
                                     bool UseNativeHalf = false) {
-  if (&format == &llvm::APFloat::IEEEfixed4()) {
+  if (&format == &llvm::APFloat::IEEEfixed4())
     return llvm::Type::getFixed4Ty(VMContext);
-  if (&format == &llvm::APFloat::IEEEfixed8()) {
+  if (&format == &llvm::APFloat::IEEEfixed8())
     return llvm::Type::getFixed4Ty(VMContext);
   if (&format == &llvm::APFloat::IEEEhalf()) {
     if (UseNativeHalf)

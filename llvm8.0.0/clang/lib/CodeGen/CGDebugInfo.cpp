@@ -702,7 +702,7 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
     Encoding = llvm::dwarf::DW_ATE_unsigned_int4;
     break;
   case BuiltinType::SInt4:
-    Encoding = llvm::dwarf::DW_ATE_int4;
+    Encoding = llvm::dwarf::DW_ATE_signed_int4;
     break;
   case BuiltinType::UChar:
   case BuiltinType::Char_U:
