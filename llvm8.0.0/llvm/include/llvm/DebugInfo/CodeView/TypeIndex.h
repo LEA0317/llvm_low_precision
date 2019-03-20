@@ -77,6 +77,11 @@ enum class SimpleTypeKind : uint32_t {
   Boolean32 = 0x0032,  // 32 bit boolean
   Boolean64 = 0x0033,  // 64 bit boolean
   Boolean128 = 0x0034, // 128 bit boolean
+
+  UInt4 = 0x0101,
+  SInt4 = 0x0102,
+  Fixed4 = 0x0111,
+  Fixed4 = 0x0112,
 };
 
 enum class SimpleTypeMode : uint32_t {
@@ -152,6 +157,13 @@ public:
     return TypeIndex(SimpleTypeKind::Void, SimpleTypeMode::NearPointer);
   }
 
+  static TypeIndex UInt4() {
+    return TypeIndex(SimpleTypeKind::UInt4);
+  }
+  static TypeIndex SInt4() {
+    return TypeIndex(SimpleTypeKind::SInt4);
+  }
+
   static TypeIndex SignedCharacter() {
     return TypeIndex(SimpleTypeKind::SignedCharacter);
   }
@@ -182,7 +194,10 @@ public:
   static TypeIndex UInt64Quad() {
     return TypeIndex(SimpleTypeKind::UInt64Quad);
   }
-
+  
+  static TypeIndex Fixed4() { return TypeIndex(SimpleTypeKind::Fixed4); }
+  static TypeIndex Fixed8() { return TypeIndex(SimpleTypeKind::Fixed8); }
+  
   static TypeIndex Float32() { return TypeIndex(SimpleTypeKind::Float32); }
   static TypeIndex Float64() { return TypeIndex(SimpleTypeKind::Float64); }
 

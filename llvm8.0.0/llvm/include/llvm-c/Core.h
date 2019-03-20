@@ -144,6 +144,8 @@ typedef enum {
 
 typedef enum {
   LLVMVoidTypeKind,        /**< type with no size */
+  LLVMFixed4TypeKind,      /**<  4 bit floating point type */
+  LLVMFixed8TypeKind,      /**<  8 bit floating point type */
   LLVMHalfTypeKind,        /**< 16 bit floating point type */
   LLVMFloatTypeKind,       /**< 32 bit floating point type */
   LLVMDoubleTypeKind,      /**< 64 bit floating point type */
@@ -1151,7 +1153,10 @@ unsigned LLVMGetIntTypeWidth(LLVMTypeRef IntegerTy);
  *
  * @{
  */
-
+  
+LLVMTypeRef LLVMFixed4TypeInContext(LLVMContextRef C);
+LLVMTypeRef LLVMFixed8TypeInContext(LLVMContextRef C);
+  
 /**
  * Obtain a 16-bit floating point type from a context.
  */
@@ -1188,6 +1193,8 @@ LLVMTypeRef LLVMPPCFP128TypeInContext(LLVMContextRef C);
  *
  * These map to the functions in this group of the same name.
  */
+LLVMTypeRef LLVMFixed4Type(void);
+LLVMTypeRef LLVMFixed8Type(void);
 LLVMTypeRef LLVMHalfType(void);
 LLVMTypeRef LLVMFloatType(void);
 LLVMTypeRef LLVMDoubleType(void);
