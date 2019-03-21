@@ -6,7 +6,7 @@
 ```
 
 Dec,18th port to LLVM7.0.1 and fix some bugs.  
-Mar,21th port to LLVM8.0.0 and fix some bugs and add 256 vector length.
+Mar,21st port to LLVM8.0.0 and fix some bugs and add 256 vector length.
 
 `fixed4 = f4`  
 `fixed8 = f8`  
