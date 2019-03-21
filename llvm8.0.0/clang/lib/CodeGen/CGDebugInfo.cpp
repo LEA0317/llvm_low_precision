@@ -698,6 +698,12 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
     return getOrCreateStructPtrType("opencl_" #ExtType, Id##Ty);
 #include "clang/Basic/OpenCLExtensionTypes.def"
 
+  case BuiltinType::UInt4:
+    Encoding = llvm::dwarf::DW_ATE_unsigned_int4;
+    break;
+  case BuiltinType::SInt4:
+    Encoding = llvm::dwarf::DW_ATE_signed_int4;
+    break;
   case BuiltinType::UChar:
   case BuiltinType::Char_U:
     Encoding = llvm::dwarf::DW_ATE_unsigned_char;
@@ -730,6 +736,8 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
   case BuiltinType::Bool:
     Encoding = llvm::dwarf::DW_ATE_boolean;
     break;
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
   case BuiltinType::Half:
   case BuiltinType::Float:
   case BuiltinType::LongDouble:

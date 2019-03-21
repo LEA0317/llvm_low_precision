@@ -310,6 +310,9 @@ TypeSpecifierType BuiltinTypeLoc::getWrittenTypeSpec() const {
   if (needsExtraLocalData())
     return static_cast<TypeSpecifierType>(getWrittenBuiltinSpecs().Type);
   switch (getTypePtr()->getKind()) {
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:
+    return TST_int4;
   case BuiltinType::Void:
     return TST_void;
   case BuiltinType::Bool:
@@ -338,6 +341,8 @@ TypeSpecifierType BuiltinTypeLoc::getWrittenTypeSpec() const {
   case BuiltinType::Long:
   case BuiltinType::LongLong:
   case BuiltinType::Int128:
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
   case BuiltinType::Half:
   case BuiltinType::Float:
   case BuiltinType::Double:

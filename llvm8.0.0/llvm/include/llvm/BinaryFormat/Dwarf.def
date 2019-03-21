@@ -694,11 +694,15 @@ HANDLE_DW_ATE(0x0c, edited, 3, DWARF)
 HANDLE_DW_ATE(0x0d, signed_fixed, 3, DWARF)
 HANDLE_DW_ATE(0x0e, unsigned_fixed, 3, DWARF)
 HANDLE_DW_ATE(0x0f, decimal_float, 3, DWARF)
+
+HANDLE_DW_ATE(0x10, signed_int4, 3, DWARF)
+HANDLE_DW_ATE(0x11, unsigned_int4, 3, DWARF)
+
 // New in DWARF v4:
-HANDLE_DW_ATE(0x10, UTF, 4, DWARF)
+HANDLE_DW_ATE(0x12, UTF, 4, DWARF)
 // New in DWARF v5:
-HANDLE_DW_ATE(0x11, UCS, 5, DWARF)
-HANDLE_DW_ATE(0x12, ASCII, 5, DWARF)
+HANDLE_DW_ATE(0x13, UCS, 5, DWARF)
+HANDLE_DW_ATE(0x14, ASCII, 5, DWARF)
 
 // DWARF attribute endianity
 HANDLE_DW_END(0x00, default)

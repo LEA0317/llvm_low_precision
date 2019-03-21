@@ -271,6 +271,7 @@ public:
   typedef TypeSpecifierType TST;
   static const TST TST_unspecified = clang::TST_unspecified;
   static const TST TST_void = clang::TST_void;
+  static const TST TST_int4 = clang::TST_int4;
   static const TST TST_char = clang::TST_char;
   static const TST TST_wchar = clang::TST_wchar;
   static const TST TST_char8 = clang::TST_char8;
@@ -278,6 +279,8 @@ public:
   static const TST TST_char32 = clang::TST_char32;
   static const TST TST_int = clang::TST_int;
   static const TST TST_int128 = clang::TST_int128;
+  static const TST TST_fixed4 = clang::TST_fixed4;
+  static const TST TST_fixed8 = clang::TST_fixed8;
   static const TST TST_half = clang::TST_half;
   static const TST TST_float = clang::TST_float;
   static const TST TST_double = clang::TST_double;

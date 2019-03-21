@@ -4756,6 +4756,9 @@ clang_PrintingPolicy_getProperty(CXPrintingPolicy Policy,
 
   PrintingPolicy *P = static_cast<PrintingPolicy *>(Policy);
   switch (Property) {
+  case CXPrintingPolicy_Fixed4:
+  case CXPrintingPolicy_Fixed8:
+    llvm_unreachable("FIX ME(konda) handle this");
   case CXPrintingPolicy_Indentation:
     return P->Indentation;
   case CXPrintingPolicy_SuppressSpecifiers:
@@ -4822,6 +4825,9 @@ void clang_PrintingPolicy_setProperty(CXPrintingPolicy Policy,
 
   PrintingPolicy *P = static_cast<PrintingPolicy *>(Policy);
   switch (Property) {
+  case CXPrintingPolicy_Fixed4:
+  case CXPrintingPolicy_Fixed8:
+    llvm_unreachable("FIX ME(konda) handle this");
   case CXPrintingPolicy_Indentation:
     P->Indentation = Value;
     return;

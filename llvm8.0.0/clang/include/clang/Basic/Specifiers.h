@@ -45,6 +45,7 @@ namespace clang {
   enum TypeSpecifierType {
     TST_unspecified,
     TST_void,
+    TST_int4,
     TST_char,
     TST_wchar,        // C++ wchar_t
     TST_char8,        // C++20 char8_t (proposed)
@@ -52,6 +53,8 @@ namespace clang {
     TST_char32,       // C++11 char32_t
     TST_int,
     TST_int128,
+    TST_fixed4,
+    TST_fixed8,
     TST_half,         // OpenCL half, ARM NEON __fp16
     TST_Float16,      // C11 extension ISO/IEC TS 18661-3
     TST_Accum,        // ISO/IEC JTC1 SC22 WG14 N1169 Extension

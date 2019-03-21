@@ -802,6 +802,8 @@ lltok::Kind LLLexer::LexIdentifier() {
   } while (false)
 
   TYPEKEYWORD("void",      Type::getVoidTy(Context));
+  TYPEKEYWORD("fixed4",    Type::getFixed4Ty(Context));
+  TYPEKEYWORD("fixed8",    Type::getFixed8Ty(Context));
   TYPEKEYWORD("half",      Type::getHalfTy(Context));
   TYPEKEYWORD("float",     Type::getFloatTy(Context));
   TYPEKEYWORD("double",    Type::getDoubleTy(Context));

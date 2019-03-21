@@ -2485,6 +2485,12 @@ void CXXNameMangler::mangleType(const BuiltinType *T) {
   //                 ::= u <source-name>    # vendor extended type
   std::string type_name;
   switch (T->getKind()) {
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
+    Out << 'X'; // (konda)FIX ME
+    break;
   case BuiltinType::Void:
     Out << 'v';
     break;

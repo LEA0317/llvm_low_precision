@@ -542,6 +542,8 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
   isLong = false;
   isUnsigned = false;
   isLongLong = false;
+  isFixed4 = false;
+  isFixed8 = false;
   isHalf = false;
   isFloat = false;
   isImaginary = false;
@@ -602,6 +604,14 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (isFract || isAccum) break;
       if (!(saw_period || saw_exponent)) break;
       isAccum = true;
+      continue;
+    case 'o':
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed4 = true;
+      continue;
+    case 'O':
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed8 = true;
       continue;
     case 'h':      // FP Suffix for "half".
     case 'H':

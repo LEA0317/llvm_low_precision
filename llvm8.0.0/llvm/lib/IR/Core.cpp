@@ -470,6 +470,10 @@ LLVMTypeKind LLVMGetTypeKind(LLVMTypeRef Ty) {
   switch (unwrap(Ty)->getTypeID()) {
   case Type::VoidTyID:
     return LLVMVoidTypeKind;
+  case Type::Fixed4TyID:
+    return LLVMFixed4TypeKind;
+  case Type::Fixed8TyID:
+    return LLVMFixed8TypeKind;
   case Type::HalfTyID:
     return LLVMHalfTypeKind;
   case Type::FloatTyID:
@@ -538,6 +542,9 @@ char *LLVMPrintTypeToString(LLVMTypeRef Ty) {
 LLVMTypeRef LLVMInt1TypeInContext(LLVMContextRef C)  {
   return (LLVMTypeRef) Type::getInt1Ty(*unwrap(C));
 }
+LLVMTypeRef LLVMInt4TypeInContext(LLVMContextRef C)  {
+  return (LLVMTypeRef) Type::getInt4Ty(*unwrap(C));
+}
 LLVMTypeRef LLVMInt8TypeInContext(LLVMContextRef C)  {
   return (LLVMTypeRef) Type::getInt8Ty(*unwrap(C));
 }
@@ -585,6 +592,12 @@ unsigned LLVMGetIntTypeWidth(LLVMTypeRef IntegerTy) {
 
 /*--.. Operations on real types ............................................--*/
 
+LLVMTypeRef LLVMFixed4TypeInContext(LLVMContextRef C) {
+  return (LLVMTypeRef) Type::getFixed4Ty(*unwrap(C));
+}
+LLVMTypeRef LLVMFixed8TypeInContext(LLVMContextRef C) {
+  return (LLVMTypeRef) Type::getFixed8Ty(*unwrap(C));
+}
 LLVMTypeRef LLVMHalfTypeInContext(LLVMContextRef C) {
   return (LLVMTypeRef) Type::getHalfTy(*unwrap(C));
 }
@@ -607,6 +620,12 @@ LLVMTypeRef LLVMX86MMXTypeInContext(LLVMContextRef C) {
   return (LLVMTypeRef) Type::getX86_MMXTy(*unwrap(C));
 }
 
+LLVMTypeRef LLVMFixed4Type(void) {
+  return LLVMFixed4TypeInContext(LLVMGetGlobalContext());
+}
+LLVMTypeRef LLVMFixed8Type(void) {
+  return LLVMFixed8TypeInContext(LLVMGetGlobalContext());
+}
 LLVMTypeRef LLVMHalfType(void) {
   return LLVMHalfTypeInContext(LLVMGetGlobalContext());
 }
