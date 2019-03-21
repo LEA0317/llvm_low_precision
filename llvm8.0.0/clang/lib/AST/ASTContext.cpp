@@ -10078,6 +10078,12 @@ QualType ASTContext::getIntTypeForBitwidth(unsigned DestWidth,
 QualType ASTContext::getRealTypeForBitwidth(unsigned DestWidth) const {
   TargetInfo::RealType Ty = getTargetInfo().getRealTypeByWidth(DestWidth);
   switch (Ty) {
+  case TargetInfo::Fixed4:
+    return Fixed4Ty;
+  case TargetInfo::Fixed8:
+    return Fixed8Ty;
+  case TargetInfo::Half:
+    return HalfTy;
   case TargetInfo::Float:
     return FloatTy;
   case TargetInfo::Double:

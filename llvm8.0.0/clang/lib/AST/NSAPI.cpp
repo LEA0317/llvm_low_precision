@@ -404,6 +404,9 @@ NSAPI::getNSNumberFactoryMethodKind(QualType T) const {
   }
 
   switch (BT->getKind()) {
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:
+    llvm_unreachable("FIX ME(konda) handle this");
   case BuiltinType::Char_S:
   case BuiltinType::SChar:
     return NSAPI::NSNumberWithChar;

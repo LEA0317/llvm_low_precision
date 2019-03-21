@@ -556,8 +556,8 @@ void TypePrinting::incorporateTypes() {
 void TypePrinting::print(Type *Ty, raw_ostream &OS) {
   switch (Ty->getTypeID()) {
   case Type::VoidTyID:      OS << "void"; return;
-  case Type::Fixed4TyID:    OS << "fixed4"; return;
-  case Type::Fixed8TyID:    OS << "fixed8"; return;
+  case Type::Fixed4TyID:    OS << "f4"; return;
+  case Type::Fixed8TyID:    OS << "f8"; return;
   case Type::HalfTyID:      OS << "half"; return;
   case Type::FloatTyID:     OS << "float"; return;
   case Type::DoubleTyID:    OS << "double"; return;
