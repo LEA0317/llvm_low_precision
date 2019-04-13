@@ -3495,41 +3495,6 @@ RValue CodeGenFunction::EmitBuiltinExpr(const FunctionDecl *FD,
         {NDRange, Kernel, Block}));
   }
 
-  case Builtin::BI__builtin_store_fixed4:
-  case Builtin::BI__builtin_store_fixed4f: {
-    Value *Val = EmitScalarExpr(E->getArg(0));
-    Address Address = EmitPointerWithAlignment(E->getArg(1));
-    Value *Fixed4Val = Builder.CreateFPTrunc(Val, Builder.getFixed4Ty());
-    return RValue::get(Builder.CreateStore(Fixed4Val, Address));
-  }
-  case Builtin::BI__builtin_load_fixed4: {
-    Address Address = EmitPointerWithAlignment(E->getArg(0));
-    Value *Fixed4Val = Builder.CreateLoad(Address);
-    return RValue::get(Builder.CreateFPExt(Fixed4Val, Builder.getDoubleTy()));
-  }
-  case Builtin::BI__builtin_load_fixed4f: {
-    Address Address = EmitPointerWithAlignment(E->getArg(0));
-    Value *Fixed4Val = Builder.CreateLoad(Address);
-    return RValue::get(Builder.CreateFPExt(Fixed4Val, Builder.getFloatTy()));
-  }
-  case Builtin::BI__builtin_store_fixed8:
-  case Builtin::BI__builtin_store_fixed8f: {
-    Value *Val = EmitScalarExpr(E->getArg(0));
-    Address Address = EmitPointerWithAlignment(E->getArg(1));
-    Value *Fixed8Val = Builder.CreateFPTrunc(Val, Builder.getFixed4Ty());
-    return RValue::get(Builder.CreateStore(Fixed8Val, Address));
-  }
-  case Builtin::BI__builtin_load_fixed8: {
-    Address Address = EmitPointerWithAlignment(E->getArg(0));
-    Value *Fixed8Val = Builder.CreateLoad(Address);
-    return RValue::get(Builder.CreateFPExt(Fixed8Val, Builder.getDoubleTy()));
-  }
-  case Builtin::BI__builtin_load_fixed8f: {
-    Address Address = EmitPointerWithAlignment(E->getArg(0));
-    Value *Fixed8Val = Builder.CreateLoad(Address);
-    return RValue::get(Builder.CreateFPExt(Fixed8Val, Builder.getFloatTy()));
-  }
-
   case Builtin::BI__builtin_store_half:
   case Builtin::BI__builtin_store_halff: {
     Value *Val = EmitScalarExpr(E->getArg(0));

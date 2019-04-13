@@ -3557,24 +3557,6 @@ void Parser::ParseDeclarationSpecifiers(DeclSpec &DS,
       isInvalid = DS.SetTypeSpecType(DeclSpec::TST_int128, Loc, PrevSpec,
                                      DiagID, Policy);
       break;
-
-    case tok::kw_int4:
-      isInvalid = DS.SetTypeSpecType(DeclSpec::TST_int4, Loc, PrevSpec,
-                                     DiagID, Policy);
-      break;
-    case tok::kw_int256:
-      isInvalid = DS.SetTypeSpecType(DeclSpec::TST_int256, Loc, PrevSpec,
-                                     DiagID, Policy);
-      break;
-     case tok::kw_fixed4:
-      isInvalid = DS.SetTypeSpecType(DeclSpec::TST_fixed4, Loc, PrevSpec,
-                                     DiagID, Policy);
-      break;
-    case tok::kw_fixed8:
-      isInvalid = DS.SetTypeSpecType(DeclSpec::TST_fixed8, Loc, PrevSpec,
-                                     DiagID, Policy);
-      break;
-      
     case tok::kw_half:
       isInvalid = DS.SetTypeSpecType(DeclSpec::TST_half, Loc, PrevSpec,
                                      DiagID, Policy);
@@ -4627,16 +4609,12 @@ bool Parser::isKnownToBeTypeSpecifier(const Token &Tok) const {
   case tok::kw__Complex:
   case tok::kw__Imaginary:
   case tok::kw_void:
-  case tok::kw_int4:
-  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
   case tok::kw_char16_t:
   case tok::kw_char32_t:
   case tok::kw_int:
-  case tok::kw_fixed4:
-  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:
@@ -4710,16 +4688,12 @@ bool Parser::isTypeSpecifierQualifier() {
   case tok::kw__Complex:
   case tok::kw__Imaginary:
   case tok::kw_void:
-  case tok::kw_int4:
-  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
   case tok::kw_char16_t:
   case tok::kw_char32_t:
   case tok::kw_int:
-  case tok::kw_fixed4:
-  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:
@@ -4874,8 +4848,6 @@ bool Parser::isDeclarationSpecifier(bool DisambiguatingWithExpression) {
   case tok::kw__Complex:
   case tok::kw__Imaginary:
   case tok::kw_void:
-  case tok::kw_int4:
-  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
@@ -4883,8 +4855,6 @@ bool Parser::isDeclarationSpecifier(bool DisambiguatingWithExpression) {
   case tok::kw_char32_t:
 
   case tok::kw_int:
-  case tok::kw_fixed4:
-  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:

@@ -329,8 +329,6 @@ bool Declarator::isDeclarationOfFunction() const {
     case TST_auto:
     case TST_auto_type:
     case TST_bool:
-    case TST_int4:
-    case TST_int256:
     case TST_char:
     case TST_char8:
     case TST_char16:
@@ -347,8 +345,6 @@ bool Declarator::isDeclarationOfFunction() const {
     case TST_enum:
     case TST_error:
     case TST_float:
-    case TST_fixed4:
-    case TST_fixed8:
     case TST_half:
     case TST_int:
     case TST_int128:
@@ -505,8 +501,6 @@ const char *DeclSpec::getSpecifierName(DeclSpec::TST T,
   switch (T) {
   case DeclSpec::TST_unspecified: return "unspecified";
   case DeclSpec::TST_void:        return "void";
-  case DeclSpec::TST_int4:        return "int4";
-  case DeclSpec::TST_int256:      return "int256";
   case DeclSpec::TST_char:        return "char";
   case DeclSpec::TST_wchar:       return Policy.MSWChar ? "__wchar_t" : "wchar_t";
   case DeclSpec::TST_char8:       return "char8_t";
@@ -514,8 +508,6 @@ const char *DeclSpec::getSpecifierName(DeclSpec::TST T,
   case DeclSpec::TST_char32:      return "char32_t";
   case DeclSpec::TST_int:         return "int";
   case DeclSpec::TST_int128:      return "__int128";
-  case DeclSpec::TST_fixed4:      return "fixed4";
-  case DeclSpec::TST_fixed8:      return "fixed8";
   case DeclSpec::TST_half:        return "half";
   case DeclSpec::TST_float:       return "float";
   case DeclSpec::TST_double:      return "double";
@@ -1123,8 +1115,8 @@ void DeclSpec::Finish(Sema &S, const PrintingPolicy &Policy) {
   if (TypeSpecSign != TSS_unspecified) {
     if (TypeSpecType == TST_unspecified)
       TypeSpecType = TST_int; // unsigned -> unsigned int, signed -> signed int.
-    else if (TypeSpecType != TST_int && TypeSpecType != TST_int128 && TypeSpecType != TST_int256 &&
-             TypeSpecType != TST_char && TypeSpecType != TST_wchar && TypeSpecType != TST_int4 &&
+    else if (TypeSpecType != TST_int && TypeSpecType != TST_int128 &&
+             TypeSpecType != TST_char && TypeSpecType != TST_wchar &&
              !IsFixedPointType) {
       S.Diag(TSSLoc, diag::err_invalid_sign_spec)
         << getSpecifierName((TST)TypeSpecType, Policy);

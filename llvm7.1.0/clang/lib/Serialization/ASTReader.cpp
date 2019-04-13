@@ -6804,18 +6804,6 @@ QualType ASTReader::GetType(TypeID ID) {
     case PREDEF_TYPE_BOOL_ID:
       T = Context.BoolTy;
       break;
-    case PREDEF_TYPE_UInt4_ID:
-      T = Context.UnsignedInt4Ty;
-      break;
-    case PREDEF_TYPE_SInt4_ID:
-      T = Context.SignedInt4Ty;
-      break;
-    case PREDEF_TYPE_UInt256_ID:
-      T = Context.UnsignedInt256Ty;
-      break;
-    case PREDEF_TYPE_SInt256_ID:
-      T = Context.SignedInt256Ty;
-      break;
     case PREDEF_TYPE_CHAR_U_ID:
     case PREDEF_TYPE_CHAR_S_ID:
       // FIXME: Check that the signedness of CharTy is correct!
@@ -6859,12 +6847,6 @@ QualType ASTReader::GetType(TypeID ID) {
       break;
     case PREDEF_TYPE_INT128_ID:
       T = Context.Int128Ty;
-      break;
-    case PREDEF_TYPE_Fixed4_ID:
-      T = Context.Fixed4Ty;
-      break;
-    case PREDEF_TYPE_Fixed8_ID:
-      T = Context.Fixed8Ty;
       break;
     case PREDEF_TYPE_HALF_ID:
       T = Context.HalfTy;

@@ -68,10 +68,6 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
     NewAlign = Triple.isArch64Bit() ? 128 : Triple.isArch32Bit() ? 64 : 0;
   else
     NewAlign = 0; // Infer from basic type alignment.
-  Fixed4Width = 4; // (konda) FIX ME?
-  Fixed4Align = 8; // (konda) FIX ME?
-  Fixed8Width = 8; // (konda) FIX ME?
-  Fixed8Align = 8; // (konda) FIX ME?
   HalfWidth = 16;
   HalfAlign = 16;
   FloatWidth = 32;
@@ -103,8 +99,6 @@ TargetInfo::TargetInfo(const llvm::Triple &T) : TargetOpts(), Triple(T) {
   UseZeroLengthBitfieldAlignment = false;
   UseExplicitBitFieldAlignment = true;
   ZeroLengthBitfieldBoundary = 0;
-  Fixed4Format = &llvm::APFloat::IEEEfixed4();
-  Fixed8Format = &llvm::APFloat::IEEEfixed8();
   HalfFormat = &llvm::APFloat::IEEEhalf();
   FloatFormat = &llvm::APFloat::IEEEsingle();
   DoubleFormat = &llvm::APFloat::IEEEdouble();
@@ -157,8 +151,6 @@ TargetInfo::checkCFProtectionReturnSupported(DiagnosticsEngine &Diags) const {
 const char *TargetInfo::getTypeName(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:       return "signed int4";
-  case UnsignedInt4:     return "unsigned int4";
   case SignedChar:       return "signed char";
   case UnsignedChar:     return "unsigned char";
   case SignedShort:      return "short";
@@ -169,8 +161,6 @@ const char *TargetInfo::getTypeName(IntType T) {
   case UnsignedLong:     return "long unsigned int";
   case SignedLongLong:   return "long long int";
   case UnsignedLongLong: return "long long unsigned int";
-  case SignedInt256:     return "int256";
-  case UnsignedInt256:   return "unsigned int256";
   }
 }
 
@@ -179,8 +169,6 @@ const char *TargetInfo::getTypeName(IntType T) {
 const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:
-  case SignedInt256:
   case SignedChar:
   case SignedShort:
   case SignedInt:        return "";
@@ -194,8 +182,6 @@ const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
     if (getShortWidth() < getIntWidth())
       return "";
     LLVM_FALLTHROUGH;
-  case UnsignedInt4:
-  case UnsignedInt256:
   case UnsignedInt:      return "U";
   case UnsignedLong:     return "UL";
   case UnsignedLongLong: return "ULL";
@@ -208,8 +194,6 @@ const char *TargetInfo::getTypeConstantSuffix(IntType T) const {
 const char *TargetInfo::getTypeFormatModifier(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:
-  case UnsignedInt4:     return "hhh";
   case SignedChar:
   case UnsignedChar:     return "hh";
   case SignedShort:
@@ -220,8 +204,6 @@ const char *TargetInfo::getTypeFormatModifier(IntType T) {
   case UnsignedLong:     return "l";
   case SignedLongLong:
   case UnsignedLongLong: return "ll";
-  case SignedInt256:
-  case UnsignedInt256: return "lll";
   }
 }
 
@@ -230,8 +212,6 @@ const char *TargetInfo::getTypeFormatModifier(IntType T) {
 unsigned TargetInfo::getTypeWidth(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:
-  case UnsignedInt4:     return getIntWidth();
   case SignedChar:
   case UnsignedChar:     return getCharWidth();
   case SignedShort:
@@ -242,15 +222,11 @@ unsigned TargetInfo::getTypeWidth(IntType T) const {
   case UnsignedLong:     return getLongWidth();
   case SignedLongLong:
   case UnsignedLongLong: return getLongLongWidth();
-  case SignedInt256:
-  case UnsignedInt256:   return getInt256Width();
   };
 }
 
 TargetInfo::IntType TargetInfo::getIntTypeByWidth(
     unsigned BitWidth, bool IsSigned) const {
-  if (getInt4Width() == BitWidth)
-    return IsSigned ? SignedInt4 : UnsignedInt4;
   if (getCharWidth() == BitWidth)
     return IsSigned ? SignedChar : UnsignedChar;
   if (getShortWidth() == BitWidth)
@@ -261,15 +237,11 @@ TargetInfo::IntType TargetInfo::getIntTypeByWidth(
     return IsSigned ? SignedLong : UnsignedLong;
   if (getLongLongWidth() == BitWidth)
     return IsSigned ? SignedLongLong : UnsignedLongLong;
-  if (getInt256Width() == BitWidth)
-    return IsSigned ? SignedInt256 : UnsignedInt256;
   return NoInt;
 }
 
 TargetInfo::IntType TargetInfo::getLeastIntTypeByWidth(unsigned BitWidth,
                                                        bool IsSigned) const {
-  if (getInt4Width() >= BitWidth)
-    return IsSigned ? SignedInt4 : UnsignedInt4;
   if (getCharWidth() >= BitWidth)
     return IsSigned ? SignedChar : UnsignedChar;
   if (getShortWidth() >= BitWidth)
@@ -280,13 +252,10 @@ TargetInfo::IntType TargetInfo::getLeastIntTypeByWidth(unsigned BitWidth,
     return IsSigned ? SignedLong : UnsignedLong;
   if (getLongLongWidth() >= BitWidth)
     return IsSigned ? SignedLongLong : UnsignedLongLong;
-  if (getInt256Width() >= BitWidth)
-    return IsSigned ? SignedInt256 : UnsignedInt256;
   return NoInt;
 }
 
 TargetInfo::RealType TargetInfo::getRealTypeByWidth(unsigned BitWidth) const {
-  // (konda) FIX ME handle f4/f8
   if (getFloatWidth() == BitWidth)
     return Float;
   if (getDoubleWidth() == BitWidth)
@@ -314,8 +283,6 @@ TargetInfo::RealType TargetInfo::getRealTypeByWidth(unsigned BitWidth) const {
 unsigned TargetInfo::getTypeAlign(IntType T) const {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:
-  case UnsignedInt4:     return getInt4Align();
   case SignedChar:
   case UnsignedChar:     return getCharAlign();
   case SignedShort:
@@ -326,8 +293,6 @@ unsigned TargetInfo::getTypeAlign(IntType T) const {
   case UnsignedLong:     return getLongAlign();
   case SignedLongLong:
   case UnsignedLongLong: return getLongLongAlign();
-  case SignedInt256:
-  case UnsignedInt256:   return getInt256Align();
   };
 }
 
@@ -336,21 +301,17 @@ unsigned TargetInfo::getTypeAlign(IntType T) const {
 bool TargetInfo::isTypeSigned(IntType T) {
   switch (T) {
   default: llvm_unreachable("not an integer!");
-  case SignedInt4:
   case SignedChar:
   case SignedShort:
   case SignedInt:
   case SignedLong:
   case SignedLongLong:
-  case SignedInt256:
     return true;
-  case UnsignedInt4:
   case UnsignedChar:
   case UnsignedShort:
   case UnsignedInt:
   case UnsignedLong:
   case UnsignedLongLong:
-  case UnsignedInt256:
     return false;
   };
 }

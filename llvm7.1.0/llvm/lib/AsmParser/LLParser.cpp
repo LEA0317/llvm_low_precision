@@ -4932,13 +4932,7 @@ bool LLParser::ConvertValIDToValue(Type *Ty, ValID &ID, Value *&V,
     // constants as double.  Fix this here.  Long double does not need this.
     if (&ID.APFloatVal.getSemantics() == &APFloat::IEEEdouble()) {
       bool Ignored;
-      if (Ty->isFixed4Ty())
-	ID.APFloatVal.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven,
-			      &Ignored);
-      else if (Ty->isFixed8Ty())
-	ID.APFloatVal.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven,
-			      &Ignored);
-      else if (Ty->isHalfTy())
+      if (Ty->isHalfTy())
         ID.APFloatVal.convert(APFloat::IEEEhalf(), APFloat::rmNearestTiesToEven,
                               &Ignored);
       else if (Ty->isFloatTy())

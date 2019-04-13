@@ -39,8 +39,6 @@ using namespace llvm;
 Type *Type::getPrimitiveType(LLVMContext &C, TypeID IDNumber) {
   switch (IDNumber) {
   case VoidTyID      : return getVoidTy(C);
-  case Fixed4TyID    : return getFixed4Ty(C);
-  case Fixed8TyID    : return getFixed8Ty(C);
   case HalfTyID      : return getHalfTy(C);
   case FloatTyID     : return getFloatTy(C);
   case DoubleTyID    : return getDoubleTy(C);
@@ -116,8 +114,6 @@ bool Type::isEmptyTy() const {
 
 unsigned Type::getPrimitiveSizeInBits() const {
   switch (getTypeID()) {
-  case Type::Fixed4TyID: return 4;
-  case Type::Fixed8TyID: return 8;
   case Type::HalfTyID: return 16;
   case Type::FloatTyID: return 32;
   case Type::DoubleTyID: return 64;
@@ -139,8 +135,6 @@ int Type::getFPMantissaWidth() const {
   if (auto *VTy = dyn_cast<VectorType>(this))
     return VTy->getElementType()->getFPMantissaWidth();
   assert(isFloatingPointTy() && "Not a floating point type!");
-  if (getTypeID() == Fixed4TyID) return 1;
-  if (getTypeID() == Fixed8TyID) return 6;
   if (getTypeID() == HalfTyID) return 11;
   if (getTypeID() == FloatTyID) return 24;
   if (getTypeID() == DoubleTyID) return 53;
@@ -166,8 +160,6 @@ bool Type::isSizedDerivedType(SmallPtrSetImpl<Type*> *Visited) const {
 
 Type *Type::getVoidTy(LLVMContext &C) { return &C.pImpl->VoidTy; }
 Type *Type::getLabelTy(LLVMContext &C) { return &C.pImpl->LabelTy; }
-Type *Type::getFixed4Ty(LLVMContext &C) { return &C.pImpl->Fixed4Ty; }
-Type *Type::getFixed8Ty(LLVMContext &C) { return &C.pImpl->Fixed8Ty; }
 Type *Type::getHalfTy(LLVMContext &C) { return &C.pImpl->HalfTy; }
 Type *Type::getFloatTy(LLVMContext &C) { return &C.pImpl->FloatTy; }
 Type *Type::getDoubleTy(LLVMContext &C) { return &C.pImpl->DoubleTy; }
@@ -179,23 +171,14 @@ Type *Type::getPPC_FP128Ty(LLVMContext &C) { return &C.pImpl->PPC_FP128Ty; }
 Type *Type::getX86_MMXTy(LLVMContext &C) { return &C.pImpl->X86_MMXTy; }
 
 IntegerType *Type::getInt1Ty(LLVMContext &C) { return &C.pImpl->Int1Ty; }
-IntegerType *Type::getInt4Ty(LLVMContext &C) { return &C.pImpl->Int4Ty; }
 IntegerType *Type::getInt8Ty(LLVMContext &C) { return &C.pImpl->Int8Ty; }
 IntegerType *Type::getInt16Ty(LLVMContext &C) { return &C.pImpl->Int16Ty; }
 IntegerType *Type::getInt32Ty(LLVMContext &C) { return &C.pImpl->Int32Ty; }
 IntegerType *Type::getInt64Ty(LLVMContext &C) { return &C.pImpl->Int64Ty; }
 IntegerType *Type::getInt128Ty(LLVMContext &C) { return &C.pImpl->Int128Ty; }
-IntegerType *Type::getInt256Ty(LLVMContext &C) { return &C.pImpl->Int256Ty; }
 
 IntegerType *Type::getIntNTy(LLVMContext &C, unsigned N) {
   return IntegerType::get(C, N);
-}
-
-PointerType *Type::getFixed4PtrTy(LLVMContext &C, unsigned AS) {
-  return getFixed4Ty(C)->getPointerTo(AS);
-}
-PointerType *Type::getFixed8PtrTy(LLVMContext &C, unsigned AS) {
-  return getFixed8Ty(C)->getPointerTo(AS);
 }
 
 PointerType *Type::getHalfPtrTy(LLVMContext &C, unsigned AS) {
@@ -234,10 +217,6 @@ PointerType *Type::getInt1PtrTy(LLVMContext &C, unsigned AS) {
   return getInt1Ty(C)->getPointerTo(AS);
 }
 
-PointerType *Type::getInt4PtrTy(LLVMContext &C, unsigned AS) {
-  return getInt4Ty(C)->getPointerTo(AS);
-}
-
 PointerType *Type::getInt8PtrTy(LLVMContext &C, unsigned AS) {
   return getInt8Ty(C)->getPointerTo(AS);
 }
@@ -254,10 +233,6 @@ PointerType *Type::getInt64PtrTy(LLVMContext &C, unsigned AS) {
   return getInt64Ty(C)->getPointerTo(AS);
 }
 
-PointerType *Type::getInt256PtrTy(LLVMContext &C, unsigned AS) {
-  return getInt256Ty(C)->getPointerTo(AS);
-}
-
 //===----------------------------------------------------------------------===//
 //                       IntegerType Implementation
 //===----------------------------------------------------------------------===//
@@ -269,13 +244,11 @@ IntegerType *IntegerType::get(LLVMContext &C, unsigned NumBits) {
   // Check for the built-in integer types
   switch (NumBits) {
   case   1: return cast<IntegerType>(Type::getInt1Ty(C));
-  case   4: return cast<IntegerType>(Type::getInt4Ty(C));
   case   8: return cast<IntegerType>(Type::getInt8Ty(C));
   case  16: return cast<IntegerType>(Type::getInt16Ty(C));
   case  32: return cast<IntegerType>(Type::getInt32Ty(C));
   case  64: return cast<IntegerType>(Type::getInt64Ty(C));
   case 128: return cast<IntegerType>(Type::getInt128Ty(C));
-  case 256: return cast<IntegerType>(Type::getInt256Ty(C));
   default:
     break;
   }

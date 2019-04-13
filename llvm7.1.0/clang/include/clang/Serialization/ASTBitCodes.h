@@ -1010,13 +1010,6 @@ namespace serialization {
 
       /// \brief The '_Sat unsigned long _Fract' type
       PREDEF_TYPE_SAT_ULONG_FRACT_ID = 69,
-      
-      PREDEF_TYPE_UInt4_ID = 70,
-      PREDEF_TYPE_SInt4_ID = 71,
-      PREDEF_TYPE_UInt256_ID = 72,
-      PREDEF_TYPE_SInt256_ID = 73,
-      PREDEF_TYPE_Fixed4_ID = 74,
-      PREDEF_TYPE_Fixed8_ID = 75,
 
       /// OpenCL image types with auto numeration
 #define IMAGE_TYPE(ImgType, Id, SingletonId, Access, Suffix) \

@@ -293,13 +293,6 @@ public:
     return ConstantInt::getFalse(Context);
   }
 
-  ConstantInt *getInt4(uint8_t C) {
-    return ConstantInt::get(getInt4Ty(), C);
-  }
-  ConstantInt *getInt256(__int128_t C) {
-    return ConstantInt::get(getInt128Ty(), C);
-  }
-
   /// Get a constant 8-bit value.
   ConstantInt *getInt8(uint8_t C) {
     return ConstantInt::get(getInt8Ty(), C);
@@ -340,13 +333,6 @@ public:
     return Type::getInt1Ty(Context);
   }
 
-  IntegerType *getInt4Ty() {
-    return Type::getInt4Ty(Context);
-  }
-  IntegerType *getInt256Ty() {
-    return Type::getInt256Ty(Context);
-  }
-
   /// Fetch the type representing an 8-bit integer.
   IntegerType *getInt8Ty() {
     return Type::getInt8Ty(Context);
@@ -373,13 +359,6 @@ public:
   /// Fetch the type representing an N-bit integer.
   IntegerType *getIntNTy(unsigned N) {
     return Type::getIntNTy(Context, N);
-  }
-
-  Type *getFixed4Ty() {
-    return Type::getFixed4Ty(Context);
-  }
-  Type *getFixed8Ty() {
-    return Type::getFixed8Ty(Context);
   }
 
   /// Fetch the type representing a 16-bit floating point value.

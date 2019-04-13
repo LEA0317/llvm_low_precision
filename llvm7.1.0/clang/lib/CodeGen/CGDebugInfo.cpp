@@ -653,13 +653,6 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
   case BuiltinType::OCLReserveID:
     return getOrCreateStructPtrType("opencl_reserve_id_t", OCLReserveIDDITy);
 
-  case BuiltinType::UInt4:
-    Encoding = llvm::dwarf::DW_ATE_unsigned_int4;
-    break;
-  case BuiltinType::SInt4:
-    Encoding = llvm::dwarf::DW_ATE_signed_int4;
-    break;
-
   case BuiltinType::UChar:
   case BuiltinType::Char_U:
     Encoding = llvm::dwarf::DW_ATE_unsigned_char;
@@ -684,14 +677,6 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
   case BuiltinType::Short:
   case BuiltinType::Int:
   case BuiltinType::Int128:
-
-  case BuiltinType::UInt256:
-    Encoding = llvm::dwarf::DW_ATE_unsigned_int256;
-    break;
-  case BuiltinType::SInt256:
-    Encoding = llvm::dwarf::DW_ATE_signed_int256;
-    break;
-
   case BuiltinType::Long:
   case BuiltinType::WChar_S:
   case BuiltinType::LongLong:
@@ -700,8 +685,6 @@ llvm::DIType *CGDebugInfo::CreateType(const BuiltinType *BT) {
   case BuiltinType::Bool:
     Encoding = llvm::dwarf::DW_ATE_boolean;
     break;
-  case BuiltinType::Fixed4:
-  case BuiltinType::Fixed8:
   case BuiltinType::Half:
   case BuiltinType::Float:
   case BuiltinType::LongDouble:

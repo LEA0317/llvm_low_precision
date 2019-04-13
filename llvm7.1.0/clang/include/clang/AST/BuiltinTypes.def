@@ -66,8 +66,6 @@ UNSIGNED_TYPE(Bool, BoolTy)
 // 'char' for targets where it's unsigned
 SHARED_SINGLETON_TYPE(UNSIGNED_TYPE(Char_U, CharTy))
 
-UNSIGNED_TYPE(UInt4, UnsignedIntTy)
-
 // 'unsigned char', explicitly qualified
 UNSIGNED_TYPE(UChar, UnsignedCharTy)
 
@@ -98,14 +96,10 @@ UNSIGNED_TYPE(ULongLong, UnsignedLongLongTy)
 // '__uint128_t'
 UNSIGNED_TYPE(UInt128, UnsignedInt128Ty)
 
-UNSIGNED_TYPE(UInt256, UnsignedInt256Ty)
-
 //===- Signed Types -------------------------------------------------------===//
 
 // 'char' for targets where it's signed
 SHARED_SINGLETON_TYPE(SIGNED_TYPE(Char_S, CharTy))
-
-SIGNED_TYPE(SInt4, SignedInt4Ty)
 
 // 'signed char', explicitly qualified
 SIGNED_TYPE(SChar, SignedCharTy)
@@ -127,8 +121,6 @@ SIGNED_TYPE(LongLong, LongLongTy)
 
 // '__int128_t'
 SIGNED_TYPE(Int128, Int128Ty)
-
-SIGNED_TYPE(SInt256, SignedInt256Ty)
 
 //===- Fixed point types --------------------------------------------------===//
 
@@ -205,9 +197,6 @@ UNSIGNED_TYPE(SatUFract, SatUnsignedFractTy)
 UNSIGNED_TYPE(SatULongFract, SatUnsignedLongFractTy)
 
 //===- Floating point types -----------------------------------------------===//
-
-FLOATING_TYPE(Fixed4, Fixed4Ty)
-FLOATING_TYPE(Fixed8, Fixed8Ty)
 
 // 'half' in OpenCL, '__fp16' in ARM NEON.
 FLOATING_TYPE(Half, HalfTy)

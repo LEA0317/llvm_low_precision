@@ -841,8 +841,6 @@ void ModuleBitcodeWriter::writeTypeTable() {
 
     switch (T->getTypeID()) {
     case Type::VoidTyID:      Code = bitc::TYPE_CODE_VOID;      break;
-    case Type::Fixed4TyID:    Code = bitc::TYPE_CODE_FIXED4;    break;
-    case Type::Fixed8TyID:    Code = bitc::TYPE_CODE_FIXED8;    break;
     case Type::HalfTyID:      Code = bitc::TYPE_CODE_HALF;      break;
     case Type::FloatTyID:     Code = bitc::TYPE_CODE_FLOAT;     break;
     case Type::DoubleTyID:    Code = bitc::TYPE_CODE_DOUBLE;    break;

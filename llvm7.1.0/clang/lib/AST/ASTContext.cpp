@@ -108,7 +108,7 @@ unsigned ASTContext::NumImplicitDestructors;
 unsigned ASTContext::NumImplicitDestructorsDeclared;
 
 enum FloatingRank {
-  Float16Rank, HalfRank, FloatRank, DoubleRank, LongDoubleRank, Float128Rank, Fixed4Rank, Fixed8Rank
+  Float16Rank, HalfRank, FloatRank, DoubleRank, LongDoubleRank, Float128Rank
 };
 
 RawComment *ASTContext::getRawCommentForDeclNoCache(const Decl *D) const {
@@ -1102,11 +1102,6 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
   // C99 6.2.5p19.
   InitBuiltinType(VoidTy,              BuiltinType::Void);
 
-  InitBuiltinType(Fixed4Ty,       BuiltinType::Fixed4);
-  InitBuiltinType(Fixed8Ty,       BuiltinType::Fixed8);
-  InitBuiltinType(SignedInt4Ty,   BuiltinType::SInt4);
-  InitBuiltinType(UnsignedInt4Ty, BuiltinType::UInt4);
-  
   // C99 6.2.5p2.
   InitBuiltinType(BoolTy,              BuiltinType::Bool);
   // C99 6.2.5p3.
@@ -1120,7 +1115,6 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
   InitBuiltinType(IntTy,               BuiltinType::Int);
   InitBuiltinType(LongTy,              BuiltinType::Long);
   InitBuiltinType(LongLongTy,          BuiltinType::LongLong);
-  InitBuiltinType(SignedInt256Ty,      BuiltinType::SInt256);
 
   // C99 6.2.5p6.
   InitBuiltinType(UnsignedCharTy,      BuiltinType::UChar);
@@ -1128,7 +1122,6 @@ void ASTContext::InitBuiltinTypes(const TargetInfo &Target,
   InitBuiltinType(UnsignedIntTy,       BuiltinType::UInt);
   InitBuiltinType(UnsignedLongTy,      BuiltinType::ULong);
   InitBuiltinType(UnsignedLongLongTy,  BuiltinType::ULongLong);
-  InitBuiltinType(UnsignedInt256Ty,    BuiltinType::UInt256);
 
   // C99 6.2.5p10.
   InitBuiltinType(FloatTy,             BuiltinType::Float);
@@ -1489,10 +1482,6 @@ const llvm::fltSemantics &ASTContext::getFloatTypeSemantics(QualType T) const {
   assert(BT && "Not a floating point type!");
   switch (BT->getKind()) {
   default: llvm_unreachable("Not a floating point type!");
-  case BuiltinType::Fixed4:
-    return Target->getFixed4Format();
-  case BuiltinType::Fixed8:
-    return Target->getFixed8Format();
   case BuiltinType::Float16:
   case BuiltinType::Half:
     return Target->getHalfFormat();
@@ -1776,11 +1765,6 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
       Width = Target->getBoolWidth();
       Align = Target->getBoolAlign();
       break;
-    case BuiltinType::UInt4:
-    case BuiltinType::SInt4:
-      Width = Target->getInt4Width();
-      Align = Target->getInt4Align();
-      break;
     case BuiltinType::Char_S:
     case BuiltinType::Char_U:
     case BuiltinType::UChar:
@@ -1827,11 +1811,6 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
       Width = 128;
       Align = 128; // int128_t is 128-bit aligned on all targets.
       break;
-    case BuiltinType::UInt256:
-    case BuiltinType::SInt256:
-      Width = 256;
-      Align = 256;
-      break;
     case BuiltinType::ShortAccum:
     case BuiltinType::UShortAccum:
     case BuiltinType::SatShortAccum:
@@ -1873,14 +1852,6 @@ TypeInfo ASTContext::getTypeInfoImpl(const Type *T) const {
     case BuiltinType::SatULongFract:
       Width = Target->getLongFractWidth();
       Align = Target->getLongFractAlign();
-      break;
-    case BuiltinType::Fixed4:
-      Width = Target->getFixed4Width();
-      Align = Target->getFixed4Align();
-      break;
-    case BuiltinType::Fixed8:
-      Width = Target->getFixed8Width();
-      Align = Target->getFixed8Align();
       break;
     case BuiltinType::Float16:
     case BuiltinType::Half:
@@ -5526,8 +5497,6 @@ static FloatingRank getFloatingRank(QualType T) {
   assert(T->getAs<BuiltinType>() && "getFloatingRank(): not a floating type");
   switch (T->getAs<BuiltinType>()->getKind()) {
   default: llvm_unreachable("getFloatingRank(): not a floating type");
-  case BuiltinType::Fixed4:     return Fixed4Rank;
-  case BuiltinType::Fixed8:     return Fixed8Rank;
   case BuiltinType::Float16:    return Float16Rank;
   case BuiltinType::Half:       return HalfRank;
   case BuiltinType::Float:      return FloatRank;
@@ -5546,8 +5515,6 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
   FloatingRank EltRank = getFloatingRank(Size);
   if (Domain->isComplexType()) {
     switch (EltRank) {
-    case Fixed4Rank: llvm_unreachable("Complex fixed4 is not supported");
-    case Fixed8Rank: llvm_unreachable("Complex fixed8 is not supported");
     case Float16Rank:
     case HalfRank: llvm_unreachable("Complex half is not supported");
     case FloatRank:      return FloatComplexTy;
@@ -5559,8 +5526,6 @@ QualType ASTContext::getFloatingTypeOfSizeWithinDomain(QualType Size,
 
   assert(Domain->isRealFloatingType() && "Unknown domain!");
   switch (EltRank) {
-  case Fixed4Rank:     return Fixed4Ty;
-  case Fixed8Rank:     return Fixed8Ty;
   case Float16Rank:    return HalfTy;
   case HalfRank:       return HalfTy;
   case FloatRank:      return FloatTy;
@@ -6439,12 +6404,6 @@ void ASTContext::getObjCEncodingForPropertyType(QualType T,
 static char getObjCEncodingForPrimitiveKind(const ASTContext *C,
                                             BuiltinType::Kind kind) {
     switch (kind) {
-    case BuiltinType::UInt4:
-    case BuiltinType::SInt4:
-    case BuiltinType::UInt256:
-    case BuiltinType::SInt256:
-      llvm_unreachable("not support ObjC");
-
     case BuiltinType::Void:       return 'v';
     case BuiltinType::Bool:       return 'B';
     case BuiltinType::Char8:
@@ -6473,8 +6432,6 @@ static char getObjCEncodingForPrimitiveKind(const ASTContext *C,
     case BuiltinType::LongDouble: return 'D';
     case BuiltinType::NullPtr:    return '*'; // like char*
 
-    case BuiltinType::Fixed4:
-    case BuiltinType::Fixed8:
     case BuiltinType::Float16:
     case BuiltinType::Float128:
     case BuiltinType::Half:
@@ -9256,16 +9213,6 @@ static QualType DecodeTypeFromStr(const char *&Str, const ASTContext &Context,
            "Bad modifiers used with 'v'!");
     Type = Context.VoidTy;
     break;
-  case 'o': // (konda)FIX ME?
-    assert(HowLong == 0 && !Signed && !Unsigned &&
-	   "Bad modifiers used with 'o'!");
-    Type = Context.Fixed4Ty;
-    break;
-  case 'O': // (konda)FIX ME?
-    assert(HowLong == 0 && !Signed && !Unsigned &&
-	   "Bad modifiers used with 'O'!");
-    Type = Context.Fixed8Ty;
-    break;
   case 'h':
     assert(HowLong == 0 && !Signed && !Unsigned &&
            "Bad modifiers used with 'h'!");
@@ -9982,12 +9929,6 @@ QualType ASTContext::getIntTypeForBitwidth(unsigned DestWidth,
 QualType ASTContext::getRealTypeForBitwidth(unsigned DestWidth) const {
   TargetInfo::RealType Ty = getTargetInfo().getRealTypeByWidth(DestWidth);
   switch (Ty) {
-  case TargetInfo::Fixed4:
-    return Fixed4Ty;
-  case TargetInfo::Fixed8:
-    return Fixed8Ty;
-  case TargetInfo::Half:
-    return HalfTy;
   case TargetInfo::Float:
     return FloatTy;
   case TargetInfo::Double:

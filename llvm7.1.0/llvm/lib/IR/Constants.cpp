@@ -269,12 +269,6 @@ Constant *Constant::getNullValue(Type *Ty) {
   switch (Ty->getTypeID()) {
   case Type::IntegerTyID:
     return ConstantInt::get(Ty, 0);
-  case Type::Fixed4TyID:
-    return ConstantFP::get(Ty->getContext(),
-			   APFloat::getZero(APFloat::IEEEfixed4()));
-  case Type::Fixed8TyID:
-    return ConstantFP::get(Ty->getContext(),
-			   APFloat::getZero(APFloat::IEEEfixed8()));
   case Type::HalfTyID:
     return ConstantFP::get(Ty->getContext(),
                            APFloat::getZero(APFloat::IEEEhalf()));
@@ -672,10 +666,6 @@ void ConstantInt::destroyConstantImpl() {
 //===----------------------------------------------------------------------===//
 
 static const fltSemantics *TypeToFloatSemantics(Type *Ty) {
-  if (Ty->isFixed4Ty())
-    return &APFloat::IEEEfixed4();
-  if (Ty->isFixed8Ty())
-    return &APFloat::IEEEfixed8();
   if (Ty->isHalfTy())
     return &APFloat::IEEEhalf();
   if (Ty->isFloatTy())
@@ -771,11 +761,7 @@ ConstantFP* ConstantFP::get(LLVMContext &Context, const APFloat& V) {
 
   if (!Slot) {
     Type *Ty;
-    if (&V.getSemantics() == &APFloat::IEEEfixed4())
-      Ty = Type::getFixed4Ty(Context);
-    else if (&V.getSemantics() == &APFloat::IEEEfixed8())
-      Ty = Type::getFixed8Ty(Context);
-    else if (&V.getSemantics() == &APFloat::IEEEhalf())
+    if (&V.getSemantics() == &APFloat::IEEEhalf())
       Ty = Type::getHalfTy(Context);
     else if (&V.getSemantics() == &APFloat::IEEEsingle())
       Ty = Type::getFloatTy(Context);
@@ -939,11 +925,7 @@ static Constant *getSequenceIfElementsMatch(Constant *C,
     else if (CI->getType()->isIntegerTy(64))
       return getIntSequenceIfElementsMatch<SequenceTy, uint64_t>(V);
   } else if (ConstantFP *CFP = dyn_cast<ConstantFP>(C)) {
-    if (CFP->getType()->isFixed4Ty())
-      return getFPSequenceIfElementsMatch<SequenceTy, __int128_t>(V);
-    else if (CFP->getType()->isFixed8Ty())
-      return getFPSequenceIfElementsMatch<SequenceTy, uint8_t>(V);
-    else if (CFP->getType()->isHalfTy())
+    if (CFP->getType()->isHalfTy())
       return getFPSequenceIfElementsMatch<SequenceTy, uint16_t>(V);
     else if (CFP->getType()->isFloatTy())
       return getFPSequenceIfElementsMatch<SequenceTy, uint32_t>(V);
@@ -1282,18 +1264,6 @@ bool ConstantFP::isValueValidForType(Type *Ty, const APFloat& Val) {
     return false;         // These can't be represented as floating point!
 
   // FIXME rounding mode needs to be more flexible
-  case Type::Fixed4TyID: {
-    if (&Val2.getSemantics() == &APFloat::IEEEfixed4())
-      return true;
-    Val2.convert(APFloat::IEEEfixed4(), APFloat::rmNearestTiesToEven, &losesInfo);
-    return !losesInfo;
-  }
-  case Type::Fixed8TyID: {
-    if (&Val2.getSemantics() == &APFloat::IEEEfixed8())
-      return true;
-    Val2.convert(APFloat::IEEEfixed8(), APFloat::rmNearestTiesToEven, &losesInfo);
-    return !losesInfo;
-  }
   case Type::HalfTyID: {
     if (&Val2.getSemantics() == &APFloat::IEEEhalf())
       return true;
@@ -1301,17 +1271,13 @@ bool ConstantFP::isValueValidForType(Type *Ty, const APFloat& Val) {
     return !losesInfo;
   }
   case Type::FloatTyID: {
-    if (&Val2.getSemantics() == &APFloat::IEEEfixed4() ||
-	&Val2.getSemantics() == &APFloat::IEEEfixed8() ||
-	&Val2.getSemantics() == &APFloat::IEEEsingle())
+    if (&Val2.getSemantics() == &APFloat::IEEEsingle())
       return true;
     Val2.convert(APFloat::IEEEsingle(), APFloat::rmNearestTiesToEven, &losesInfo);
     return !losesInfo;
   }
   case Type::DoubleTyID: {
-    if (&Val2.getSemantics() == &APFloat::IEEEfixed4() ||
-	&Val2.getSemantics() == &APFloat::IEEEfixed8() ||
-	&Val2.getSemantics() == &APFloat::IEEEhalf()   ||
+    if (&Val2.getSemantics() == &APFloat::IEEEhalf() ||
         &Val2.getSemantics() == &APFloat::IEEEsingle() ||
         &Val2.getSemantics() == &APFloat::IEEEdouble())
       return true;
@@ -1324,12 +1290,10 @@ bool ConstantFP::isValueValidForType(Type *Ty, const APFloat& Val) {
            &Val2.getSemantics() == &APFloat::IEEEdouble() ||
            &Val2.getSemantics() == &APFloat::x87DoubleExtended();
   case Type::FP128TyID:
-    return (&Val2.getSemantics() == &APFloat::IEEEfixed4() ||
-	    &Val2.getSemantics() == &APFloat::IEEEfixed8() ||
-	    &Val2.getSemantics() == &APFloat::IEEEhalf()   ||
-	    &Val2.getSemantics() == &APFloat::IEEEsingle() ||
-	    &Val2.getSemantics() == &APFloat::IEEEdouble() ||
-	    &Val2.getSemantics() == &APFloat::IEEEquad());
+    return &Val2.getSemantics() == &APFloat::IEEEhalf() ||
+           &Val2.getSemantics() == &APFloat::IEEEsingle() ||
+           &Val2.getSemantics() == &APFloat::IEEEdouble() ||
+           &Val2.getSemantics() == &APFloat::IEEEquad();
   case Type::PPC_FP128TyID:
     return &Val2.getSemantics() == &APFloat::IEEEhalf() ||
            &Val2.getSemantics() == &APFloat::IEEEsingle() ||
@@ -2530,19 +2494,6 @@ void ConstantDataSequential::destroyConstantImpl() {
 /// double for 64bits) Note that this can return a ConstantAggregateZero
 /// object.
 Constant *ConstantDataArray::getFP(LLVMContext &Context,
-				   ArrayRef<__int128_t> Elts) {
-  Type *Ty = ArrayType::get(Type::getFixed4Ty(Context), Elts.size());
-  const char *Data = reinterpret_cast<const char *>(Elts.data());
-  return getImpl(StringRef(Data, Elts.size()), Ty); // FIX ME(konda)
-}
-Constant *ConstantDataArray::getFP(LLVMContext &Context,
-				   ArrayRef<uint8_t> Elts) {
-  Type *Ty = ArrayType::get(Type::getFixed8Ty(Context), Elts.size());
-  const char *Data = reinterpret_cast<const char *>(Elts.data());
-  return getImpl(StringRef(Data, Elts.size()), Ty);
-}
-
-Constant *ConstantDataArray::getFP(LLVMContext &Context,
                                    ArrayRef<uint16_t> Elts) {
   Type *Ty = ArrayType::get(Type::getHalfTy(Context), Elts.size());
   const char *Data = reinterpret_cast<const char *>(Elts.data());
@@ -2613,19 +2564,6 @@ Constant *ConstantDataVector::get(LLVMContext &Context, ArrayRef<double> Elts) {
 /// bits in the ArrayRef passed in.  (i.e. half for 16bits, float for 32bits,
 /// double for 64bits) Note that this can return a ConstantAggregateZero
 /// object.
-Constant *ConstantDataVector::getFP(LLVMContext &Context,
-				    ArrayRef<__int128_t> Elts) {
-  Type *Ty = VectorType::get(Type::getFixed4Ty(Context), Elts.size());
-  const char *Data = reinterpret_cast<const char *>(Elts.data());
-  return getImpl(StringRef(Data, Elts.size()), Ty); // FIX ME(konda)
-}
-Constant *ConstantDataVector::getFP(LLVMContext &Context,
-				    ArrayRef<uint8_t> Elts) {
-  Type *Ty = VectorType::get(Type::getFixed8Ty(Context), Elts.size());
-  const char *Data = reinterpret_cast<const char *>(Elts.data());
-  return getImpl(StringRef(Data, Elts.size()), Ty);
-}
-
 Constant *ConstantDataVector::getFP(LLVMContext &Context,
                                     ArrayRef<uint16_t> Elts) {
   Type *Ty = VectorType::get(Type::getHalfTy(Context), Elts.size());
@@ -2741,14 +2679,6 @@ APFloat ConstantDataSequential::getElementAsAPFloat(unsigned Elt) const {
   switch (getElementType()->getTypeID()) {
   default:
     llvm_unreachable("Accessor can only be used when element is float/double!");
-  case Type::Fixed4TyID: {
-    auto EltVal = *reinterpret_cast<const __int128_t *>(EltPtr);
-    return APFloat(APFloat::IEEEfixed4(), APInt(4, EltVal));
-  }
-  case Type::Fixed8TyID: {
-    auto EltVal = *reinterpret_cast<const uint8_t *>(EltPtr);
-    return APFloat(APFloat::IEEEfixed8(), APInt(8, EltVal));
-  }
   case Type::HalfTyID: {
     auto EltVal = *reinterpret_cast<const uint16_t *>(EltPtr);
     return APFloat(APFloat::IEEEhalf(), APInt(16, EltVal));

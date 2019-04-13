@@ -2028,8 +2028,6 @@ bool MIParser::parseMachineOperand(MachineOperand &Dest,
     return parseRegisterOperand(Dest, TiedDefIdx);
   case MIToken::IntegerLiteral:
     return parseImmediateOperand(Dest);
-  case MIToken::kw_fixed4:
-  case MIToken::kw_fixed8:
   case MIToken::kw_half:
   case MIToken::kw_float:
   case MIToken::kw_double:

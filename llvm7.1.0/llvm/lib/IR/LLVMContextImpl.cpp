@@ -25,8 +25,6 @@ LLVMContextImpl::LLVMContextImpl(LLVMContext &C)
   : DiagHandler(llvm::make_unique<DiagnosticHandler>()),
     VoidTy(C, Type::VoidTyID),
     LabelTy(C, Type::LabelTyID),
-    Fixed4Ty(C, Type::Fixed4TyID),
-    Fixed8Ty(C, Type::Fixed8TyID),
     HalfTy(C, Type::HalfTyID),
     FloatTy(C, Type::FloatTyID),
     DoubleTy(C, Type::DoubleTyID),
@@ -37,13 +35,11 @@ LLVMContextImpl::LLVMContextImpl(LLVMContext &C)
     PPC_FP128Ty(C, Type::PPC_FP128TyID),
     X86_MMXTy(C, Type::X86_MMXTyID),
     Int1Ty(C, 1),
-    Int4Ty(C, 4),
     Int8Ty(C, 8),
     Int16Ty(C, 16),
     Int32Ty(C, 32),
     Int64Ty(C, 64),
-    Int128Ty(C, 128),
-    Int256Ty(C, 256) {}
+    Int128Ty(C, 128) {}
 
 LLVMContextImpl::~LLVMContextImpl() {
   // NOTE: We need to delete the contents of OwnedModules, but Module's dtor

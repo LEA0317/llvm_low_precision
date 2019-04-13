@@ -1788,8 +1788,6 @@ public:
   /// Determine whether this type is a scoped enumeration type.
   bool isScopedEnumeralType() const;
   bool isBooleanType() const;
-  bool isInt4Type() const;
-  bool isInt256Type() const;
   bool isCharType() const;
   bool isWideCharType() const;
   bool isChar8Type() const;
@@ -1811,8 +1809,6 @@ public:
   bool isComplexType() const;      // C99 6.2.5p11 (complex)
   bool isAnyComplexType() const;   // C99 6.2.5p11 (complex) + Complex Int.
   bool isFloatingType() const;     // C99 6.2.5p11 (real floating + complex)
-  bool isFixed4Type() const;
-  bool isFixed8Type() const;
   bool isHalfType() const;         // OpenCL 6.1.1.1, NEON (IEEE 754-2008 half)
   bool isFloat16Type() const;      // C11 extension ISO/IEC TS 18661
   bool isFloat128Type() const;
@@ -2289,19 +2285,19 @@ public:
   QualType desugar() const { return QualType(this, 0); }
 
   bool isInteger() const {
-    return getKind() >= Bool && getKind() <= SInt256;
+    return getKind() >= Bool && getKind() <= Int128;
   }
 
   bool isSignedInteger() const {
-    return getKind() >= Char_S && getKind() <= SInt256;
+    return getKind() >= Char_S && getKind() <= Int128;
   }
 
   bool isUnsignedInteger() const {
-    return getKind() >= Bool && getKind() <= UInt256;
+    return getKind() >= Bool && getKind() <= UInt128;
   }
 
   bool isFloatingPoint() const {
-    return getKind() >= Fixed4 && getKind() <= Float128;
+    return getKind() >= Half && getKind() <= Float128;
   }
 
   /// Determines whether the given kind corresponds to a placeholder type.
@@ -6347,18 +6343,6 @@ inline bool Type::isVoidType() const {
   return false;
 }
 
-inline bool Type::isFixed4Type() const {
-  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
-    return BT->getKind() == BuiltinType::Fixed4;
-  return false;
-}
-
-inline bool Type::isFixed8Type() const {
-  if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
-    return BT->getKind() == BuiltinType::Fixed8;
-  return false;
-}
-  
 inline bool Type::isHalfType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() == BuiltinType::Half;
@@ -6390,7 +6374,7 @@ bool IsEnumDeclScoped(EnumDecl *);
 inline bool Type::isIntegerType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() >= BuiltinType::Bool &&
-           BT->getKind() <= BuiltinType::SInt256;
+           BT->getKind() <= BuiltinType::Int128;
   if (const EnumType *ET = dyn_cast<EnumType>(CanonicalType)) {
     // Incomplete enum types are not treated as integer types.
     // FIXME: In C++, enum types are never integer types.
@@ -6456,7 +6440,7 @@ inline bool Type::isScalarType() const {
 inline bool Type::isIntegralOrEnumerationType() const {
   if (const auto *BT = dyn_cast<BuiltinType>(CanonicalType))
     return BT->getKind() >= BuiltinType::Bool &&
-           BT->getKind() <= BuiltinType::SInt256;
+           BT->getKind() <= BuiltinType::Int128;
 
   // Check for a complete enum type; incomplete enum types are not properly an
   // enumeration type in the sense required here.
