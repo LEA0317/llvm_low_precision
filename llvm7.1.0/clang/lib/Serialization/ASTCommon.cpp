@@ -33,6 +33,18 @@ serialization::TypeIdxFromBuiltin(const BuiltinType *BT) {
   case BuiltinType::Bool:
     ID = PREDEF_TYPE_BOOL_ID;
     break;
+  case BuiltinType::UInt4:
+    ID = PREDEF_TYPE_UInt4_ID;
+    break;
+  case BuiltinType::SInt4:
+    ID = PREDEF_TYPE_SInt4_ID;
+    break;
+  case BuiltinType::UInt256:
+    ID = PREDEF_TYPE_UInt256_ID;
+    break;
+  case BuiltinType::SInt256:
+    ID = PREDEF_TYPE_SInt256_ID;
+    break;
   case BuiltinType::Char_U:
     ID = PREDEF_TYPE_CHAR_U_ID;
     break;
@@ -78,6 +90,12 @@ serialization::TypeIdxFromBuiltin(const BuiltinType *BT) {
     break;
   case BuiltinType::Int128:
     ID = PREDEF_TYPE_INT128_ID;
+    break;
+  case BuiltinType::Fixed4:
+    ID = PREDEF_TYPE_Fixed4_ID;
+    break;
+  case BuiltinType::Fixed8:
+    ID = PREDEF_TYPE_Fixed8_ID;
     break;
   case BuiltinType::Half:
     ID = PREDEF_TYPE_HALF_ID;

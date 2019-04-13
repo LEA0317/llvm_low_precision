@@ -7413,6 +7413,8 @@ EvaluateBuiltinClassifyType(QualType T, const LangOptions &LangOpts) {
     case BuiltinType::Bool:
       return GCCTypeClass::Bool;
 
+    case BuiltinType::UInt4:
+    case BuiltinType::UInt256:
     case BuiltinType::Char_U:
     case BuiltinType::UChar:
     case BuiltinType::WChar_U:

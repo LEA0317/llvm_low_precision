@@ -55,25 +55,27 @@ public:
   enum TypeID {
     // PrimitiveTypes - make sure LastPrimitiveTyID stays up to date.
     VoidTyID = 0,    ///<  0: type with no size
-    HalfTyID,        ///<  1: 16-bit floating point type
-    FloatTyID,       ///<  2: 32-bit floating point type
-    DoubleTyID,      ///<  3: 64-bit floating point type
-    X86_FP80TyID,    ///<  4: 80-bit floating point type (X87)
-    FP128TyID,       ///<  5: 128-bit floating point type (112-bit mantissa)
-    PPC_FP128TyID,   ///<  6: 128-bit floating point type (two 64-bits, PowerPC)
-    LabelTyID,       ///<  7: Labels
-    MetadataTyID,    ///<  8: Metadata
-    X86_MMXTyID,     ///<  9: MMX vectors (64 bits, X86 specific)
-    TokenTyID,       ///< 10: Tokens
+    Fixed4TyID,      ///<  1: 4-bit floating point type
+    Fixed8TyID,      ///<  2: 8-bit floating point type
+    HalfTyID,        ///<  3: 16-bit floating point type
+    FloatTyID,       ///<  4: 32-bit floating point type
+    DoubleTyID,      ///<  5: 64-bit floating point type
+    X86_FP80TyID,    ///<  6: 80-bit floating point type (X87)
+    FP128TyID,       ///<  7: 128-bit floating point type (112-bit mantissa)
+    PPC_FP128TyID,   ///<  8: 128-bit floating point type (two 64-bits, PowerPC)
+    LabelTyID,       ///<  9: Labels
+    MetadataTyID,    ///< 10: Metadata
+    X86_MMXTyID,     ///< 11: MMX vectors (64 bits, X86 specific)
+    TokenTyID,       ///< 12: Tokens
 
     // Derived types... see DerivedTypes.h file.
     // Make sure FirstDerivedTyID stays up to date!
-    IntegerTyID,     ///< 11: Arbitrary bit width integers
-    FunctionTyID,    ///< 12: Functions
-    StructTyID,      ///< 13: Structures
-    ArrayTyID,       ///< 14: Arrays
-    PointerTyID,     ///< 15: Pointers
-    VectorTyID       ///< 16: SIMD 'packed' format, or other vector type
+    IntegerTyID,     ///< 13: Arbitrary bit width integers
+    FunctionTyID,    ///< 14: Functions
+    StructTyID,      ///< 15: Structures
+    ArrayTyID,       ///< 16: Arrays
+    PointerTyID,     ///< 17: Pointers
+    VectorTyID       ///< 18: SIMD 'packed' format, or other vector type
   };
 
 private:
@@ -140,6 +142,9 @@ public:
   /// Return true if this is 'void'.
   bool isVoidTy() const { return getTypeID() == VoidTyID; }
 
+  bool isFixed4Ty() const { return getTypeID() == Fixed4TyID; }
+  bool isFixed8Ty() const { return getTypeID() == Fixed8TyID; }
+
   /// Return true if this is 'half', a 16-bit IEEE fp type.
   bool isHalfTy() const { return getTypeID() == HalfTyID; }
 
@@ -160,7 +165,8 @@ public:
 
   /// Return true if this is one of the six floating-point types
   bool isFloatingPointTy() const {
-    return getTypeID() == HalfTyID || getTypeID() == FloatTyID ||
+    return getTypeID() == Fixed4TyID || getTypeID() == Fixed8TyID ||
+           getTypeID() == HalfTyID || getTypeID() == FloatTyID ||
            getTypeID() == DoubleTyID ||
            getTypeID() == X86_FP80TyID || getTypeID() == FP128TyID ||
            getTypeID() == PPC_FP128TyID;
@@ -168,6 +174,8 @@ public:
 
   const fltSemantics &getFltSemantics() const {
     switch (getTypeID()) {
+    case Fixed4TyID: return APFloat::IEEEfixed4();
+    case Fixed8TyID: return APFloat::IEEEfixed8();
     case HalfTyID: return APFloat::IEEEhalf();
     case FloatTyID: return APFloat::IEEEsingle();
     case DoubleTyID: return APFloat::IEEEdouble();
@@ -394,6 +402,8 @@ public:
   //
   static Type *getVoidTy(LLVMContext &C);
   static Type *getLabelTy(LLVMContext &C);
+  static Type *getFixed4Ty(LLVMContext &C);
+  static Type *getFixed8Ty(LLVMContext &C);
   static Type *getHalfTy(LLVMContext &C);
   static Type *getFloatTy(LLVMContext &C);
   static Type *getDoubleTy(LLVMContext &C);
@@ -405,11 +415,13 @@ public:
   static Type *getTokenTy(LLVMContext &C);
   static IntegerType *getIntNTy(LLVMContext &C, unsigned N);
   static IntegerType *getInt1Ty(LLVMContext &C);
+  static IntegerType *getInt4Ty(LLVMContext &C);
   static IntegerType *getInt8Ty(LLVMContext &C);
   static IntegerType *getInt16Ty(LLVMContext &C);
   static IntegerType *getInt32Ty(LLVMContext &C);
   static IntegerType *getInt64Ty(LLVMContext &C);
   static IntegerType *getInt128Ty(LLVMContext &C);
+  static IntegerType *getInt256Ty(LLVMContext &C);
   template <typename ScalarTy> static Type *getScalarTy(LLVMContext &C) {
     int noOfBits = sizeof(ScalarTy) * CHAR_BIT;
     if (std::is_integral<ScalarTy>::value) {
@@ -429,6 +441,8 @@ public:
   // Convenience methods for getting pointer types with one of the above builtin
   // types as pointee.
   //
+  static PointerType *getFixed4PtrTy(LLVMContext &C, unsigned AS = 0);
+  static PointerType *getFixed8PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getHalfPtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getFloatPtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getDoublePtrTy(LLVMContext &C, unsigned AS = 0);
@@ -438,10 +452,12 @@ public:
   static PointerType *getX86_MMXPtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getIntNPtrTy(LLVMContext &C, unsigned N, unsigned AS = 0);
   static PointerType *getInt1PtrTy(LLVMContext &C, unsigned AS = 0);
+  static PointerType *getInt4PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt8PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt16PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt32PtrTy(LLVMContext &C, unsigned AS = 0);
   static PointerType *getInt64PtrTy(LLVMContext &C, unsigned AS = 0);
+  static PointerType *getInt256PtrTy(LLVMContext &C, unsigned AS = 0);
 
   /// Return a pointer to the current type. This is equivalent to
   /// PointerType::get(Foo, AddrSpace).

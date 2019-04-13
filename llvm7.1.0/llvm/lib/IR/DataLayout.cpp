@@ -164,10 +164,14 @@ const char *DataLayout::getManglingComponent(const Triple &T) {
 
 static const LayoutAlignElem DefaultAlignments[] = {
   { INTEGER_ALIGN, 1, 1, 1 },    // i1
+  { INTEGER_ALIGN, 4, 1, 1 },    // i4
   { INTEGER_ALIGN, 8, 1, 1 },    // i8
   { INTEGER_ALIGN, 16, 2, 2 },   // i16
   { INTEGER_ALIGN, 32, 4, 4 },   // i32
   { INTEGER_ALIGN, 64, 4, 8 },   // i64
+  { INTEGER_ALIGN,256,16,32 },   // i256
+  { FLOAT_ALIGN, 4, 1, 1 },      // fixed4
+  { FLOAT_ALIGN, 8, 1, 1 },      // fixed8
   { FLOAT_ALIGN, 16, 2, 2 },     // half
   { FLOAT_ALIGN, 32, 4, 4 },     // float
   { FLOAT_ALIGN, 64, 8, 8 },     // double
@@ -698,6 +702,8 @@ unsigned DataLayout::getAlignment(Type *Ty, bool abi_or_pref) const {
   case Type::IntegerTyID:
     AlignType = INTEGER_ALIGN;
     break;
+  case Type::Fixed4TyID:
+  case Type::Fixed8TyID:
   case Type::HalfTyID:
   case Type::FloatTyID:
   case Type::DoubleTyID:

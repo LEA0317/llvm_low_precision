@@ -1515,6 +1515,8 @@ void StmtPrinter::VisitIntegerLiteral(IntegerLiteral *Node) {
   // Emit suffixes.  Integer literals are always a builtin integer type.
   switch (Node->getType()->getAs<BuiltinType>()->getKind()) {
   default: llvm_unreachable("Unexpected type for integer literal!");
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:     OS << "i4"; break;
   case BuiltinType::Char_S:
   case BuiltinType::Char_U:    OS << "i8"; break;
   case BuiltinType::UChar:     OS << "Ui8"; break;
@@ -1526,6 +1528,8 @@ void StmtPrinter::VisitIntegerLiteral(IntegerLiteral *Node) {
   case BuiltinType::ULong:     OS << "UL"; break;
   case BuiltinType::LongLong:  OS << "LL"; break;
   case BuiltinType::ULongLong: OS << "ULL"; break;
+  case BuiltinType::UInt256:
+  case BuiltinType::SInt256: OS << "i256"; break;
   }
 }
 
@@ -1565,6 +1569,8 @@ static void PrintFloatingLiteral(raw_ostream &OS, FloatingLiteral *Node,
   // Emit suffixes.  Float literals are always a builtin float type.
   switch (Node->getType()->getAs<BuiltinType>()->getKind()) {
   default: llvm_unreachable("Unexpected type for float literal!");
+  case BuiltinType::Fixed4:    break; // (konda)FIX ME
+  case BuiltinType::Fixed8:    break; // (konda)FIX ME
   case BuiltinType::Half:       break; // FIXME: suffix?
   case BuiltinType::Double:     break; // no suffix.
   case BuiltinType::Float16:    OS << "F16"; break;

@@ -122,11 +122,15 @@ std::string EVT::getEVTString() const {
       return "i" + utostr(getSizeInBits());
     llvm_unreachable("Invalid EVT!");
   case MVT::i1:      return "i1";
+  case MVT::i4:      return "i4";
   case MVT::i8:      return "i8";
   case MVT::i16:     return "i16";
   case MVT::i32:     return "i32";
   case MVT::i64:     return "i64";
   case MVT::i128:    return "i128";
+  case MVT::i256:    return "i256";
+  case MVT::f4:      return "f4";
+  case MVT::f8:      return "f8";
   case MVT::f16:     return "f16";
   case MVT::f32:     return "f32";
   case MVT::f64:     return "f64";
@@ -206,11 +210,15 @@ Type *EVT::getTypeForEVT(LLVMContext &Context) const {
     return LLVMTy;
   case MVT::isVoid:  return Type::getVoidTy(Context);
   case MVT::i1:      return Type::getInt1Ty(Context);
+  case MVT::i4:      return Type::getInt4Ty(Context);
   case MVT::i8:      return Type::getInt8Ty(Context);
   case MVT::i16:     return Type::getInt16Ty(Context);
   case MVT::i32:     return Type::getInt32Ty(Context);
   case MVT::i64:     return Type::getInt64Ty(Context);
   case MVT::i128:    return IntegerType::get(Context, 128);
+  case MVT::i256:    return Type::getInt256Ty(Context);    
+  case MVT::f4:      return Type::getFixed4Ty(Context);
+  case MVT::f8:      return Type::getFixed8Ty(Context);
   case MVT::f16:     return Type::getHalfTy(Context);
   case MVT::f32:     return Type::getFloatTy(Context);
   case MVT::f64:     return Type::getDoubleTy(Context);
@@ -287,6 +295,8 @@ MVT MVT::getVT(Type *Ty, bool HandleUnknown){
     return MVT::isVoid;
   case Type::IntegerTyID:
     return getIntegerVT(cast<IntegerType>(Ty)->getBitWidth());
+  case Type::Fixed4TyID:    return MVT(MVT::f4);
+  case Type::Fixed8TyID:    return MVT(MVT::f8);
   case Type::HalfTyID:      return MVT(MVT::f16);
   case Type::FloatTyID:     return MVT(MVT::f32);
   case Type::DoubleTyID:    return MVT(MVT::f64);

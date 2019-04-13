@@ -542,6 +542,9 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
   isLong = false;
   isUnsigned = false;
   isLongLong = false;
+  isLongLongLong = false;
+  isFixed4 = false;
+  isFixed8 = false;
   isHalf = false;
   isFloat = false;
   isImaginary = false;
@@ -603,6 +606,14 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       if (!(saw_period || saw_exponent)) break;
       isAccum = true;
       continue;
+    case 'o': // for f4
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed4 = true;
+      continue;
+    case 'O': // for f8
+      if (isIntegerLiteral()) break;  // Error for integer constant.
+      isFixed8 = true;
+      continue;
     case 'h':      // FP Suffix for "half".
     case 'H':
       // OpenCL Extension v1.2 s9.5 - h or H suffix for half type.
@@ -640,8 +651,8 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
       continue;  // Success.
     case 'l':
     case 'L':
-      if (isLong || isLongLong) break;  // Cannot be repeated.
-      if (isHalf || isFloat || isFloat128) break;     // LH, LF, LQ invalid.
+      if (isLong || isLongLong || isLongLongLong) break;  // Cannot be repeated.
+      if (isFixed4 || isFixed8 || isHalf || isFloat || isFloat128) break;     // LH, LF, LQ invalid.
 
       // Check for long long.  The L's need to be adjacent and the same case.
       if (s[1] == s[0]) {
@@ -656,7 +667,7 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
     case 'i':
     case 'I':
       if (PP.getLangOpts().MicrosoftExt) {
-        if (isLong || isLongLong || MicrosoftInteger)
+        if (isLong || isLongLong || isLongLongLong || MicrosoftInteger)
           break;
 
         if (!isFPConstant) {
@@ -715,6 +726,9 @@ NumericLiteralParser::NumericLiteralParser(StringRef TokSpelling,
         isLong = false;
         isUnsigned = false;
         isLongLong = false;
+        isLongLongLong = false;
+        isFixed4 = false;
+        isFixed8 = false;
         isFloat = false;
         isFloat16 = false;
         isHalf = false;

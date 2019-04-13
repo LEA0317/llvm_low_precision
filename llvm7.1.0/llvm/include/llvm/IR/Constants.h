@@ -725,6 +725,8 @@ public:
   /// bits in the ArrayRef passed in. (i.e. half for 16bits, float for 32bits,
   /// double for 64bits) Note that this can return a ConstantAggregateZero
   /// object.
+  static Constant *getFP(LLVMContext &Context, ArrayRef<__int128_t> Elts); // for fixed4
+  static Constant *getFP(LLVMContext &Context, ArrayRef<uint8_t> Elts); // for fixed8
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint16_t> Elts);
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint32_t> Elts);
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint64_t> Elts);
@@ -779,6 +781,8 @@ public:
   /// bits in the ArrayRef passed in.  (i.e. half for 16bits, float for 32bits,
   /// double for 64bits) Note that this can return a ConstantAggregateZero
   /// object.
+  static Constant *getFP(LLVMContext &Context, ArrayRef<__int128_t> Elts); // for fixed4
+  static Constant *getFP(LLVMContext &Context, ArrayRef<uint8_t> Elts); // for fixed8
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint16_t> Elts);
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint32_t> Elts);
   static Constant *getFP(LLVMContext &Context, ArrayRef<uint64_t> Elts);

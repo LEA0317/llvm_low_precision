@@ -1231,6 +1231,8 @@ ExprResult Parser::ParseCastExpression(bool isUnaryExpression,
     // Fall through
 
   case tok::annot_decltype:
+  case tok::kw_int4:
+  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
@@ -1244,6 +1246,8 @@ ExprResult Parser::ParseCastExpression(bool isUnaryExpression,
   case tok::kw___int128:
   case tok::kw_signed:
   case tok::kw_unsigned:
+  case tok::kw_fixed4:
+  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:
