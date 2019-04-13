@@ -1195,6 +1195,30 @@ static QualType ConvertDeclSpecToType(TypeProcessingState &state) {
   case DeclSpec::TST_void:
     Result = Context.VoidTy;
     break;
+
+  case DeclSpec::TST_int4:
+    if (DS.getTypeSpecSign() == DeclSpec::TSS_unspecified)
+      Result = Context.SignedInt4Ty;
+    else if (DS.getTypeSpecSign() == DeclSpec::TSS_signed)
+      Result = Context.SignedInt4Ty;
+    else {
+      assert(DS.getTypeSpecSign() == DeclSpec::TSS_unsigned &&
+	     "Unknown TSS value");
+      Result = Context.UnsignedInt4Ty;
+    }
+    break;
+  case DeclSpec::TST_int256:
+    if (DS.getTypeSpecSign() == DeclSpec::TSS_unspecified)
+      Result = Context.SignedInt256Ty;
+    else if (DS.getTypeSpecSign() == DeclSpec::TSS_signed)
+      Result = Context.SignedInt256Ty;
+    else {
+      assert(DS.getTypeSpecSign() == DeclSpec::TSS_unsigned &&
+	     "Unknown TSS value");
+      Result = Context.UnsignedInt256Ty;
+    }
+    break;
+    
   case DeclSpec::TST_char:
     if (DS.getTypeSpecSign() == DeclSpec::TSS_unspecified)
       Result = Context.CharTy;
@@ -1392,6 +1416,8 @@ static QualType ConvertDeclSpecToType(TypeProcessingState &state) {
     else
       Result = Context.Int128Ty;
     break;
+  case DeclSpec::TST_fixed4:  Result = Context.Fixed4Ty; break;
+  case DeclSpec::TST_fixed8:  Result = Context.Fixed8Ty; break;
   case DeclSpec::TST_float16: Result = Context.Float16Ty; break;
   case DeclSpec::TST_half:    Result = Context.HalfTy; break;
   case DeclSpec::TST_float:   Result = Context.FloatTy; break;

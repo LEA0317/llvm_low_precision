@@ -531,6 +531,8 @@ CXString clang_getTypeKindSpelling(enum CXTypeKind K) {
     TKIND(Unexposed);
     TKIND(Void);
     TKIND(Bool);
+    TKIND(UInt4);
+    TKIND(SInt4);
     TKIND(Char_U);
     TKIND(UChar);
     TKIND(Char16);
@@ -540,6 +542,8 @@ CXString clang_getTypeKindSpelling(enum CXTypeKind K) {
     TKIND(ULong);
     TKIND(ULongLong);
     TKIND(UInt128);
+    TKIND(UInt256);
+    TKIND(SInt256);
     TKIND(Char_S);
     TKIND(SChar);
     case CXType_WChar: s = "WChar"; break;
@@ -548,6 +552,8 @@ CXString clang_getTypeKindSpelling(enum CXTypeKind K) {
     TKIND(Long);
     TKIND(LongLong);
     TKIND(Int128);
+    TKIND(Fixed4);
+    TKIND(Fixed8);
     TKIND(Half);
     TKIND(Float);
     TKIND(Double);

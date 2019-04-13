@@ -46,8 +46,12 @@ bool FormatToken::isSimpleTypeSpecifier() const {
   case tok::kw_signed:
   case tok::kw_unsigned:
   case tok::kw_void:
+  case tok::kw_int4:
+  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_int:
+  case tok::kw_fixed4:
+  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:

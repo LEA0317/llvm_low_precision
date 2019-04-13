@@ -157,6 +157,8 @@ protected:
   };
 
   enum APFloatSemantics {
+    IEEEfixed4,
+    IEEEfixed8,
     IEEEhalf,
     IEEEsingle,
     IEEEdouble,

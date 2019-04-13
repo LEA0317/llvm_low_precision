@@ -404,6 +404,11 @@ NSAPI::getNSNumberFactoryMethodKind(QualType T) const {
   }
 
   switch (BT->getKind()) {
+  case BuiltinType::UInt4:
+  case BuiltinType::SInt4:
+  case BuiltinType::UInt256:
+  case BuiltinType::SInt256:
+    llvm_unreachable("FIX ME(konda) cannot handle this currently");
   case BuiltinType::Char_S:
   case BuiltinType::SChar:
     return NSAPI::NSNumberWithChar;
@@ -485,6 +490,8 @@ NSAPI::getNSNumberFactoryMethodKind(QualType T) const {
   case BuiltinType::Overload:
   case BuiltinType::UnknownAny:
   case BuiltinType::ARCUnbridgedCast:
+  case BuiltinType::Fixed4:
+  case BuiltinType::Fixed8:
   case BuiltinType::Half:
   case BuiltinType::PseudoObject:
   case BuiltinType::BuiltinFn:

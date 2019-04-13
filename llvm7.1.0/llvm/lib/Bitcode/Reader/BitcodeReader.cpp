@@ -2196,7 +2196,13 @@ Error BitcodeReader::parseConstants() {
     case bitc::CST_CODE_FLOAT: {    // FLOAT: [fpval]
       if (Record.empty())
         return error("Invalid record");
-      if (CurTy->isHalfTy())
+      if (CurTy->isFixed4Ty())
+	V = ConstantFP::get(Context, APFloat(APFloat::IEEEfixed4(),
+					     APInt(4, (__int128_t)Record[0]))); // FIXME(konda) hack
+      else if (CurTy->isFixed8Ty())
+	V = ConstantFP::get(Context, APFloat(APFloat::IEEEfixed8(),
+					     APInt(8, (uint8_t)Record[0])));
+      else if (CurTy->isHalfTy())
         V = ConstantFP::get(Context, APFloat(APFloat::IEEEhalf(),
                                              APInt(16, (uint16_t)Record[0])));
       else if (CurTy->isFloatTy())

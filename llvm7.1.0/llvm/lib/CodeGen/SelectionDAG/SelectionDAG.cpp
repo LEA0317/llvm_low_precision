@@ -3794,6 +3794,10 @@ SDValue SelectionDAG::getNode(unsigned Opcode, const SDLoc &DL, EVT VT,
       return getConstantFP(apf, DL, VT);
     }
     case ISD::BITCAST:
+      if (VT == MVT::f4 && C->getValueType(0) == MVT::i4)
+        return getConstantFP(APFloat(APFloat::IEEEfixed4(), Val), DL, VT);
+      if (VT == MVT::f8 && C->getValueType(0) == MVT::i8)
+        return getConstantFP(APFloat(APFloat::IEEEfixed8(), Val), DL, VT);
       if (VT == MVT::f16 && C->getValueType(0) == MVT::i16)
         return getConstantFP(APFloat(APFloat::IEEEhalf(), Val), DL, VT);
       if (VT == MVT::f32 && C->getValueType(0) == MVT::i32)

@@ -35,9 +35,9 @@ struct CodeGenTypeCache {
   llvm::Type *VoidTy;
 
   /// i8, i16, i32, and i64
-  llvm::IntegerType *Int8Ty, *Int16Ty, *Int32Ty, *Int64Ty;
+  llvm::IntegerType  *Int8Ty, *Int16Ty, *Int32Ty, *Int64Ty;
   /// float, double
-  llvm::Type *HalfTy, *FloatTy, *DoubleTy;
+  llvm::Type *Fixed4Ty, *Fixed8Ty, *HalfTy, *FloatTy, *DoubleTy;
 
   /// int
   llvm::IntegerType *IntTy;

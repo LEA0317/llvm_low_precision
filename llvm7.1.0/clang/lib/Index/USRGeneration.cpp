@@ -644,7 +644,14 @@ void USRGenerator::VisitType(QualType T) {
     if (const BuiltinType *BT = T->getAs<BuiltinType>()) {
       unsigned char c = '\0';
       switch (BT->getKind()) {
-        case BuiltinType::Void:
+      case BuiltinType::UInt4:
+      case BuiltinType::SInt4:
+      case BuiltinType::UInt256:
+      case BuiltinType::SInt256:
+      case BuiltinType::Fixed4:
+      case BuiltinType::Fixed8:
+	llvm_unreachable("FIX ME(konda) cannot handle this currently");
+      case BuiltinType::Void:
           c = 'v'; break;
         case BuiltinType::Bool:
           c = 'b'; break;
@@ -684,7 +691,7 @@ void USRGenerator::VisitType(QualType T) {
           c = 'K'; break;
         case BuiltinType::Int128:
           c = 'J'; break;
-        case BuiltinType::Float16:
+        case BuiltinType::Float16: // (konda)FIX ME handle f4/f8
         case BuiltinType::Half:
           c = 'h'; break;
         case BuiltinType::Float:

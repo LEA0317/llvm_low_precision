@@ -49,7 +49,10 @@ struct PrintingPolicy {
       Alignof(LO.CPlusPlus11), UnderscoreAlignof(LO.C11),
       UseVoidForZeroParams(!LO.CPlusPlus),
       TerseOutput(false), PolishForDeclaration(false),
-      Half(LO.Half), MSWChar(LO.MicrosoftExt && !LO.WChar),
+      Half(LO.Half),
+      Fixed4(true /* LangOption */),
+      Fixed8(true /* LangOption */),
+      MSWChar(LO.MicrosoftExt && !LO.WChar),
       IncludeNewlines(true), MSVCFormatting(false),
       ConstantsAsWritten(false), SuppressImplicitBase(false),
       FullyQualifiedName(false) { }
@@ -188,6 +191,9 @@ struct PrintingPolicy {
   /// When true, print the half-precision floating-point type as 'half'
   /// instead of '__fp16'
   unsigned Half : 1;
+  
+  unsigned Fixed4 : 1;
+  unsigned Fixed8 : 1;
 
   /// When true, print the built-in wchar_t type as __wchar_t. For use in
   /// Microsoft mode when wchar_t is not available.

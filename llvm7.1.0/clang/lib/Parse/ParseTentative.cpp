@@ -1028,12 +1028,16 @@ Parser::isExpressionOrTypeSpecifierSimple(tok::TokenKind Kind) {
     return TPResult::True;
 
   // Obviously starts a type-specifier-seq:
+  case tok::kw_int4:
+  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_const:
   case tok::kw_double:
   case tok::kw__Float16:
   case tok::kw___float128:
   case tok::kw_enum:
+  case tok::kw_fixed4:
+  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_int:
@@ -1528,6 +1532,8 @@ Parser::isCXXDeclarationSpecifier(Parser::TPResult BracedCastResult,
     }
     LLVM_FALLTHROUGH;
 
+  case tok::kw_int4:
+  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
@@ -1541,6 +1547,8 @@ Parser::isCXXDeclarationSpecifier(Parser::TPResult BracedCastResult,
   case tok::kw___int128:
   case tok::kw_signed:
   case tok::kw_unsigned:
+  case tok::kw_fixed4:
+  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:
@@ -1620,6 +1628,8 @@ bool Parser::isCXXDeclarationSpecifierAType() {
     return true;
 
     // simple-type-specifier
+  case tok::kw_int4:
+  case tok::kw_int256:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
@@ -1633,6 +1643,8 @@ bool Parser::isCXXDeclarationSpecifierAType() {
   case tok::kw___int128:
   case tok::kw_signed:
   case tok::kw_unsigned:
+  case tok::kw_fixed4:
+  case tok::kw_fixed8:
   case tok::kw_half:
   case tok::kw_float:
   case tok::kw_double:

@@ -173,10 +173,14 @@ let isAny = 1 in {
   def llvm_anyvector_ty  : LLVMType<vAny>;
 }
 def llvm_i1_ty         : LLVMType<i1>;
+def llvm_i4_ty         : LLVMType<i4>;
 def llvm_i8_ty         : LLVMType<i8>;
 def llvm_i16_ty        : LLVMType<i16>;
 def llvm_i32_ty        : LLVMType<i32>;
 def llvm_i64_ty        : LLVMType<i64>;
+def llvm_i256_ty       : LLVMType<i256>;
+def llvm_f4_ty         : LLVMType<f4>;
+def llvm_f8_ty         : LLVMType<f8>;
 def llvm_half_ty       : LLVMType<f16>;
 def llvm_float_ty      : LLVMType<f32>;
 def llvm_double_ty     : LLVMType<f64>;

@@ -67,6 +67,8 @@ protected:
   unsigned char PointerWidth, PointerAlign;
   unsigned char BoolWidth, BoolAlign;
   unsigned char IntWidth, IntAlign;
+  unsigned char Fixed4Width, Fixed4Align;
+  unsigned char Fixed8Width, Fixed8Align;
   unsigned char HalfWidth, HalfAlign;
   unsigned char FloatWidth, FloatAlign;
   unsigned char DoubleWidth, DoubleAlign;
@@ -74,6 +76,7 @@ protected:
   unsigned char LargeArrayMinWidth, LargeArrayAlign;
   unsigned char LongWidth, LongAlign;
   unsigned char LongLongWidth, LongLongAlign;
+  unsigned char Int256Width, Int256Align;
 
   // Fixed point bit widths
   unsigned char ShortAccumWidth, ShortAccumAlign;
@@ -112,7 +115,7 @@ protected:
   std::unique_ptr<llvm::DataLayout> DataLayout;
   const char *MCountName;
   const llvm::fltSemantics *HalfFormat, *FloatFormat, *DoubleFormat,
-    *LongDoubleFormat, *Float128Format;
+    *LongDoubleFormat, *Float128Format, *Fixed4Format, *Fixed8Format;
   unsigned char RegParmMax, SSERegParmMax;
   TargetCXXABI TheCXXABI;
   const LangASMap *AddrSpaceMap;
@@ -156,6 +159,8 @@ public:
   ///===---- Target Data Type Query Methods -------------------------------===//
   enum IntType {
     NoInt = 0,
+    SignedInt4,
+    UnsignedInt4,
     SignedChar,
     UnsignedChar,
     SignedShort,
@@ -165,12 +170,17 @@ public:
     SignedLong,
     UnsignedLong,
     SignedLongLong,
-    UnsignedLongLong
+    UnsignedLongLong,
+    SignedInt256,
+    UnsignedInt256,
   };
 
   enum RealType {
     NoFloat = 255,
     Float = 0,
+    Half,
+    Fixed4,
+    Fixed8,
     Double,
     LongDouble,
     Float128
@@ -258,6 +268,10 @@ public:
   IntType getSizeType() const { return SizeType; }
   IntType getSignedSizeType() const {
     switch (SizeType) {
+    case UnsignedInt4:
+      return SignedInt4;
+    case UnsignedInt256:
+      return SignedInt256;
     case UnsignedShort:
       return SignedShort;
     case UnsignedInt:
@@ -297,6 +311,10 @@ public:
 
   static IntType getCorrespondingUnsignedType(IntType T) {
     switch (T) {
+    case SignedInt4:
+      return UnsignedInt4;
+    case SignedInt256:
+      return UnsignedInt256;
     case SignedChar:
       return UnsignedChar;
     case SignedShort:
@@ -359,6 +377,9 @@ public:
   /// Return the alignment of '_Bool' and C++ 'bool' for this target.
   unsigned getBoolAlign() const { return BoolAlign; }
 
+  unsigned getInt4Width() const { return 4; } // FIXME(konda)
+  unsigned getInt4Align() const { return 8; } // FIXME(konda)
+  
   unsigned getCharWidth() const { return 8; } // FIXME
   unsigned getCharAlign() const { return 8; } // FIXME
 
@@ -384,6 +405,9 @@ public:
   /// 'unsigned long long' for this target, in bits.
   unsigned getLongLongWidth() const { return LongLongWidth; }
   unsigned getLongLongAlign() const { return LongLongAlign; }
+
+  unsigned getInt256Width() const { return Int256Width; }
+  unsigned getInt256Align() const { return Int256Align; }
 
   /// getShortAccumWidth/Align - Return the size of 'signed short _Accum' and
   /// 'unsigned short _Accum' for this target, in bits.
@@ -544,6 +568,13 @@ public:
   /// bits.
   unsigned getChar32Width() const { return getTypeWidth(Char32Type); }
   unsigned getChar32Align() const { return getTypeAlign(Char32Type); }
+
+  unsigned getFixed4Width() const { return Fixed4Width; }
+  unsigned getFixed4Align() const { return Fixed4Align; }
+  const llvm::fltSemantics &getFixed4Format() const { return *Fixed4Format; }
+  unsigned getFixed8Width() const { return Fixed8Width; }
+  unsigned getFixed8Align() const { return Fixed8Align; }
+  const llvm::fltSemantics &getFixed8Format() const { return *Fixed8Format; }
 
   /// getHalfWidth/Align/Format - Return the size/align/format of 'half'.
   unsigned getHalfWidth() const { return HalfWidth; }

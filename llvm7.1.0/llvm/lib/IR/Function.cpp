@@ -595,6 +595,8 @@ static std::string getMangledTypeStr(Type* Ty) {
     default: llvm_unreachable("Unhandled type");
     case Type::VoidTyID:      Result += "isVoid";   break;
     case Type::MetadataTyID:  Result += "Metadata"; break;
+    case Type::Fixed4TyID:    Result += "f4";      break;
+    case Type::Fixed8TyID:    Result += "f8";      break;
     case Type::HalfTyID:      Result += "f16";      break;
     case Type::FloatTyID:     Result += "f32";      break;
     case Type::DoubleTyID:    Result += "f64";      break;
@@ -634,48 +636,53 @@ enum IIT_Info {
   // Common values should be encoded with 0-15.
   IIT_Done = 0,
   IIT_I1   = 1,
-  IIT_I8   = 2,
-  IIT_I16  = 3,
-  IIT_I32  = 4,
-  IIT_I64  = 5,
-  IIT_F16  = 6,
-  IIT_F32  = 7,
-  IIT_F64  = 8,
-  IIT_V2   = 9,
-  IIT_V4   = 10,
-  IIT_V8   = 11,
-  IIT_V16  = 12,
-  IIT_V32  = 13,
-  IIT_PTR  = 14,
-  IIT_ARG  = 15,
+  IIT_I4   = 2,
+  IIT_I8   = 3,
+  IIT_I16  = 4,
+  IIT_I32  = 5,
+  IIT_I64  = 6,
+  IIT_I256 = 7,
+  IIT_F4   = 8,
+  IIT_F8   = 9,
+  IIT_F16  = 10,
+  IIT_F32  = 11,
+  IIT_F64  = 12,
+  IIT_V2   = 13,
+  IIT_V4   = 14,
+  IIT_V8   = 15,
+  IIT_V16  = 16,
+  IIT_V32  = 17,
+  IIT_PTR  = 18,
+  IIT_ARG  = 19,
 
   // Values from 16+ are only encodable with the inefficient encoding.
-  IIT_V64  = 16,
-  IIT_MMX  = 17,
-  IIT_TOKEN = 18,
-  IIT_METADATA = 19,
-  IIT_EMPTYSTRUCT = 20,
-  IIT_STRUCT2 = 21,
-  IIT_STRUCT3 = 22,
-  IIT_STRUCT4 = 23,
-  IIT_STRUCT5 = 24,
-  IIT_EXTEND_ARG = 25,
-  IIT_TRUNC_ARG = 26,
-  IIT_ANYPTR = 27,
-  IIT_V1   = 28,
-  IIT_VARARG = 29,
-  IIT_HALF_VEC_ARG = 30,
-  IIT_SAME_VEC_WIDTH_ARG = 31,
-  IIT_PTR_TO_ARG = 32,
-  IIT_PTR_TO_ELT = 33,
-  IIT_VEC_OF_ANYPTRS_TO_ELT = 34,
-  IIT_I128 = 35,
-  IIT_V512 = 36,
-  IIT_V1024 = 37,
-  IIT_STRUCT6 = 38,
-  IIT_STRUCT7 = 39,
-  IIT_STRUCT8 = 40,
-  IIT_F128 = 41
+  IIT_V64  = 20,
+  IIT_MMX  = 21,
+  IIT_TOKEN = 22,
+  IIT_METADATA = 23,
+  IIT_EMPTYSTRUCT = 24,
+  IIT_STRUCT2 = 25,
+  IIT_STRUCT3 = 26,
+  IIT_STRUCT4 = 27,
+  IIT_STRUCT5 = 28,
+  IIT_EXTEND_ARG = 29,
+  IIT_TRUNC_ARG = 30,
+  IIT_ANYPTR = 31,
+  IIT_V1   = 32,
+  IIT_VARARG = 33,
+  IIT_HALF_VEC_ARG = 34,
+  IIT_SAME_VEC_WIDTH_ARG = 35,
+  IIT_PTR_TO_ARG = 36,
+  IIT_PTR_TO_ELT = 37,
+  IIT_VEC_OF_ANYPTRS_TO_ELT = 38,
+  IIT_I128 = 39,
+  IIT_V256 = 40,
+  IIT_V512 = 41,
+  IIT_V1024 = 42,
+  IIT_STRUCT6 = 43,
+  IIT_STRUCT7 = 44,
+  IIT_STRUCT8 = 45,
+  IIT_F128 = 46
 };
 
 static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
@@ -701,6 +708,12 @@ static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
   case IIT_METADATA:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Metadata, 0));
     return;
+  case IIT_F4:
+    OutputTable.push_back(IITDescriptor::get(IITDescriptor::Fixed4, 0));
+    return;
+  case IIT_F8:
+    OutputTable.push_back(IITDescriptor::get(IITDescriptor::Fixed8, 0));
+    return;
   case IIT_F16:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Half, 0));
     return;
@@ -716,6 +729,9 @@ static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
   case IIT_I1:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Integer, 1));
     return;
+  case IIT_I4:
+    OutputTable.push_back(IITDescriptor::get(IITDescriptor::Integer, 4));
+    return;
   case IIT_I8:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Integer, 8));
     return;
@@ -730,6 +746,9 @@ static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
     return;
   case IIT_I128:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Integer, 128));
+    return;
+  case IIT_I256:
+    OutputTable.push_back(IITDescriptor::get(IITDescriptor::Integer, 256));
     return;
   case IIT_V1:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Vector, 1));
@@ -757,6 +776,10 @@ static void DecodeIITType(unsigned &NextElt, ArrayRef<unsigned char> Infos,
     return;
   case IIT_V64:
     OutputTable.push_back(IITDescriptor::get(IITDescriptor::Vector, 64));
+    DecodeIITType(NextElt, Infos, OutputTable);
+    return;
+  case IIT_V256:
+    OutputTable.push_back(IITDescriptor::get(IITDescriptor::Vector, 256));
     DecodeIITType(NextElt, Infos, OutputTable);
     return;
   case IIT_V512:
@@ -894,6 +917,8 @@ static Type *DecodeFixedType(ArrayRef<Intrinsic::IITDescriptor> &Infos,
   case IITDescriptor::MMX: return Type::getX86_MMXTy(Context);
   case IITDescriptor::Token: return Type::getTokenTy(Context);
   case IITDescriptor::Metadata: return Type::getMetadataTy(Context);
+  case IITDescriptor::Fixed4: return Type::getFixed4Ty(Context);
+  case IITDescriptor::Fixed8: return Type::getFixed8Ty(Context);
   case IITDescriptor::Half: return Type::getHalfTy(Context);
   case IITDescriptor::Float: return Type::getFloatTy(Context);
   case IITDescriptor::Double: return Type::getDoubleTy(Context);
@@ -1037,6 +1062,8 @@ bool Intrinsic::matchIntrinsicType(Type *Ty, ArrayRef<Intrinsic::IITDescriptor> 
     case IITDescriptor::MMX:  return !Ty->isX86_MMXTy();
     case IITDescriptor::Token: return !Ty->isTokenTy();
     case IITDescriptor::Metadata: return !Ty->isMetadataTy();
+    case IITDescriptor::Fixed4: return !Ty->isFixed4Ty();
+    case IITDescriptor::Fixed8: return !Ty->isFixed8Ty();
     case IITDescriptor::Half: return !Ty->isHalfTy();
     case IITDescriptor::Float: return !Ty->isFloatTy();
     case IITDescriptor::Double: return !Ty->isDoubleTy();

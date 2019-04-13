@@ -2165,6 +2165,10 @@ ScalarExprEmitter::EmitScalarPrePostIncDec(const UnaryOperator *E, LValue LV,
       // necessarily represented using the "half" LLVM type.
       if (value->getType()->isFP128Ty())
         FS = &CGF.getTarget().getFloat128Format();
+      else if (value->getType()->isFixed4Ty())
+        FS = &CGF.getTarget().getFixed4Format();
+      else if (value->getType()->isFixed8Ty())
+        FS = &CGF.getTarget().getFixed8Format();
       else if (value->getType()->isHalfTy())
         FS = &CGF.getTarget().getHalfFormat();
       else

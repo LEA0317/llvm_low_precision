@@ -1431,6 +1431,10 @@ static Type *shrinkFPConstant(ConstantFP *CFP) {
   // See if the value can be truncated to half and then reextended.
   if (fitsInFPType(CFP, APFloat::IEEEhalf()))
     return Type::getHalfTy(CFP->getContext());
+  if (fitsInFPType(CFP, APFloat::IEEEfixed4()))
+    return Type::getFixed4Ty(CFP->getContext());
+  if (fitsInFPType(CFP, APFloat::IEEEfixed8()))
+    return Type::getFixed8Ty(CFP->getContext());
   // See if the value can be truncated to float and then reextended.
   if (fitsInFPType(CFP, APFloat::IEEEsingle()))
     return Type::getFloatTy(CFP->getContext());
