@@ -25,5 +25,5 @@ test_uint4.ll:
 	../llvm7.1.0/build/bin/clang++ -S -emit-llvm test_uint4.cpp
 
 test_int256.ll:
-	@echo "** test for uint256_t **"
+	@echo "** test for int256 **"
 	../llvm7.1.0/build/bin/clang++ -S -emit-llvm test_int256.cpp
