@@ -127,8 +127,6 @@ SIGNED_TYPE(LongLong, LongLongTy)
 // '__int128_t'
 SIGNED_TYPE(Int128, Int128Ty)
 
-SIGNED_TYPE(SInt128, Int256Ty)
-
 SIGNED_TYPE(SInt256, Int256Ty)
 
 //===- Fixed point types --------------------------------------------------===//
