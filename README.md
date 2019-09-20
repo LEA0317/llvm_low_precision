@@ -1,6 +1,6 @@
 # llvm low precision
 ```
-  utilize low precision in LLVM7 / LLVM8
+  utilize low precision in LLVM7 / LLVM8 / LLVM9
 
   you can use types as below (unsigned int4 may be buggy).
 ```
