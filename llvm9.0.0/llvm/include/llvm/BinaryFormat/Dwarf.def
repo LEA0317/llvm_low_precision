@@ -703,10 +703,12 @@ HANDLE_DW_ATE(0x0d, signed_fixed, 3, DWARF)
 HANDLE_DW_ATE(0x0e, unsigned_fixed, 3, DWARF)
 HANDLE_DW_ATE(0x0f, decimal_float, 3, DWARF)
 
-HANDLE_DW_ATE(0x10, signed_int4, 3, DWARF)
-HANDLE_DW_ATE(0x11, unsigned_int4, 3, DWARF)
-HANDLE_DW_ATE(0x12, signed_int256, 3, DWARF)
-HANDLE_DW_ATE(0x13, unsigned_int256, 3, DWARF)
+HANDLE_DW_ATE(0x10, float4, 3, DWARF)
+HANDLE_DW_ATE(0x11, float8, 3, DWARF)
+HANDLE_DW_ATE(0x12, signed_int4, 3, DWARF)
+HANDLE_DW_ATE(0x13, unsigned_int4, 3, DWARF)
+HANDLE_DW_ATE(0x14, signed_int256, 3, DWARF)
+HANDLE_DW_ATE(0x15, unsigned_int256, 3, DWARF)
 
 // New in DWARF v4:
 HANDLE_DW_ATE(0x14, UTF, 4, DWARF)
