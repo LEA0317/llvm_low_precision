@@ -1722,7 +1722,13 @@ Error BitcodeReader::parseTypeTableBody() {
     case bitc::TYPE_CODE_VOID:      // VOID
       ResultTy = Type::getVoidTy(Context);
       break;
-    case bitc::TYPE_CODE_HALF:     // HALF
+    case bitc::TYPE_CODE_FLOAT4:
+      ResultTy = Type::getFloat4Ty(Context);
+      break;
+    case bitc::TYPE_CODE_FLOAT8:
+      ResultTy = Type::getFloat8Ty(Context);
+      break;
+    case bitc::TYPE_CODE_HALF:
       ResultTy = Type::getHalfTy(Context);
       break;
     case bitc::TYPE_CODE_FLOAT:     // FLOAT
