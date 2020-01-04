@@ -1,3 +1,3 @@
-void test(int256 *a, int256 *b, int256 *c) {
+void test(int256_t *a, int256_t *b, int256_t *c) {
   *c = *a + *b;
 }
