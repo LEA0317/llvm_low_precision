@@ -16,4 +16,4 @@ Jan / 4th / 2020 port to LLVM9.0.1 and fix some fatal bugs.
 `float8 = f8`  
 `int4   = i4`
 
-`int256 = i256`
+`int256_t = i256`
