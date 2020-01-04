@@ -295,6 +295,9 @@ unsigned HexagonTargetObjectFile::getSmallestAddressableSize(const Type *Ty,
   if (!Ty)
     return 0;
   switch (Ty->getTypeID()) {
+  case Type::Float4TyID:
+  case Type::Float8TyID:
+    llvm_unreachable("cannot handle this");
   case Type::StructTyID: {
     const StructType *STy = cast<const StructType>(Ty);
     for (auto &E : STy->elements()) {

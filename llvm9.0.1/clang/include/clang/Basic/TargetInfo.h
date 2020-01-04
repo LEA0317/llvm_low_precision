@@ -125,12 +125,12 @@ struct TransferrableTargetInfo {
   enum RealType {
     NoFloat = 255,
     Float = 0,
+    Double,
+    LongDouble,
+    Float128,
     Float4,
     Float8,
     Half,
-    Double,
-    LongDouble,
-    Float128
   };
 protected:
   IntType SizeType, IntMaxType, PtrDiffType, IntPtrType, WCharType,
@@ -196,7 +196,7 @@ protected:
   mutable VersionTuple PlatformMinVersion;
 
   unsigned HasAlignMac68kSupport : 1;
-  unsigned RealTypeUsesObjCFPRet : 4;
+  unsigned RealTypeUsesObjCFPRet : 3;
   unsigned ComplexLongDoubleUsesFP2Ret : 1;
 
   unsigned HasBuiltinMSVaList : 1;
