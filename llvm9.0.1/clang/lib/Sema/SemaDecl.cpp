@@ -132,7 +132,7 @@ bool Sema::isSimpleTypeSpecifier(tok::TokenKind Kind) const {
   case tok::kw_unsigned:
   case tok::kw_void:
   case tok::kw_int4:
-  case tok::kw_int256:
+  case tok::kw_int256_t:
   case tok::kw_char:
   case tok::kw_int:
   case tok::kw_float4:

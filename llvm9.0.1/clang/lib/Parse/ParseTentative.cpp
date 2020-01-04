@@ -1107,7 +1107,7 @@ Parser::isExpressionOrTypeSpecifierSimple(tok::TokenKind Kind) {
 
   // Obviously starts a type-specifier-seq:
   case tok::kw_int4:
-  case tok::kw_int256:
+  case tok::kw_int256_t:
   case tok::kw_char:
   case tok::kw_const:
   case tok::kw_double:
@@ -1654,7 +1654,7 @@ Parser::isCXXDeclarationSpecifier(Parser::TPResult BracedCastResult,
     LLVM_FALLTHROUGH;
 
   case tok::kw_int4:
-  case tok::kw_int256:
+  case tok::kw_int256_t:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:
@@ -1752,7 +1752,7 @@ bool Parser::isCXXDeclarationSpecifierAType() {
 
     // simple-type-specifier
   case tok::kw_int4:
-  case tok::kw_int256:
+  case tok::kw_int256_t:
   case tok::kw_char:
   case tok::kw_wchar_t:
   case tok::kw_char8_t:

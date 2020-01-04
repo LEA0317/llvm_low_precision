@@ -2719,11 +2719,11 @@ StringRef BuiltinType::getName(const PrintingPolicy &Policy) const {
   case UInt4:
     return "unsigned int4";
   case UInt256:
-    return "unsigned int256";
+    return "unsigned int256_t";
   case SInt4:
     return "int4";
   case SInt256:
-    return "int256";
+    return "int256_t";
   case Char_S:
     return "char";
   case Char_U:

@@ -384,7 +384,7 @@ MODULES_KEYWORD(module)
 MODULES_KEYWORD(import)
 
 KEYWORD(int4                        , KEYALL)
-KEYWORD(int256                      , KEYALL)
+KEYWORD(int256_t                    , KEYALL)
 
 // C++20 keywords.
 CXX2A_KEYWORD(char8_t               , CHAR8SUPPORT)

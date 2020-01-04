@@ -2106,7 +2106,7 @@ void Parser::ParseCXXSimpleTypeSpecifier(DeclSpec &DS) {
   case tok::kw_int4:
     DS.SetTypeSpecType(DeclSpec::TST_int4, Loc, PrevSpec, DiagID, Policy);
     break;
-  case tok::kw_int256:
+  case tok::kw_int256_t:
     DS.SetTypeSpecType(DeclSpec::TST_int256, Loc, PrevSpec, DiagID, Policy);
     break;
   case tok::kw_float4:
